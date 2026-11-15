@@ -19,7 +19,7 @@ In the learner's working folder, next to `learning-log.md`:
 - `reference/slug.html`, a one-page reference sheet for the same material.
 - `assets/`, copied once from this skill's `assets/` folder: `lesson.css`, `quiz.js`, `check-lesson.js`, and `lang.js` if pages are bilingual. Start new pages from `assets/lesson-template.html` and `assets/reference-template.html`.
 
-Open the lesson for the learner when it is written.
+Open the lesson for the learner when it is written. In the reply, say in two or three lines what the page covers and how many questions it has. Never show the questions, options or answer key in chat, not as a table and not as the page's data: the learner would see the answers before trying. If the learner can't open files, switch to quizzing in chat, one question at a time.
 
 ## What goes on a lesson page, in this order
 
@@ -45,7 +45,7 @@ Open the lesson for the learner when it is written.
 
 ## Drill difficulty
 
-- Aim drills at 70 to 85 percent right. Learning is fastest when some answers are hard to reach; near 100 percent means the drill is too easy.
+- Aim drills at 70 to 85 percent right, and tell the learner that target in one line when giving them a drill, with the step it is at. Learning is fastest when some answers are hard to reach; near 100 percent means the drill is too easy.
 - After two drills in a row above 90 percent, step up. Below 60 percent, step down or reteach before the next drill.
 - Step up in this order: single choice, then more multi-select, then short answers, then a design case to write up. A short answer uses the recall format (write first, then reveal a model answer and self-mark); a design case goes to chat for feedback. Keep some multiple choice at every step if the exam uses it.
 - Level checks keep their pass marks from `references/levels.md`; this target is for practice only.
