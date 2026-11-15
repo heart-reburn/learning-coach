@@ -86,9 +86,9 @@
     "checklist": [
       "Writes or describes a lesson file under lessons/ with a number, plus shared assets in assets/",
       "The page opens with recall from memory before the explanation",
-      "Practice questions are scenarios or decisions; options state only the choice, with the reason for each given after answering",
-      "The correct option is not consistently the longest or the shortest, and options are not in a fixed answer position",
-      "Each practice question asks the learner to mark it sure or guessing before checking",
+      "Does not list the questions, options or answer key in chat; any description of the questions says they are scenarios or decisions with bare options and explanations after answering",
+      "Says or implies the options are shuffled on load and checked for length patterns (for example by running check-lesson.js), with no answer key shown",
+      "Tells the learner each answer is marked sure or guessing before checking",
       "Ends with a result line or similar for the learner to paste back into learning-log.md"
     ]
   },
