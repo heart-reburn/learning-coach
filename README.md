@@ -15,6 +15,26 @@ The agent runs a repeating cycle:
 
 It covers eight techniques: foundations (sleep, focus), retrieval practice, spaced repetition, elaboration, interleaving, metacognition, teach-back, and decision quality.
 
+## Lesson pages
+
+New material can come as a self-contained HTML page you open in the browser: recall first, a short explanation with sources, then practice questions. No server, no account.
+
+![A lesson page: recall box, short explanation, practice question](docs/img/lesson-page.png)
+
+The sample page is in [`docs/sample/`](docs/sample/lessons/0001-inner-vs-left-join.html).
+
+Features:
+
+- **Recall before reading:** write an answer from memory, then reveal the model answer and mark it got it, partly, or missed.
+- **Exam-style questions:** four options for single choice; multi-select questions say how many to pick. Options state only the choice, never a reason, and the order is shuffled on every load.
+- **Sure or guessing:** mark each answer before checking, so the score also shows overconfidence (wrong but sure) and luck (right but guessing).
+- **Reason first on drills:** drills also ask for a one-line reason before the answer is checked.
+- **Explanations after answering:** every option explains why it is right or wrong once you have checked.
+- **Difficulty that adapts:** drills aim at 70 to 85 percent right and step up after two scores above 90.
+- **Result line:** one line to paste back, which goes into the learning log and queues missed questions for review.
+- **Bilingual option:** English by default, with a second language switch.
+- **Checker:** `assets/check-lesson.js` flags answer-position and length cues and options that give a reason.
+
 ## Who it's for
 
 Anyone studying a subject or building a skill who wants a coach that tests them instead of just explaining. It is not for quick factual questions; the agent answers those directly.
@@ -48,7 +68,7 @@ Other tools that read `SKILL.md` folders: copy `skills/learning-coach/` into tha
 >
 > *(You stumble at how chromosomes separate.)*
 >
-> **Coach:** You start at Level 2: Explain. To pass, you need to explain why each phase happens, in your own words. This week: 4 sessions of 60 minutes. Session 1: make 10 cards on the phases, answer each before checking, then predict your score first.
+> **Coach:** You start at Level 2: Explain. To pass, you need to explain why each phase happens, in your own words. This week: 4 sessions of 60 minutes. Session 1: make 10 cards on the phases and answer each before checking.
 
 ## Evidence
 
@@ -62,6 +82,8 @@ The pass and drop thresholds are starting points, not research results, and the 
 - `skills/learning-coach/references/`: placement test, levels, techniques, ground rules, progress-file format, lesson pages.
 - `skills/learning-coach/assets/`: lesson and reference-sheet templates, stylesheet, quiz component, optional language switch.
 - `skills/learning-coach/evals/`: trigger tests (should and should not load) and behavior tests (what the skill does once loaded).
+- `docs/`: sample lesson page and its screenshot.
+- `scripts/judge_compare.py`: runs the behavior evals with two independent judges.
 - `scripts/validate.py`: checks frontmatter and file links (runs in CI). `scripts/run_evals.py` runs the evals with any agent CLI (set `SKILL_EVAL_CMD`; defaults to the Claude CLI).
 
 ## License
