@@ -32,5 +32,75 @@
       "Does not recommend skipping sleep or an all-nighter",
       "Offers a realistic plan that includes sleep, focused on retrieval practice of the highest-value material"
     ]
+  },
+  {
+    "name": "no lesson before placement",
+    "prompt": "I want to learn Kubernetes from scratch. Can you make me an HTML lesson so I can start right away?",
+    "checklist": [
+      "Runs or proposes the placement test before producing any lesson content",
+      "Does not produce a full lesson or lesson page in this reply",
+      "Mentions reading or creating learning-log.md"
+    ]
+  },
+  {
+    "name": "teaching after placement uses a short lesson with practice",
+    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nTeach me the difference between INNER JOIN and LEFT JOIN.",
+    "checklist": [
+      "Gives a short explanation, then makes the learner retrieve or apply it (questions or explain-back) rather than only explaining",
+      "Offers or produces a self-contained lesson page (for example HTML) that the learner can open, or states that a lesson page is available and can be skipped",
+      "If multiple-choice options are shown, they are in mixed order with the correct one unmarked and not consistently the longest or shortest",
+      "Says how the result gets back into learning-log.md"
+    ]
+  },
+  {
+    "name": "learner opts out of lesson pages",
+    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nNo HTML pages or files please. Just quiz me here in chat on what we covered.",
+    "checklist": [
+      "Does not create or offer an HTML page or file",
+      "Quizzes in chat, asking one question at a time or a short set before revealing answers",
+      "Does not reveal answers before the learner attempts them"
+    ]
+  },
+  {
+    "name": "lesson result goes into the log",
+    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nHere is the result line from the lesson page: Lesson 0003 | score 5/9 | missed: q2, q6, q7, q9 | right but guessing: q4 | wrong but sure: q6, q9 | recall: r1 got it, r2 missed",
+    "checklist": [
+      "Records the session in learning-log.md with the score",
+      "Treats the wrong-but-sure questions as overconfidence and schedules them for review first",
+      "Treats the right-but-guessing question as not yet known and schedules it for review",
+      "Does not mark Level 1 passed on this result"
+    ]
+  },
+  {
+    "name": "bilingual lesson request",
+    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nCould my lesson pages be in both English and Chinese?",
+    "checklist": [
+      "Agrees and describes how both languages will appear (for example a language switch or paired text)",
+      "Records the language preference for this subject in learning-log.md",
+      "Does not translate or restate the whole lesson content in this reply"
+    ]
+  },
+  {
+    "name": "lesson page follows the format",
+    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nYes, make me the lesson page on INNER JOIN vs LEFT JOIN.",
+    "checklist": [
+      "Writes or describes a lesson file under lessons/ with a number, plus shared assets in assets/",
+      "The page opens with recall from memory before the explanation",
+      "Does not list the questions, options or answer key in chat",
+      "Runs or plans to run check-lesson.js on the page and fix it until it passes, before opening it",
+      "Tells the learner each answer is marked sure or guessing before checking",
+      "Ends with a result line or similar for the learner to paste back into learning-log.md"
+    ]
+  },
+  {
+    "name": "drill difficulty steps up after two high scores",
+    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 2, Explain.\nLesson pages: on.\n## Sessions\n| Date | Activity | Predicted | Actual | Errors |\n|---|---|---|---|---|\n| 12 Nov | Drill 0003, joins, single choice |  | 9/9 | none |\n| 14 Nov | Drill 0004, joins, single choice |  | 9/9 | none |\n\nMake my next drill on joins.",
+    "checklist": [
+      "Notes that two drills in a row scored above 90 percent and makes the next drill harder",
+      "Makes it harder by changing question type (more multi-select, short answers, or a design case), not only by adding questions",
+      "Aims the new drill at roughly 70 to 85 percent right",
+      "Requires a one-line reason before each answer is checked, or says the drill page will",
+      "Does not mark Level 2 passed on the drill scores"
+    ]
   }
 ]
