@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INNER JOIN vs LEFT JOIN</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+<main>
+<h1>INNER JOIN vs LEFT JOIN: predict which rows come back</h1>
+<p class="meta">Lesson 0001 · about 20 minutes · Level 1, Recall</p>
+<div class="win"><strong>Your win today:</strong> given two small tables, you can say which rows each join returns.</div>
+<h2>Before you read: recall</h2>
+<p>Write your answer from memory first. The answer appears only after you have written something.</p>
+<div id="recall"></div>
+<h2>Which rows survive</h2>
+<p>An INNER JOIN keeps only rows with a match in both tables. A LEFT JOIN keeps every row from the left table and fills the right side with NULL when nothing matches.</p>
+<h2>Practice</h2>
+<p>Scenario questions, mixed on purpose. Option order is shuffled every time you open this page. Mark each answer sure or guessing before you check.</p>
+<div id="quiz"></div>
+<h2>Your result</h2>
+<div class="result" id="result"></div>
+<p class="row" style="margin-top:.6rem"><button id="copy">Copy result</button></p>
+</main>
+<script>
+window.LESSON = {
+  id: "0001", reason: false,
+  recall: [{ prompt: "What does WHERE do to the rows of a SELECT?", answer: "It keeps only the rows for which the condition is true." }],
+  questions: [{
+    stem: "A report must list every customer, including those who never ordered. Which join do you write from customers to orders?",
+    options: [
+      { text: "LEFT JOIN", correct: true, why: "It keeps every customer row and shows NULL for the order columns when there is no order." },
+      { text: "INNER JOIN", correct: false, why: "It drops customers with no order, so the report would be missing them." },
+      { text: "INNER JOIN, then add a WHERE on the order id", correct: false, why: "A filter on the order id removes the unmatched rows even further." },
+      { text: "Two separate queries combined by hand", correct: false, why: "A single LEFT JOIN already returns both groups." }
+    ]
+  }]
+};
+</script>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
