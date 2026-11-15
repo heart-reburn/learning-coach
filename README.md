@@ -8,7 +8,7 @@ The agent runs a repeating cycle:
 
 1. **Place:** a 15-minute test finds the starting level (1 to 6).
 2. **Set the bar:** it states what you must show to pass the level, before you study.
-3. **Study:** sessions of practice, reading, and self-testing (60 minutes by default), logged in a progress file the agent reads each time.
+3. **Study:** sessions of practice, reading, and self-testing (60 minutes by default), logged in a progress file the agent reads each time. New material can come as a short HTML lesson page: recall first, a plain explanation, then practice questions, each marked sure or guessing before it is checked.
 4. **Check:** an oral teach-back, scored at about 80%.
 5. **Rebuild:** you rewrite a one-page summary from memory.
 6. **Advance:** pass, move up, and keep reviewing earlier levels.
@@ -59,7 +59,8 @@ The pass and drop thresholds are starting points, not research results, and the 
 ## Repo layout
 
 - `skills/learning-coach/SKILL.md`: the skill.
-- `skills/learning-coach/references/`: placement test, levels, techniques, ground rules, progress-file format.
+- `skills/learning-coach/references/`: placement test, levels, techniques, ground rules, progress-file format, lesson pages.
+- `skills/learning-coach/assets/`: lesson and reference-sheet templates, stylesheet, quiz component, optional language switch.
 - `skills/learning-coach/evals/`: trigger tests (should and should not load) and behavior tests (what the skill does once loaded).
 - `scripts/validate.py`: checks frontmatter and file links (runs in CI). `scripts/run_evals.py` runs the evals with any agent CLI (set `SKILL_EVAL_CMD`; defaults to the Claude CLI).
 

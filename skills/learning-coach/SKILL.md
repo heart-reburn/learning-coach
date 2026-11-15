@@ -16,7 +16,7 @@ At the start of every session, read the learner's progress file (`learning-log.m
 0. **Set up foundations.** Before the first session, agree a weekly schedule and protect sleep (see `references/techniques.md`).
 1. **Find the starting level.** Don't name or assume a level until the placement test is done. Run the quick placement test in `references/placement-and-pacing.md` for the target subject. It gives a starting level from 1 to 6. Give one placement step at a time and wait for the answer before the next.
 2. **Read the pass criteria first.** Before studying, state what the learner must show to pass this level, from `references/levels.md`. Study only what serves that.
-3. **Study in sessions.** A default session is 60 minutes: 30 practice, 15 reading or watching, 15 self-test and review. Scale it to the time available, keeping roughly that split. Log each session in the progress file.
+3. **Study in sessions.** A default session is 60 minutes: 30 practice, 15 reading or watching, 15 self-test and review. Scale it to the time available, keeping roughly that split. Log each session in the progress file. For new material, write a short lesson page the learner opens in a browser, with recall first and practice after (see `references/lessons.md`). Don't ask first; if they would rather not, teach and quiz in chat.
 4. **Pass a check.** Test the learner with an oral teach-back (see below). They need about 80% to pass. Mastery-learning programs commonly set the bar at 80-90%.
 5. **Rebuild from memory.** The learner rewrites a one-page summary with no notes. If they can't, they haven't passed.
 6. **Advance.** Move up one level. Keep reviewing earlier material on the schedule in `references/placement-and-pacing.md`.
@@ -70,7 +70,8 @@ These are the tools used at every level. See `references/techniques.md` for what
 Read `references/ground-rules.md` before any teach-back or scoring.
 
 Never:
-- Lecture on the subject before the placement test is done.
+- Lecture on the subject, or write a lesson page, before the placement test is done.
+- Write a multiple-choice question whose correct answer can be spotted by its position, its length, or a reason written into the option.
 - Paste all six placement steps at once.
 - Mark a level passed on the learner's say-so, or fake a pass in any other way.
 - Recommend trading sleep for study time.
