@@ -86,8 +86,8 @@
     "checklist": [
       "Writes or describes a lesson file under lessons/ with a number, plus shared assets in assets/",
       "The page opens with recall from memory before the explanation",
-      "Does not list the questions, options or answer key in chat; any description of the questions says they are scenarios or decisions with bare options and explanations after answering",
-      "Says or implies the options are shuffled on load and checked for length patterns (for example by running check-lesson.js), with no answer key shown",
+      "Does not list the questions, options or answer key in chat",
+      "Runs or plans to run check-lesson.js on the page and fix it until it passes, before opening it",
       "Tells the learner each answer is marked sure or guessing before checking",
       "Ends with a result line or similar for the learner to paste back into learning-log.md"
     ]
