@@ -82,6 +82,7 @@ input[type="number"] { width: 6rem; }
 .option input { margin-top: .35rem; }
 .option.correct { background: var(--good-bg); border-color: var(--good); }
 .option.wrong { background: var(--bad-bg); border-color: var(--bad); }
+.why[hidden] { display: none; }
 .why { display: block; font-size: .88rem; color: var(--muted); margin-top: .2rem; }
 .confidence { margin-top: .6rem; }
 .reason { margin-top: .6rem; }
