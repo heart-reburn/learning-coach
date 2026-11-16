@@ -1,13 +1,13 @@
 # The eight techniques
 
-1. **Foundations.** Sleep, attention, and mindset. Protect sleep. Study in focused blocks with breaks. Treat mistakes as information. Do this first.
-2. **Retrieval practice.** Recall from memory instead of rereading. Close the book, write what you remember, then check. Strong evidence, highest priority.
-3. **Spaced repetition.** Review at growing intervals (flashcards or a paper schedule). Spacing beats cramming for long-term memory.
-4. **Elaboration.** Connect each new idea to something you already know. Ask "why does this work?" and "how does it relate to X?" Works best when you have some base knowledge.
-5. **Interleaving.** Mix related problem types in one session instead of doing one type at a time. It feels harder and teaches you to tell similar cases apart.
+1. **Foundations.** Sleep, attention, and mindset. Get seven to nine hours of sleep the night before a check. Study in focused blocks with breaks. Treat mistakes as information. Do this first. The sleep and foundations advice is practice judgment, not research.
+2. **Retrieval practice.** Recall from memory instead of rereading. Close the book, write what you remember, then check. High utility in Dunlosky et al. (2013); highest priority.
+3. **Spaced repetition.** Review at growing intervals (flashcards or a paper schedule). High utility in Dunlosky et al. (2013): spacing beats cramming for long-term memory.
+4. **Elaboration.** Connect each new idea to something you already know. Ask "why does this work?" and "how does it relate to X?" Elaborative interrogation and self-explanation are moderate utility in Dunlosky et al. (2013), and work best with some base knowledge.
+5. **Interleaving.** Mix related problem types in one session instead of doing one type at a time. Moderate utility in Dunlosky et al. (2013). It feels harder and teaches you to tell similar cases apart.
 6. **Metacognition.** Check your own understanding. Predict your score before a test, compare it with the result, and adjust pace and methods. This keeps the other techniques working.
-7. **Teach-back.** Explain the idea simply, find where you stumble, go back and fix it, then explain again. Doubles as the pass check.
-8. **Decision quality.** Decide what is worth learning and in what order. Take the small part of a subject that carries most of the value first, while motivation is high. Keep prerequisites in order.
+7. **Teach-back.** Explain the idea simply, find where you stumble, go back and fix it, then explain again. Practice judgment, not research; it doubles as the pass check.
+8. **Decision quality.** Decide what is worth learning and in what order. Take the part of a subject that carries most of the value first, while motivation is high (practice judgment, not research). Keep prerequisites in order.
 
 ## Teach-back example
 
@@ -34,4 +34,4 @@ Rereading, highlighting, and summarizing as your main strategy are weak (Dunlosk
 - Kulik, Kulik & Bangert-Drowns (1990). Effectiveness of mastery learning programs: a meta-analysis. *Review of Educational Research*, 60(2), 265-299. https://doi.org/10.3102/00346543060002265
 - Anderson & Krathwohl (Eds.) (2001). *A Taxonomy for Learning, Teaching, and Assessing*. Longman. (The six level names are adapted from this revised Bloom's taxonomy.)
 
-Not from research: the pass-and-drop thresholds in `placement-and-pacing.md` (the half-wrong rule, 60-minute sessions, the 70/20/10 time split). They are starting points to adjust.
+Not from research: the pass and drop thresholds in `levels.md` (the half-wrong rule, the 70 to 85 percent drill band and its 60, 70 and 85 step marks), the page size of about 15 questions, six options by default, two to four sentence explanations, the quarter cap on longest and shortest correct options and the ten-character reason minimum in `lessons.md`, and the 60-minute sessions, session time split, eight-session cutoff, placement step times, checklist sizes and review schedule (1 day, 3 days, 1 week, 2 weeks, 1 month) in `placement-and-pacing.md`. They are starting points to adjust.

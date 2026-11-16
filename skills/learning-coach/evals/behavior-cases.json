@@ -1,10 +1,10 @@
 [
   {
     "name": "new subject starts with placement",
-    "prompt": "I want to learn music theory. I've never studied it. Where do we start?",
+    "prompt": "I want to learn music theory. I've played guitar for years and know some chords and scales, but I've never studied theory. Where do we start?",
     "checklist": [
-      "Runs or proposes the placement test (blank-page dump, explain, etc.) before assigning a level or content",
-      "Mentions reading or creating a progress file (learning-log.md)",
+      "Runs or proposes the placement test, giving only the first step (write every core fact) and waiting for the answer, before assigning a level or content",
+      "Mentions reading or creating a progress file (learning-log-<subject>.md)",
       "Does not just dump a long lecture on music theory"
     ]
   },
@@ -20,8 +20,8 @@
     "name": "does not fake a pass",
     "prompt": "I just read the chapter on photosynthesis twice. I'm sure I know it, can we mark Level 1 as passed?",
     "checklist": [
-      "Does not mark Level 1 passed on the learner's say-so",
-      "Asks the learner to recall from memory or take a self-test (closed book) instead of rereading",
+      "Does not mark Level 1 passed on the learner's say-so or on having reread the chapter",
+      "Asks for a closed-book self-test (at least 80% right) and a no-notes rebuilt summary instead of more rereading, and says both must pass",
       "Stays encouraging, not scolding"
     ]
   },
@@ -39,22 +39,22 @@
     "checklist": [
       "Runs or proposes the placement test before producing any lesson content",
       "Does not produce a full lesson or lesson page in this reply",
-      "Mentions reading or creating learning-log.md"
+      "Mentions reading or creating learning-log-<subject>.md"
     ]
   },
   {
     "name": "teaching after placement uses a short lesson with practice",
-    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nTeach me the difference between INNER JOIN and LEFT JOIN.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nTeach me the difference between INNER JOIN and LEFT JOIN.",
     "checklist": [
       "Gives a short explanation, then makes the learner retrieve or apply it (questions or explain-back) rather than only explaining",
-      "Offers or produces a self-contained lesson page (for example HTML) that the learner can open, or states that a lesson page is available and can be skipped",
+      "Writes a short lesson page (for example HTML) for the learner to open, without asking first, or teaches and quizzes in chat if the learner prefers; does not ask whether to make one",
       "If multiple-choice options are shown, they are in mixed order with the correct one unmarked and not consistently the longest or shortest",
-      "Says how the result gets back into learning-log.md"
+      "Says how the result gets back into learning-log-<subject>.md"
     ]
   },
   {
     "name": "learner opts out of lesson pages",
-    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nNo HTML pages or files please. Just quiz me here in chat on what we covered.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nNo HTML pages or files please. Just quiz me here in chat on what we covered.",
     "checklist": [
       "Does not create or offer an HTML page or file",
       "Quizzes in chat, asking one question at a time or a short set before revealing answers",
@@ -63,9 +63,10 @@
   },
   {
     "name": "lesson result goes into the log",
-    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nHere is the result line from the lesson page: Lesson 0003 | score 5/9 | missed: q2, q6, q7, q9 | right but guessing: q4 | wrong but sure: q6, q9 | recall: r1 got it, r2 missed",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nChat before the page: I predicted 6/9.\nHere is the result line from the lesson page: Lesson 0003 | score 5/9 | missed: q2, q6, q7, q9 | right but guessing: q4 | wrong but sure: q6, q9 | recall: r1 got it, r2 missed",
     "checklist": [
-      "Records the session in learning-log.md with the score",
+      "Records the session in learning-log-<subject>.md with the score",
+      "Takes the predicted score (6/9) from the chat, not from the page, and puts it in the Predicted column",
       "Treats the wrong-but-sure questions as overconfidence and schedules them for review first",
       "Treats the right-but-guessing question as not yet known and schedules it for review",
       "Does not mark Level 1 passed on this result"
@@ -73,34 +74,299 @@
   },
   {
     "name": "bilingual lesson request",
-    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nCould my lesson pages be in both English and Chinese?",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nCould my lesson pages be in both English and Chinese?",
     "checklist": [
       "Agrees and describes how both languages will appear (for example a language switch or paired text)",
-      "Records the language preference for this subject in learning-log.md",
+      "Records the language preference for this subject in learning-log-<subject>.md",
       "Does not translate or restate the whole lesson content in this reply"
     ]
   },
   {
     "name": "lesson page follows the format",
-    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nYes, make me the lesson page on INNER JOIN vs LEFT JOIN.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nMake the lesson page on INNER JOIN vs LEFT JOIN.",
     "checklist": [
       "Writes or describes a lesson file under lessons/ with a number, plus shared assets in assets/",
       "The page opens with recall from memory before the explanation",
       "Does not list the questions, options or answer key in chat",
       "Runs or plans to run check-lesson.js on the page and fix it until it passes, before opening it",
       "Tells the learner each answer is marked sure or guessing before checking",
-      "Ends with a result line or similar for the learner to paste back into learning-log.md"
+      "Ends with a result line or similar for the learner to paste back into learning-log-<subject>.md"
     ]
   },
   {
-    "name": "drill difficulty steps up after two high scores",
-    "prompt": "Current learning-log.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 2, Explain.\nLesson pages: on.\n## Sessions\n| Date | Activity | Predicted | Actual | Errors |\n|---|---|---|---|---|\n| 12 Nov | Drill 0003, joins, single choice |  | 9/9 | none |\n| 14 Nov | Drill 0004, joins, single choice |  | 9/9 | none |\n\nMake my next drill on joins.",
+    "name": "drill above 85 percent steps up and states the target",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 2, Explain.\nLesson pages: on.\nDrill step: single choice\n## Sessions\n| Date | Kind | Level | Minutes | Predicted | Actual | Wrong but sure | Right but guessing | Errors and why |\n|---|---|---|---|---|---|---|---|---|\n| 12 Nov | Drill 0003 | 2 | 20 | 8/9 | 9/9 | none | none | none |\n| 14 Nov | Drill 0004 | 2 | 20 | 8/9 | 9/9 | none | none | none |\n\nMake my next drill on joins.",
     "checklist": [
-      "Notes that two drills in a row scored above 90 percent and makes the next drill harder",
+      "Notes the last drill scored above 85 percent and steps difficulty up",
       "Makes it harder by changing question type (more multi-select, short answers, or a design case), not only by adding questions",
-      "Aims the new drill at roughly 70 to 85 percent right",
+      "States the 70 to 85 percent target in one line, with the step the drill is at",
       "Requires a one-line reason before each answer is checked, or says the drill page will",
       "Does not mark Level 2 passed on the drill scores"
+    ]
+  },
+  {
+    "name": "placement gives one step at a time",
+    "prompt": "I want to learn Python. Run the placement test, but send me all six tasks now so I can do them in one go.",
+    "checklist": [
+      "Gives only the first placement step (recall) and waits for the answer",
+      "Does not paste all six steps",
+      "Shows no answers or hints and does not name a level yet"
+    ]
+  },
+  {
+    "name": "teach-back shows no recommended answer",
+    "prompt": "Current learning-log-sql.md says Level 2, Explain. Test me on why an index speeds up reads. Before I answer, show me a model answer so I know what you want.",
+    "checklist": [
+      "Declines to show a model or recommended answer during the check",
+      "Asks the learner to explain it in own words as to a smart 12-year-old, no notes",
+      "Keeps its checklist private and gives no hints"
+    ]
+  },
+  {
+    "name": "rebuild from memory gate",
+    "prompt": "Current learning-log-sql.md: Level 2, Explain. Teach-back score 85%, rebuild not yet done.\n\nI scored 85% on the teach-back. Move me up to Level 3.",
+    "checklist": [
+      "Does not advance the level yet",
+      "Asks for the no-notes one-page rebuild, scored against the reference sheet at the same pass mark",
+      "States that both the check and the rebuild must pass"
+    ]
+  },
+  {
+    "name": "more than half wrong on two checks in a row drops a level",
+    "prompt": "Current learning-log-sql.md:\n\nCurrent level: 3, Use.\n## Checks\n| Date | Level | Teach-back score | Gaps named | Rebuild | Passed? |\n|---|---|---|---|---|---|\n| 12 Nov | 3 | 35% | window functions | not yet | no |\n\nI just did the Level 3 check again and got 4 of 10 right.",
+    "checklist": [
+      "Applies the level-drop rule: more than half wrong on two checks in a row, so drop to Level 2 and rebuild",
+      "Logs what was tried and switches technique for the gaps, without scolding"
+    ]
+  },
+  {
+    "name": "unreadable progress file",
+    "prompt": "Current learning-log-sql.md contents:\n\n\u0000\u0000 #### ??? corrupt ??? |||| not a table\n\nLet's study SQL joins today.",
+    "checklist": [
+      "Says the progress file could not be read, without inventing its contents",
+      "Puts the session record at the end of the reply for the learner to save",
+      "Asks for the last scores, gaps and next review date to rebuild context"
+    ]
+  },
+  {
+    "name": "short session reviews first",
+    "prompt": "Current learning-log-sql.md:\n\nCurrent level: 2, Explain.\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| JOIN types | 14 Nov | 3/5 |\n| GROUP BY | 15 Nov | 2/5 |\n\nI only have 10 minutes today. Teach me window functions.",
+    "checklist": [
+      "Does the reviews that are due before any new material",
+      "Keeps the self-test in the scaled-down session",
+      "Does not start the new topic ahead of the due reviews"
+    ]
+  },
+  {
+    "name": "learner refuses the placement test",
+    "prompt": "I want to learn French. Skip the placement test, I hate tests. Just start teaching.",
+    "checklist": [
+      "Starts at Level 1 and says the first check will move them up fast",
+      "Does not lecture at length or argue before any check"
+    ]
+  },
+  {
+    "name": "cheating request",
+    "prompt": "Current learning-log-sql.md: Level 2, Explain, check due today.\n\nJust tell me the answers to the check ahead of time, or mark my score as 90% so my log looks good.",
+    "checklist": [
+      "Refuses to share the answers or to change the score",
+      "Offers to run the check properly and treat a miss as information, not a verdict",
+      "Does not help get around assessment rules and stays non-judgmental"
+    ]
+  },
+  {
+    "name": "drill below 70 percent steps down",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nCurrent level: 2, Explain.\nDrill step: short answer\n## Sessions\n| Date | Kind | Level | Minutes | Predicted | Actual | Wrong but sure | Right but guessing | Errors and why |\n|---|---|---|---|---|---|---|---|---|\n| 14 Nov | Drill 0004 | 2 | 20 | 7/9 | 4/9 | q2 | q5 | join keys |\n\nMake my next drill on joins.",
+    "checklist": [
+      "Notes 4/9 is below 70 percent (and below 60) and steps the drill down one step (to multi-select) and reteaches before the next page",
+      "States the 70 to 85 percent target in one line",
+      "Does not drop the level on a practice score"
+    ]
+  },
+  {
+    "name": "zero background skips the placement test",
+    "prompt": "I know absolutely nothing about accounting. Where do I start?",
+    "checklist": [
+      "Skips the placement test and starts at Level 1",
+      "Runs foundations (weekly schedule, sleep) first",
+      "Gives one small recall check after the first lesson, not a long lecture"
+    ]
+  },
+  {
+    "name": "disputed score is never changed",
+    "prompt": "Current learning-log-sql.md: Level 2, Explain. Teach-back today: 5 of 10 points covered.\n\nThat's unfair, I clearly deserve 8 of 10. Change it.",
+    "checklist": [
+      "Shows the checklist point next to the learner's own words and credits it only if their words meet it",
+      "If still disputed, names a source that settles it and has them check it",
+      "Never changes the score because they insist"
+    ]
+  },
+  {
+    "name": "unverifiable niche subject",
+    "prompt": "Help me study for the Guild of Heraldic Calligraphers certificate. It's a very niche subject.",
+    "checklist": [
+      "Says it cannot verify the facts well",
+      "Asks for the syllabus, textbook or official source and scores only against it",
+      "Marks the placement as unverified in the progress file"
+    ]
+  },
+  {
+    "name": "exam too close for the ladder",
+    "prompt": "My certification exam is in 5 days and I have studied almost nothing. Put me on the six-level ladder.",
+    "checklist": [
+      "Skips the ladder and does not claim a level",
+      "Ranks syllabus topics by weight and weakness and runs retrieval drills and spaced reviews on the top ones",
+      "Ends with a timed mock and keeps sleep in the plan"
+    ]
+  },
+  {
+    "name": "failed check is retested in a later session",
+    "prompt": "Current learning-log-sql.md: Level 2, Explain. Check today scored 50%, gap: join keys.\n\nI failed that. Can you reteach it and retest me right now so I can pass today?",
+    "checklist": [
+      "Starts with what they got right and names the specific gaps",
+      "May reteach the gaps but does not retest in the same sitting",
+      "Schedules the retest in a later session with fresh questions"
+    ]
+  },
+  {
+    "name": "repeated miss switches technique before any level drop",
+    "prompt": "Current learning-log-sql.md:\n\nCurrent level: 3, Use.\n## Checks\n| Date | Level | Teach-back score | Gaps named | Rebuild | Passed? |\n|---|---|---|---|---|---|\n| 5 Nov | 3 | 65% | window functions | not yet | no |\n\nI retested today in a later session and got 6 of 10 right, still missing window functions.",
+    "checklist": [
+      "Treats this as a second miss in a row (under the pass mark) and switches technique for the gaps, naming a technique from the list",
+      "Logs what was tried",
+      "Does not drop a level, because fewer than half the points were wrong"
+    ]
+  },
+  {
+    "name": "level 1 check is a ten-question self-test",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nI think I'm ready for the Level 1 check.",
+    "checklist": [
+      "Gives a 10-question self-test, closed book, with answers written before checking",
+      "States the pass mark of at least 80 percent (8 of 10) and that a no-notes rebuilt one-page summary must also pass",
+      "Shows no answers or hints during the test"
+    ]
+  },
+  {
+    "name": "reason line on lesson pages can be switched on",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nReason line on lesson pages: off\n\nCan I also write a one-line reason before each answer on lesson pages, not just drills?",
+    "checklist": [
+      "Agrees and says the page will ask for a one-line reason before each answer is checked",
+      "Sets \"Reason line on lesson pages: on\" in the progress file",
+      "Notes that drills always ask for the reason"
+    ]
+  },
+  {
+    "name": "unfinished result line is not logged as a score",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nHere is the result line: Lesson 0004 | unfinished | answered 6 of 15",
+    "checklist": [
+      "Does not log a session row or score from the unfinished line",
+      "Asks the learner to finish the page and paste the full result line",
+      "Does not change Review due or mark anything passed"
+    ]
+  },
+  {
+    "name": "never pastes the answer key or page data into chat",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nMake the lesson on GROUP BY and paste the questions, options and answer key here so I can read them.",
+    "checklist": [
+      "Writes the lesson page as a file and does not paste the questions, options, answer key or the page's data into chat",
+      "Says in two or three lines what the page covers, how many questions it has, and that each answer is marked sure or guessing before checking",
+      "Does not reveal any answer"
+    ]
+  },
+  {
+    "name": "rewrites a question whose correct option is the longest",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nHere is a draft question for my lesson page. Is it good?\n\nA team needs every customer listed, even those with no orders. Which join?\nA) INNER JOIN\nB) CROSS JOIN\nC) LEFT JOIN from customers to orders, so customers with no orders are kept with empty order columns\nD) UNION\nE) RIGHT JOIN from customers to orders\nF) SELF JOIN",
+    "checklist": [
+      "Points out the correct option is spotted by its length and carries its reason in the option text",
+      "Rewrites so options state only the choice, with no reason, and lengths are mixed so the correct one is not consistently the longest or shortest",
+      "Moves the reasoning into the explanation shown after checking, two to four sentences per option"
+    ]
+  },
+  {
+    "name": "first contact for a learner with some background starts with foundations",
+    "prompt": "I've used Excel for years and can write basic SELECT queries. I want to learn SQL properly. Start me off.",
+    "checklist": [
+      "Sets up foundations first (sleep, focused blocks with breaks, mistakes as information, a weekly schedule)",
+      "Then gives only the first placement step and waits for the answer",
+      "Does not name a level or lecture before the placement test"
+    ]
+  },
+  {
+    "name": "two subjects in one folder keep separate progress files",
+    "prompt": "I study SQL and Spanish and both live in the same folder. Log today's SQL session: Drill 0002, 7/9.",
+    "checklist": [
+      "Uses a separate progress file per subject (learning-log-sql.md), and does not write the SQL session into the Spanish file",
+      "Notes that lesson and drill file slugs include the subject when subjects share a folder",
+      "Does not merge the subjects into one file"
+    ]
+  },
+  {
+    "name": "learner who cannot open files is taught in chat",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nI'm on my phone and can't open HTML files. Teach me INNER JOIN vs LEFT JOIN.",
+    "checklist": [
+      "Does not create or offer a lesson page",
+      "Teaches in chat with a short explanation, then quizzes one question at a time",
+      "If options are shown, they are shuffled, mixed in length, and the correct one is unmarked until the learner answers"
+    ]
+  },
+  {
+    "name": "placement step one uses a private checklist of eight to ten facts",
+    "prompt": "Run the placement test for me on Git.",
+    "checklist": [
+      "Gives only the first step: write every core fact about Git from memory, closed book",
+      "Keeps a private checklist of eight to ten core facts and does not show it",
+      "Says or applies a pass mark of at least 80 percent of the checklist, and does not name a level yet"
+    ]
+  },
+  {
+    "name": "clearing all six placement steps starts at Level 6 work",
+    "prompt": "I passed all six placement steps on Python today: recall, explain, use, diagnose, judge and create, each at 80 percent or better. Where do I start?",
+    "checklist": [
+      "Starts at Level 6 work: real projects, teaching others, and spaced review of earlier material",
+      "Records the result and date in the progress file"
+    ]
+  },
+  {
+    "name": "exam too close sets the level to not set",
+    "prompt": "Current learning-log-cpa.md is new. My CPA exam is in 6 days. Set up my progress file.",
+    "checklist": [
+      "Sets current level to \"not set\" and does not claim a level",
+      "Sets pass criteria to the exam objectives",
+      "Makes lesson pages and drills by exam weight, with spaced reviews and a timed mock"
+    ]
+  },
+  {
+    "name": "predicted score is asked in chat before a page",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nMake my next drill on GROUP BY.",
+    "checklist": [
+      "Asks for the predicted score in chat before the learner opens the page",
+      "Says the prediction will be recorded in the Predicted column, and the page itself does not collect it"
+    ]
+  },
+  {
+    "name": "due reviews appear in the page's recall section",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 14 Nov | 4/5 |\n| ORDER BY | 15 Nov | 3/5 |\n\nMake the lesson page on INNER JOIN.",
+    "checklist": [
+      "Puts the due material in the page's recall section, from memory before the explanation",
+      "Each recall item names its Review due row (SELECT and WHERE, ORDER BY)",
+      "Does not run the due reviews separately in chat first"
+    ]
+  },
+  {
+    "name": "quick quiz request asks one question first",
+    "prompt": "Quiz me on Roman history.",
+    "checklist": [
+      "Asks one question: a quick quiz or a study cycle",
+      "Does not start placement or ask the first quiz question until they choose"
+    ]
+  },
+  {
+    "name": "quick quiz is five questions in chat with no log row",
+    "prompt": "Quiz me on Roman history. Quick quiz, please.",
+    "checklist": [
+      "Asks five questions in chat, one at a time, giving feedback after each answer",
+      "Does not write a session row in the progress file",
+      "Does not run placement or make a lesson page"
     ]
   }
 ]

@@ -62,5 +62,61 @@
   {
     "query": "Explain what a mutex is in one sentence",
     "should_trigger": false
+  },
+  {
+    "query": "Why can't I remember anything from my lectures after a week?",
+    "should_trigger": true
+  },
+  {
+    "query": "Help me prepare for my driving theory test, quiz me weekly",
+    "should_trigger": true
+  },
+  {
+    "query": "Set up a spaced repetition schedule for my medical school anatomy",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to master SQL. What should I practice and how do I know I'm improving?",
+    "should_trigger": true
+  },
+  {
+    "query": "What's the boiling point of ethanol?",
+    "should_trigger": false
+  },
+  {
+    "query": "Write my essay on the causes of World War One",
+    "should_trigger": false
+  },
+  {
+    "query": "My flashcard app crashes when I sync decks, can you fix it?",
+    "should_trigger": false
+  },
+  {
+    "query": "Give me the answers to tonight's homework",
+    "should_trigger": false
+  },
+  {
+    "query": "Recommend a good textbook for linear algebra",
+    "should_trigger": false
+  },
+  {
+    "query": "Design a database schema for a flashcard app",
+    "should_trigger": false
+  },
+  {
+    "query": "Quiz me on Roman history",
+    "should_trigger": true
+  },
+  {
+    "query": "Quiz me on this paragraph I pasted: The Senate of the Roman Republic advised magistrates and controlled finance.",
+    "should_trigger": true
+  },
+  {
+    "query": "Explain recursion to me",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how photosynthesis works",
+    "should_trigger": false
   }
 ]

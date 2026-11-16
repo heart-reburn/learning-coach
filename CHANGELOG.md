@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added: lesson pages with recall first and sure or guessing marks, a checker for answer cues, saved page progress, drills, a per-subject progress file, and one source for the difficulty rule.
+
 ## 0.2.0
 
 - Renamed from how-to-learn to learning-coach, to match interview-coach and promotion-coach. Install with the new name; the old GitHub URL redirects.

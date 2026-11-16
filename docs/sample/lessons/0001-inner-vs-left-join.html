@@ -8,6 +8,7 @@
 </head>
 <body>
 <main>
+<noscript><p class="note">This page needs JavaScript for the recall boxes and questions. Turn it on, or open the page in another browser.</p></noscript>
 <h1>INNER JOIN vs LEFT JOIN: predict which rows come back</h1>
 <p class="meta">Lesson 0001 · about 20 minutes · Level 1, Recall</p>
 <div class="win"><strong>Your win today:</strong> given two small tables, you can say which rows each join returns.</div>
@@ -15,25 +16,35 @@
 <p>Write your answer from memory first. The answer appears only after you have written something.</p>
 <div id="recall"></div>
 <h2>Which rows survive</h2>
-<p>An INNER JOIN keeps only rows with a match in both tables. A LEFT JOIN keeps every row from the left table and fills the right side with NULL when nothing matches.</p>
+<p>An INNER JOIN keeps only rows with a match in both tables. A LEFT JOIN keeps every row from the left table and fills the right side with NULL when nothing matches.<sup><a href="#s1">1</a></sup> A WHERE on a right-table column removes the NULL rows again, so a LEFT JOIN with such a filter behaves like an INNER JOIN.<sup><a href="#s2">2</a></sup></p>
 <h2>Practice</h2>
-<p>Scenario questions, mixed on purpose. Option order is shuffled every time you open this page. Mark each answer sure or guessing before you check.</p>
+<p>Scenario questions, mixed on purpose. Option order is shuffled once for you and saved on this device. Mark each answer sure or guessing before you check.</p>
 <div id="quiz"></div>
+<h2>Explain it back</h2>
+<p>Close this page. In three or four sentences, as if to a smart 12-year-old, explain which rows an INNER JOIN and a LEFT JOIN return, and why a WHERE on the right table can undo a LEFT JOIN. Bring it to your coach; that is the start of your next check.</p>
 <h2>Your result</h2>
+<p>Copy this line and paste it to your coach so it goes into your learning log.</p>
 <div class="result" id="result"></div>
 <p class="row" style="margin-top:.6rem"><button id="copy">Copy result</button></p>
+<h2>Read next</h2>
+<p><strong>Primary source:</strong> <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-FROM">PostgreSQL manual, Table Expressions</a>. Read the Joined Tables section for the exact definition of each join type.</p>
+<ol class="sources">
+  <li id="s1">PostgreSQL Global Development Group, <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-FROM">Table Expressions: Joined Tables</a> (current manual).</li>
+  <li id="s2">PostgreSQL Global Development Group, <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-FROM">Table Expressions: outer joins and the WHERE clause</a> (current manual).</li>
+</ol>
 </main>
 <script>
 window.LESSON = {
-  id: "0001", reason: false,
+  id: "0001", kind: "lesson", // drills set "drill"
+  reason: false,
   recall: [{ prompt: "What does WHERE do to the rows of a SELECT?", answer: "It keeps only the rows for which the condition is true." }],
   questions: [{
     stem: "A report must list every customer, including those who never ordered. Which join do you write from customers to orders?",
     options: [
-      { text: "LEFT JOIN", correct: true, why: "It keeps every customer row and shows NULL for the order columns when there is no order." },
-      { text: "INNER JOIN", correct: false, why: "It drops customers with no order, so the report would be missing them." },
-      { text: "INNER JOIN, then add a WHERE on the order id", correct: false, why: "A filter on the order id removes the unmatched rows even further." },
-      { text: "Two separate queries combined by hand", correct: false, why: "A single LEFT JOIN already returns both groups." }
+      { text: "LEFT JOIN", correct: true, why: "A common misunderstanding is that a join can only return rows that match on both sides. LEFT JOIN keeps every customer row and fills the order columns with NULL when there is no order. That makes it the join to use whenever the left table must be fully listed." },
+      { text: "INNER JOIN", correct: false, why: "It tempts because INNER JOIN is the default join and is often taught first. Here it drops customers with no order, so the report would silently miss them. It is the right choice only when you want rows that exist on both sides." },
+      { text: "INNER JOIN, then add a WHERE on the order id", correct: false, why: "It tempts as a way to bring back the missing customers, but the idea is backwards. Any WHERE on the order columns discards rows whose order columns are NULL, so it makes the gap worse. A filter belongs in the ON clause, or on the left table, when you want to keep unmatched rows." },
+      { text: "Two separate queries combined by hand", correct: false, why: "It tempts because it feels safe to treat customers with orders and customers without as two separate problems. In SQL one LEFT JOIN returns both groups in a single result. Combining by hand is only worth it when the two groups need different columns or logic." }
     ]
   }]
 };

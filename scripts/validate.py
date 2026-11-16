@@ -34,6 +34,9 @@ for skill in sorted((ROOT / "skills").glob("*/SKILL.md")):
     for ref in re.findall(r"`(references/[^`]+\.md)`", text):
         if not (folder / ref).is_file():
             errors.append(f"{skill}: missing {ref}")
+    for asset in sorted(set(re.findall(r"\b(assets/[\w.-]+\.[a-z]+)\b", text))):
+        if not (folder / asset).is_file():
+            errors.append(f"{skill}: missing {asset}")
     for md in (folder / "references").glob("*.md"):
         for ref in re.findall(r"`((?:references/)?[\w-]+\.md)`", md.read_text()):
             if not ((folder / ref).is_file() or (md.parent / ref).is_file()):

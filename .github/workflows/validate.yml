@@ -12,3 +12,11 @@ jobs:
           python-version: "3.12"
       - name: Check frontmatter limits and file links
         run: python3 scripts/validate.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check the sample lesson for answer cues
+        run: node skills/learning-coach/assets/check-lesson.js docs/sample/lessons/0001-inner-vs-left-join.html
+      - name: Parse eval JSON files
+        run: |
+          for f in skills/*/evals/*.json; do python3 -m json.tool "$f" > /dev/null; done

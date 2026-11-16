@@ -12,6 +12,8 @@
 <body>
 <main>
 
+<noscript><p class="note">This page needs JavaScript for the recall boxes and questions. Turn it on, or open the page in another browser.</p></noscript>
+
 <h1>TITLE: WHAT THE LEARNER WILL BE ABLE TO DO</h1>
 <p class="meta">Lesson NNNN · about NN minutes · LEVEL NAME</p>
 
@@ -27,7 +29,7 @@
 <p>SHORT, PLAIN EXPLANATION. QUOTE THE PRIMARY SOURCE FOR DEFINITIONS.<sup><a href="#s1">1</a></sup></p>
 
 <h2>Practice</h2>
-<p>NUMBER scenario questions, mixed on purpose. Option order is shuffled every time you open this page. Mark each answer sure or guessing before you check.</p>
+<p>NUMBER scenario questions, mixed on purpose. Option order is shuffled once for you and saved on this device. Mark each answer sure or guessing before you check.</p>
 <div id="quiz"></div>
 
 <h2>Explain it back</h2>
@@ -54,6 +56,7 @@
 <script>
 window.LESSON = {
   id: "NNNN",
+  kind: "lesson", // drills set "drill"
   reason: false, // true on drills: a one-line reason is required before checking
   recall: [
     { prompt: "QUESTION ON EARLIER OR DUE MATERIAL", answer: "MODEL ANSWER" }
