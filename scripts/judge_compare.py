@@ -18,7 +18,10 @@ JUDGES = {"opus": ["claude", "-p", "--model", "opus", "--effort", "high", "--too
           "sonnet": ["claude", "-p", "--model", "sonnet", "--tools", ""]}
 
 def ask(cmd, prompt):
-    r = subprocess.run(cmd, input=prompt, capture_output=True, text=True, timeout=600)
+    try:
+        r = subprocess.run(cmd, input=prompt, capture_output=True, text=True, timeout=600)
+    except subprocess.TimeoutExpired:
+        return None  # recorded as a failure by the callers
     return r.stdout.strip()
 
 cases = json.loads((skill / "evals" / "behavior-cases.json").read_text())
@@ -33,14 +36,23 @@ system = ("You are an agent with this skill loaded. You cannot run tools in this
 def answer(job):
     case, k = job
     return {"case": case["name"], "sample": k, "checklist": case["checklist"],
-            "reply": ask(COACH, f"{system}\n\n# User message\n{case['prompt']}")}
+            "reply": ask(COACH, f"{system}\n\n# User message\n{case['prompt']}")}  # None on timeout
 
 def grade(run):
     items = "\n".join(f"{i + 1}. {c}" for i, c in enumerate(run["checklist"]))
+    if run["reply"] is None:
+        for name in JUDGES:
+            run[name] = [False] * len(run["checklist"])
+        run["error"] = "coach timed out"
+        return run
     prompt = (f"Reply under test:\n---\n{run['reply']}\n---\nFor each numbered requirement, answer PASS or FAIL, "
               f"one per line, in the form `N: PASS` or `N: FAIL`, with no other text.\n{items}")
     for name, cmd in JUDGES.items():
         v = ask(cmd, prompt)
+        if v is None:
+            run[name] = [False] * len(run["checklist"])
+            run.setdefault("error", f"{name} judge timed out")
+            continue
         marks = {}
         for line in v.splitlines():
             n, _, rest = line.strip("` ").partition(":")

@@ -12,6 +12,7 @@ Behavior results are a model-graded smoke test, not proof: read the failures.
 """
 import json
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -25,7 +26,10 @@ CMD = shlex.split(os.environ.get("SKILL_EVAL_CMD", "claude -p --model sonnet --t
 def ask(prompt, system=None):
     if system:
         prompt = f"{system}\n\n# User message\n{prompt}"
-    return subprocess.run(CMD, input=prompt, capture_output=True, text=True, timeout=180).stdout.strip()
+    try:
+        return subprocess.run(CMD, input=prompt, capture_output=True, text=True, timeout=180).stdout.strip()
+    except subprocess.TimeoutExpired:
+        return None  # callers record a failure
 
 
 def frontmatter(skill_dir):
@@ -43,15 +47,33 @@ def trigger(skill_dir):
             f"You have one skill available.\nName: {fm['name']}\nDescription: {fm['description']}\n\n"
             f"User message: {case['query']}\n\nWould you load this skill to handle the message? Answer only YES or NO."
         )
-        return case, reply.upper().startswith("YES")
+        return case, None if reply is None else reply.upper().startswith("YES")
 
     with ThreadPoolExecutor(8) as pool:
         results = list(pool.map(run, cases))
     bad = [(c["query"], got) for c, got in results if got != c["should_trigger"]]
     print(f"{skill_dir.name}: {len(results) - len(bad)}/{len(results)} trigger cases correct")
     for q, got in bad:
-        print(f"  WRONG ({'loaded' if got else 'not loaded'}): {q}")
+        print(f"  WRONG ({'timed out' if got is None else 'loaded' if got else 'not loaded'}): {q}")
     return not bad
+
+
+def grade(verdict, count):
+    """Failure notes for a judge reply. A pass needs exactly one `N: PASS` line per checklist item."""
+    marks = {}
+    for line in verdict.splitlines():
+        m = re.fullmatch(r"[`*\s]*(\d+)\s*:\s*(PASS|FAIL)\b.*", line.strip(), re.I)
+        if not m:
+            if line.strip():
+                return [f"malformed judge output: {line.strip()[:60]!r}"]
+            continue
+        n = int(m.group(1))
+        if n in marks or not 1 <= n <= count:
+            return [f"unexpected or repeated item {n} in judge output"]
+        marks[n] = m.group(2).upper()
+    if len(marks) != count:
+        return [f"judge returned {len(marks)} of {count} items"]
+    return [f"{n}: FAIL" for n in sorted(marks) if marks[n] == "FAIL"]
 
 
 def behavior(skill_dir):
@@ -66,20 +88,24 @@ def behavior(skill_dir):
 
     def run(case):
         out = ask(case["prompt"], system)
+        if out is None:
+            return case, ["timed out answering the case"]
         items = "\n".join(f"{i + 1}. {c}" for i, c in enumerate(case["checklist"]))
         verdict = ask(
             f"Reply under test:\n---\n{out}\n---\nFor each numbered requirement, answer PASS or FAIL, "
             f"one per line, in the form `N: PASS` or `N: FAIL`, with no other text.\n{items}"
         )
-        fails = [line for line in verdict.splitlines() if "FAIL" in line.upper()]
-        return case, fails
+        if verdict is None:
+            return case, ["timed out grading the reply"]
+        return case, grade(verdict, len(case["checklist"]))
 
     with ThreadPoolExecutor(4) as pool:
         results = list(pool.map(run, cases))
     ok = 0
     for case, fails in results:
         if fails:
-            print(f"  FAIL {case['name']}: " + "; ".join(case["checklist"][int(f.split(':')[0]) - 1] for f in fails if f.split(':')[0].strip().isdigit()))
+            notes = [case["checklist"][int(f.split(":")[0]) - 1] if re.fullmatch(r"\d+: FAIL", f) else f for f in fails]
+            print(f"  FAIL {case['name']}: " + "; ".join(notes))
         else:
             ok += 1
     print(f"{skill_dir.name}: {ok}/{len(results)} behavior cases passed")
