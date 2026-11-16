@@ -15,7 +15,7 @@ const vm = require("vm");
 const html = fs.readFileSync(process.argv[2], "utf8");
 const m = html.match(/<script>\s*(window\.LESSON[\s\S]*?)<\/script>/);
 if (!m) { console.error("no window.LESSON block found"); process.exit(2); }
-// The page data is evaluated in an empty context with a time limit; it cannot reach require or process.
+// The page data is evaluated in an empty context with a time limit; it gets no require or process of its own. This is not a security boundary; pages are written by the agent.
 const window = {};
 try { vm.runInNewContext(m[1], { window }, { timeout: 1000 }); }
 catch (e) { console.error("window.LESSON could not be evaluated: " + e.message); process.exit(2); }

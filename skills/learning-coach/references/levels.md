@@ -40,7 +40,7 @@ List the specific gaps and send the learner back to study just those. The coach 
 
 1. First miss: reteach the gaps and retest in a later session.
 2. Second miss in a row: switch technique for the gaps (`techniques.md`) and log what was tried.
-3. If the next check is then half or more wrong again, or more than half is wrong on two checks in a row, drop one level and rebuild. This is this skill's own rule of thumb, not a research finding.
+3. If more than half is wrong on two checks in a row, drop one level and rebuild. This is this skill's own rule of thumb, not a research finding.
 
 ## Difficulty and level drops
 

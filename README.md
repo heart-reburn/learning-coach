@@ -64,7 +64,7 @@ Other tools that read `SKILL.md` folders: copy `skills/learning-coach/` into tha
 
 > **You:** I have a biology exam in three weeks. Help me study cell division.
 >
-> **Coach:** First, we set up foundations: a weekly schedule and sleep. Then a placement test. Close your notes and write everything you know about cell division for ten minutes.
+> **Coach:** First, we set up foundations: a weekly schedule and sleep. Then a placement test. Close your notes and write everything you know about cell division for four minutes.
 >
 > *(You write 6 facts.)*
 >
@@ -72,7 +72,7 @@ Other tools that read `SKILL.md` folders: copy `skills/learning-coach/` into tha
 >
 > *(You stumble at how chromosomes separate.)*
 >
-> **Coach:** You start at Level 2: Explain. To pass, you need to explain why each phase happens, in your own words. This week: 4 sessions of 60 minutes. Session 1 comes as a lesson page: recall first, a short explanation, then practice questions. Open it, and tell me your predicted score first.
+> **Coach:** You start at Level 2: Explain. To pass, you need to explain why each phase happens, in your own words. This week: 4 sessions of 60 minutes. Session 1 comes as a lesson page: recall first, a short explanation, then practice questions. Tell me your predicted score first, then I'll open it.
 
 ## Evidence
 

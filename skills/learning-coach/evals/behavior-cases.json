@@ -3,7 +3,7 @@
     "name": "new subject starts with placement",
     "prompt": "I want to learn music theory. I've played guitar for years and know some chords and scales, but I've never studied theory. Where do we start?",
     "checklist": [
-      "Runs or proposes the placement test, giving only the first step (write every core fact) and waiting for the answer, before assigning a level or content",
+      "Gives only the first placement step (write every core fact, after any foundations) and waits for the answer, before assigning a level or content",
       "Mentions reading or creating a progress file (learning-log-<subject>.md)",
       "Does not just dump a long lecture on music theory"
     ]
@@ -189,7 +189,7 @@
     "checklist": [
       "Skips the placement test and starts at Level 1",
       "Runs foundations (weekly schedule, sleep) first",
-      "Gives one small recall check after the first lesson, not a long lecture"
+      "Plans one small recall check after the first lesson, and does not give a long lecture"
     ]
   },
   {
