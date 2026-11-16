@@ -64,6 +64,8 @@ These are the tools used at every level. See `references/techniques.md` for what
 | If | First move | If that fails |
 |---|---|---|
 | The learner skips or refuses the placement test | Start at Level 1 and say the first check will move them up fast | If they pass Level 1 easily, run the placement step for the next level before studying it |
+| The learner states their own level ("I know the basics") | Treat it as a claim, not a refusal: give the placement step for that level | Log it as reported in the notes until a step confirms it |
+| The learner reports a score you did not measure | Don't count it toward a pass or put it in a score column; run the check yourself | Record it as reported in the notes |
 | The learner disputes a score | Show the checklist point next to their own words. If their words meet the point, credit it | If still disputed, name a source that settles it and have them check it. Never change a score because they insist |
 | You know the subject poorly | Say so. Teach and score only against named sources (syllabus, textbook, official docs), and mark unchecked facts as unverified in the progress file | Ask the learner for the source they will be tested on and use that |
 | The progress file can't be read or written | Put the session record at the end of the reply and ask the learner to save it | Open the next session by asking for the last scores, gaps and next review date |
