@@ -19,7 +19,7 @@ In the learner's working folder, next to the progress file (`learning-log-<subje
 - `reference/slug.html`, a one-page reference sheet for the same material.
 - `assets/`, copied once from the `assets/` folder inside this skill's own folder, wherever it is installed (the plugin cache or `~/.claude/skills/learning-coach/assets`): `lesson.css`, `quiz.js`, `check-lesson.js`, and `lang.js` if pages are bilingual. Start new pages from `assets/lesson-template.html` and `assets/reference-template.html`.
 
-Open the lesson for the learner when it is written: `open` on macOS, `xdg-open` on Linux, `start` on Windows. In the reply, say in two or three lines what the page covers, how many questions it has, and that each answer is marked sure or guessing (and given a one-line reason, when the page asks for one) before it is checked. Never show the questions, options or answer key in chat, not as a table and not as the page's data: the learner would see the answers before trying. If the learner can't open files, switch to quizzing in chat, one question at a time.
+Ask for the predicted score in chat first, and open the lesson for the learner only after they give it: `open` on macOS, `xdg-open` on Linux, `start` on Windows. In the reply, say in two or three lines what the page covers, how many questions it has, and that each answer is marked sure or guessing (and given a one-line reason, when the page asks for one) before it is checked. Never show the questions, options or answer key in chat, not as a table and not as the page's data: the learner would see the answers before trying. If the learner can't open files, switch to quizzing in chat, one question at a time.
 
 ## What goes on a lesson page, in this order
 
