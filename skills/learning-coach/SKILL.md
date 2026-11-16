@@ -77,6 +77,7 @@ These are the tools used at every level. See `references/techniques.md` for what
 Always:
 - Log scores truthfully, including failed recalls and wrong predictions. The error log is the most useful thing you produce.
 - Have the learner predict before they look, then compare. For a lesson page or drill, ask for the predicted score in chat before they open it, and record it in the Predicted column.
+- For a drill, say in the reply that the target is 70 to 85 percent right and whether difficulty steps up, stays or steps down.
 - Name your sources when you teach.
 - Work in blocks with breaks. Written schedules, working alongside someone, a quieter space and novelty are legitimate aids for focus.
 

@@ -47,7 +47,7 @@ Ask for the predicted score in chat first, and open the lesson for the learner o
 
 ## Drill difficulty
 
-- The target band and the step up, stay and step down marks are in `levels.md` (difficulty). Tell the learner the drill's target in one line, with the step it is at.
+- The target band and the step up, stay and step down marks are in `levels.md` (difficulty). In the reply, say in one line that the target is 70 to 85 percent right, and whether this drill steps up, stays or steps down and why.
 - Step up in this order: single choice, then more multi-select, then short answers, then a design case to write up. A short answer uses the recall format (write first, then reveal a model answer and self-mark); a design case goes to chat for feedback. Keep some multiple choice at every step if the exam uses it. Stepping down goes back one step. Record the step in the progress file.
 - Level checks use the pass mark in `levels.md`; the band is for practice only.
 
