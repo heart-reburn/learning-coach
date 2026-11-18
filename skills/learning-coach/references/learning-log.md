@@ -21,8 +21,8 @@ Pass criteria for this level: <from levels.md, made specific to the subject>
 |---|---|---|
 
 ## Sessions
-| Date | Kind | Level | Minutes | Predicted | Actual | Wrong but sure | Right but guessing | Errors and why |
-|---|---|---|---|---|---|---|---|---|
+| Date | Kind | Level | Minutes | Actual | Wrong but sure | Right but guessing | Errors and why |
+|---|---|---|---|---|---|---|---|
 
 ## Checks
 | Date | Level | Teach-back score | Gaps named | Rebuild (pass, fail, not yet) | Passed? |
@@ -32,7 +32,7 @@ Pass criteria for this level: <from levels.md, made specific to the subject>
 One row per session. No row means it didn't happen. Kind is "Study", "Lesson 0001" or "Drill 0003".
 
 A page's result line becomes one session row:
-- Kind and number come from the result line; actual is its score. Pages do not collect predictions: the coach asks for the predicted score in chat before the learner opens the page and records it in Predicted.
+- Kind and number come from the result line; actual is its score.
 - Wrong but sure and right but guessing list the question numbers in those columns.
 - Errors and why holds the missed questions with the learner's one-line reasons, sure ones first. A result line marked unfinished is not a session score: ask the learner to finish the page.
 - Missed questions and right-but-guessing ones go to Review due at a short interval of one day (the first review step). The recall self-marks update Last result there.

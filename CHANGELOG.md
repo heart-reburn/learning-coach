@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Added: lesson pages with recall first and sure or guessing marks, a checker for answer cues, saved page progress, drills, a per-subject progress file, and one source for the difficulty rule.
+- Removed: asking for a predicted score in chat before a lesson page opens; the sure or guessing marks carry calibration, and the page opens as soon as it passes the checker.
 
 ## 0.2.0
 
