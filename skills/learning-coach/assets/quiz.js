@@ -1,6 +1,8 @@
 // Shared quiz and recall components for lesson pages.
 // A lesson defines window.LESSON = { id, kind, recall: [...], questions: [...], reason } before loading this file.
-// kind: "lesson" (default) or "drill"; it names the page in the result line.
+// kind: "lesson" (default), "drill" or "deck"; it names the page in the result line.
+// A question with at: "name" renders into the element with data-quiz="name" (a course deck puts each on its own slide);
+// other questions render into #quiz. Questions are numbered in data order either way.
 // reason: true asks for a one-line reason (at least 10 characters, counted as code points) on every question before it can be checked.
 // Any text field may be a string, or { en, l2 } on a bilingual page (see lang.js).
 // Rules this component enforces:
@@ -14,7 +16,7 @@
 (function () {
   const L = window.LESSON;
   const state = { results: {}, sure: {}, recall: {}, reasons: {} };
-  const KINDS = ["lesson", "drill"];
+  const KINDS = ["lesson", "drill", "deck"];
   const KIND = KINDS.indexOf(L.kind) >= 0 ? L.kind : "lesson";
   // A content signature in the key: if the page's questions change, old saved answers no longer apply.
   function signature() {
@@ -343,8 +345,12 @@
     load();
     renderRecall(document.getElementById("recall"));
     const quiz = document.getElementById("quiz");
-    if (quiz) (L.questions || []).forEach((q, i) => {
-      try { renderQuestion(q || {}, i + 1, quiz); } catch (e) { console.error("question " + (i + 1) + " could not render", e); }
+    const slots = {};
+    document.querySelectorAll("[data-quiz]").forEach((e) => (slots[e.getAttribute("data-quiz")] = e));
+    (L.questions || []).forEach((q, i) => {
+      const root = (q && slots[q.at]) || quiz;
+      if (!root) return;
+      try { renderQuestion(q || {}, i + 1, root); } catch (e) { console.error("question " + (i + 1) + " could not render", e); }
     });
     const copy = document.getElementById("copy");
     if (copy) {

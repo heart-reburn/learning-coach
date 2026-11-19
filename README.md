@@ -26,7 +26,7 @@ The sample page is in [`docs/sample/`](docs/sample/lessons/0001-inner-vs-left-jo
 Features:
 
 - **Recall before reading:** write an answer from memory, then reveal the model answer and mark it got it, partly, or missed.
-- **Exam-style questions:** six options by default; multi-select questions say how many to pick. Options state only the choice, never a reason. Order is shuffled once per learner and page, and the order is saved.
+- **Exam-style questions:** six options (never four or fewer); about 30 percent multi-select, each saying how many to pick. Course decks lay out a whole course with each lesson's questions after its slides. Options state only the choice, never a reason. Order is shuffled once per learner and page, and the order is saved.
 - **Sure or guessing:** mark each answer before checking, so the score also shows overconfidence (wrong but sure) and luck (right but guessing).
 - **Reason first on drills:** drills also ask for a one-line reason before the answer is checked.
 - **Explanations after answering:** every option explains why it is right or wrong once you have checked.

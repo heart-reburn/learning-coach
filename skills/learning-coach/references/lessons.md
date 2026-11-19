@@ -8,7 +8,7 @@ A lesson page is a short, self-contained HTML file the learner opens in a browse
 - Lesson pages are on by default. When new material comes up, write the page in the same turn instead of asking first, and say in one line that the learner can switch to chat. If the progress file says "Lesson pages: off", or the learner declines, teach and quiz in chat instead and note "Lesson pages: off" in the progress file.
 - Not for teach-back checks or the blank-page rebuild: those are closed book and happen in chat. Due reviews happen in chat too; due material may appear only in a page's recall section, and each recall item names its Review due row.
 - One lesson covers about 20 minutes: one or two ideas, not a chapter.
-- A **drill** is a practice-only page on material already taught: missed questions, weak spots from the log, or a mix of earlier lessons. Make one when the log shows a weak spot, or when the learner asks for practice. It keeps the same format, with a short explanation or none, and sets `kind: "drill"` in `window.LESSON` (a lesson page uses `kind: "lesson"`; the template shows the line). The page's `kind` is either "lesson" or "drill".
+- A **drill** is a practice-only page on material already taught: missed questions, weak spots from the log, or a mix of earlier lessons. Make one when the log shows a weak spot, or when the learner asks for practice. It keeps the same format, with a short explanation or none, and sets `kind: "drill"` in `window.LESSON` (a lesson page uses `kind: "lesson"`; the template shows the line). The page's `kind` is "lesson", "drill" or "deck" (a course deck, below).
 
 ## Files
 
@@ -17,7 +17,8 @@ In the learner's working folder, next to the progress file (`learning-log-<subje
 - `lessons/NNNN-slug.html`, numbered in order (0001, 0002, ...) per subject. If subjects share a folder, put the subject in the slug.
 - `drills/NNNN-slug.html`, numbered separately in the same way.
 - `reference/slug.html`, a one-page reference sheet for the same material.
-- `assets/`, copied once from the `assets/` folder inside this skill's own folder, wherever it is installed (the plugin cache or `~/.claude/skills/learning-coach/assets`): `lesson.css`, `quiz.js`, `check-lesson.js`, and `lang.js` if pages are bilingual. Start new pages from `assets/lesson-template.html` and `assets/reference-template.html`.
+- `decks/slug.html`, a course deck (below), one per course or book.
+- `assets/`, copied once from the `assets/` folder inside this skill's own folder, wherever it is installed (the plugin cache or `~/.claude/skills/learning-coach/assets`): `lesson.css`, `quiz.js`, `check-lesson.js`, `lang.js` if pages are bilingual, and `deck.css` and `deck.js` for course decks. When the skill's copies change, copy them again. Start new pages from `assets/lesson-template.html`, `assets/reference-template.html` and `assets/deck-template.html`.
 
 Open the lesson for the learner as soon as it passes the checker: `open` on macOS, `xdg-open` on Linux, `start` on Windows. In the reply, say in two or three lines what the page covers, how many questions it has, and that each answer is marked sure or guessing (and given a one-line reason, when the page asks for one) before it is checked. Never show the questions, options or answer key in chat, not as a table and not as the page's data: the learner would see the answers before trying. If the learner can't open files, switch to quizzing in chat, one question at a time.
 
@@ -35,7 +36,9 @@ Open the lesson for the learner as soon as it passes the checker: `open` on macO
 ## Writing the questions
 
 - Ask for a decision in a scenario, not a definition, from Level 2 up.
-- Match the target exam's format where there is one. Otherwise single-choice and multi-select questions have six options by default (the template shows a short example; real pages follow this rule); drop to four only for a learner who is just starting out or when the topic can't support six real misconceptions. More options lower the odds of guessing, but every option must be a real misconception: a padded weak option makes the question easier, not harder. Multi-select questions say how many to pick (`quiz.js` shows "Select N." from the number of correct options). Put one or two on a first lesson page, and more as the learner progresses.
+- Match the target exam's format where there is one. Otherwise every question has six options, five only when the topic can't support six real misconceptions, and never four or fewer, beginners included. More options lower the odds of guessing, but every option must be a real misconception: a padded weak option makes the question easier, not harder.
+- About 30 percent of the questions on every page are multi-select, from the first page on: two or three correct options out of six. Multi-select questions say how many to pick (`quiz.js` shows "Select N." from the number of correct options). Each correct option must stand on its own; two correct options that say the same thing in different words make the question easier.
+- `check-lesson.js` flags a question with fewer than five options, and a page of four or more questions where multi-select is under a quarter or over half of the questions.
 - Size a page at about 15 questions, which takes 20 to 25 minutes with the marks. Test each idea the page teaches at least twice, in different forms (recognise it, then apply it in a scenario). Go longer by adding drills, not by lengthening the page.
 - **Options state only the choice:** the action, design or claim, with no reason, purpose or expected result ("because...", "so that...", "to confirm...", "; that fixes it"). The reason goes in its `why`, shown after checking. A reason in an option either restates the page's rule, which gives the answer away, or is a weak one, which rules the option out. The exception is a question that asks for a reason ("why does this fail?"), where the reasons are the choices.
 - **Exactly one option is correct for the stated scenario, without making it easy:** the stem is as long as it needs to be, often two to four sentences: the situation, what is at stake, and exactly what is being decided. For each wrong option, ask whether an expert could defend it given the stem; if so, add situation facts until it is clearly worse, or rewrite it. A limit in the stem may narrow what is asked, but it must not name the type of the answer, and it must not rule out an option by its wording alone ("before choosing any design" does that). Include one or two details that look relevant but don't change the answer, so the learner has to decide what applies. Difficulty comes from applying the idea to the situation, never from vagueness.
@@ -48,8 +51,17 @@ Open the lesson for the learner as soon as it passes the checker: `open` on macO
 ## Drill difficulty
 
 - The target band and the step up, stay and step down marks are in `levels.md` (difficulty). Tell the learner the drill's target in one line, with the step it is at.
-- Step up in this order: single choice, then more multi-select, then short answers, then a design case to write up. A short answer uses the recall format (write first, then reveal a model answer and self-mark); a design case goes to chat for feedback. Keep some multiple choice at every step if the exam uses it. Stepping down goes back one step. Record the step in the progress file.
+- Step up in this order: mixed choice (the default, about 30 percent multi-select), then mostly multi-select (about half), then short answers, then a design case to write up. A short answer uses the recall format (write first, then reveal a model answer and self-mark); a design case goes to chat for feedback. Keep some multiple choice at every step if the exam uses it. Stepping down goes back one step. Record the step in the progress file.
 - Level checks use the pass mark in `levels.md`; the band is for practice only.
+
+## Course decks
+
+When the learner wants a whole course, book or lecture series laid out at once, make a course deck: one slide-by-slide page (`deck.js` shows one slide at a time) covering every lesson of the source, with that lesson's questions after its slides. Never make slides without questions. A deck is a first pass over the whole course, not a substitute for lesson pages and checks.
+
+- **Per lesson:** a few content slides (the ideas, tools, numbers and examples worth keeping, in the source's words where they are definitions), then that lesson's questions, one per slide, two to four per lesson. Each question slide holds `<div data-quiz="lN"></div>` and the question carries `at: "lN"`; questions are numbered across the whole deck in data order.
+- The question rules above all apply: six options, about 30 percent multi-select over the deck, options state only the choice, every option has a teaching `why`. Run `check-lesson.js` on the deck; it also checks that every `at` has a matching slide.
+- Last slides: an explain-it-back prompt, and the result line with `kind: "deck"`. Coach's own applications go on a slide marked as not from the source.
+- Open it like a lesson page, and record its result line as a session row with Kind "Deck <id>". Lesson pages then follow, one per session, on the deck's weak spots first.
 
 ## The reference sheet
 

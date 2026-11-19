@@ -11,7 +11,7 @@ Schedule: <sessions per week and usual length>
 Placement: <starting level, date, and "unverified" if you could not check the facts>
 Lesson pages: <on or off; language, if not English only>
 Reason line on lesson pages: <on or off> (drills always on)
-Drill step: <single choice, multi-select, short answer, or design case>
+Drill step: <mixed choice, mostly multi-select, short answer, or design case>
 Last lesson: <number>   Last drill: <number>
 Current level: <1-6, name>
 Pass criteria for this level: <from levels.md, made specific to the subject>
@@ -29,7 +29,7 @@ Pass criteria for this level: <from levels.md, made specific to the subject>
 |---|---|---|---|---|---|
 ```
 
-One row per session. No row means it didn't happen. Kind is "Study", "Lesson 0001" or "Drill 0003".
+One row per session. No row means it didn't happen. Kind is "Study", "Lesson 0001", "Drill 0003" or "Deck <id>".
 
 A page's result line becomes one session row:
 - Kind and number come from the result line; actual is its score.

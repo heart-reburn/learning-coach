@@ -9,7 +9,9 @@
 // a question with no correct option, a single-choice question (declared with `single: true`,
 // `multiple: false` or `type: "single"`) with more than one, "all/none of the above", a missing "why", a "why" that
 // is not two to four sentences (the form only; references/lessons.md says what a good one contains),
-// and a missing second-language field.
+// a missing second-language field, a question with fewer than five options, a page of four or more
+// questions where multi-select is under a quarter or over half of them, and a question whose
+// at: "name" has no matching data-quiz="name" element (course decks).
 const fs = require("fs");
 const vm = require("vm");
 const html = fs.readFileSync(process.argv[2], "utf8");
@@ -31,6 +33,8 @@ L.questions.forEach((q, i) => {
   if (!Array.isArray(q.options) || !q.options.length) { problems.push(n + ": no options"); return; }
   const need = q.options.filter((o) => o.correct).length;
   if (need === 0) problems.push(n + ": no correct option");
+  if (q.options.length < 5) problems.push(n + ": " + q.options.length + " options; write six (five only when the topic can't support six real misconceptions)");
+  if (q.at && html.indexOf('data-quiz="' + q.at + '"') < 0) problems.push(n + ": at \"" + q.at + "\" has no data-quiz=\"" + q.at + "\" element");
   const declaredSingle = q.single === true || q.multiple === false || q.type === "single";
   if (declaredSingle && need > 1) problems.push(n + ": declared single-choice but " + need + " options are marked correct");
   langs.forEach((lang) => {
@@ -77,6 +81,11 @@ langs.forEach((lang) => {
     if (n >= 6 && count(r) === 0) problems.push(tag + "correct option is never the " + r + "; a reader learns to skip that end, so mix it in");
   });
 });
+
+// About 30 percent multi-select on every page.
+const multi = L.questions.filter((q) => (q.options || []).filter((o) => o.correct).length > 1).length;
+if (L.questions.length >= 4 && (multi * 4 < L.questions.length || multi * 2 > L.questions.length))
+  problems.push("multi-select is " + multi + " of " + L.questions.length + " questions; aim for about 30 percent (at least a quarter, at most half)");
 
 if (problems.length) { console.log(problems.join("\n")); process.exit(1); }
 console.log("ok: " + L.questions.length + " questions, no answer cues");

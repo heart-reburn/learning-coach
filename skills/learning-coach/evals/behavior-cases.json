@@ -94,7 +94,7 @@
   },
   {
     "name": "drill above 85 percent steps up and states the target",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 2, Explain.\nLesson pages: on.\nDrill step: single choice\n## Sessions\n| Date | Kind | Level | Minutes | Actual | Wrong but sure | Right but guessing | Errors and why |\n|---|---|---|---|---|---|---|---|---|\n| 12 Nov | Drill 0003 | 2 | 20 | 8/9 | 9/9 | none | none | none |\n| 14 Nov | Drill 0004 | 2 | 20 | 8/9 | 9/9 | none | none | none |\n\nMake my next drill on joins.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 2, Explain.\nLesson pages: on.\nDrill step: mixed choice\n## Sessions\n| Date | Kind | Level | Minutes | Actual | Wrong but sure | Right but guessing | Errors and why |\n|---|---|---|---|---|---|---|---|---|\n| 12 Nov | Drill 0003 | 2 | 20 | 8/9 | 9/9 | none | none | none |\n| 14 Nov | Drill 0004 | 2 | 20 | 8/9 | 9/9 | none | none | none |\n\nMake my next drill on joins.",
     "checklist": [
       "Notes the last drill scored above 85 percent and steps difficulty up",
       "Makes it harder by changing question type (more multi-select, short answers, or a design case), not only by adding questions",
@@ -177,7 +177,7 @@
     "name": "drill below 70 percent steps down",
     "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nCurrent level: 2, Explain.\nDrill step: short answer\n## Sessions\n| Date | Kind | Level | Minutes | Actual | Wrong but sure | Right but guessing | Errors and why |\n|---|---|---|---|---|---|---|---|---|\n| 14 Nov | Drill 0004 | 2 | 20 | 7/9 | 4/9 | q2 | q5 | join keys |\n\nMake my next drill on joins.",
     "checklist": [
-      "Notes 4/9 is below 70 percent (and below 60) and steps the drill down one step (to multi-select) and reteaches before the next page",
+      "Notes 4/9 is below 70 percent (and below 60) and steps the drill down one step (to mostly multi-select) and reteaches before the next page",
       "States the 70 to 85 percent target in one line",
       "Does not drop the level on a practice score"
     ]

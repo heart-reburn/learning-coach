@@ -1,0 +1,69 @@
+<!doctype html>
+<!-- Course deck template. Save as decks/slug.html in the learner's folder; assets/ sits beside decks/.
+     Per lesson: content slides, then one question slide per question (class="slide quiz", holding data-quiz="lN";
+     the question carries at: "lN"). Rules for the questions are in references/lessons.md. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COURSE NAME</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/deck.css">
+</head>
+<body>
+
+<section class="slide title">
+  <p class="kicker">SOURCE · NUMBER LESSONS</p>
+  <h1>COURSE NAME</h1>
+  <p class="big">THE COURSE'S ONE-LINE IDEA</p>
+  <p class="muted">Arrow keys or space to move. Each lesson ends with its questions: mark sure or guessing, then check.</p>
+</section>
+
+<section class="slide">
+  <h2><small>Lesson 1</small>SLIDE HEADING: THE IDEA IN WORDS</h2>
+  <p>CONTENT. DEFINITIONS IN THE SOURCE'S WORDS.</p>
+</section>
+
+<section class="slide quiz">
+  <h2><small>Lesson 1 · question</small>Check yourself</h2>
+  <div data-quiz="l1-a"></div>
+</section>
+
+<section class="slide">
+  <h2><small>Explain it back</small>Close the deck</h2>
+  <p>In three or four sentences, as if to a smart 12-year-old, explain: THE IDEAS THAT MATTER MOST.</p>
+</section>
+
+<section class="slide">
+  <h2><small>Your result</small>Copy this line to your coach</h2>
+  <div class="result" id="result"></div>
+  <p class="row" style="margin-top:.6rem"><button id="copy">Copy result</button></p>
+  <p class="source">SOURCES.</p>
+</section>
+
+<script>
+window.LESSON = {
+  id: "SLUG",
+  kind: "deck",
+  reason: false,
+  recall: [],
+  questions: [
+    {
+      at: "l1-a",
+      stem: "SCENARIO, THEN THE QUESTION",
+      options: [
+        { text: "CORRECT OPTION", correct: true, why: "WHY IT IS RIGHT. WHAT IT MAKES POSSIBLE." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION. WHY IT FAILS HERE." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION. WHY IT FAILS HERE." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION. WHY IT FAILS HERE." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION. WHY IT FAILS HERE." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION. WHY IT FAILS HERE." }
+      ]
+    }
+  ]
+};
+</script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/deck.js"></script>
+</body>
+</html>
