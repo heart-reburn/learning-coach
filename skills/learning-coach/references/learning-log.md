@@ -9,7 +9,7 @@ Goal: <what the learner wants to be able to do, and by when>
 Out of scope: <what this goal deliberately leaves out, if anything>
 Schedule: <sessions per week and usual length>
 Placement: <starting level, date, and "unverified" if you could not check the facts>
-Lesson pages: <on or off; language, if not English only>
+Lesson pages: <on or off>; Language: <English and the second language, for example English + 中文, or English only>
 Reason line on lesson pages: <on or off> (drills always on)
 Drill step: <mixed choice, mostly multi-select, short answer, or design case>
 Last lesson: <number>   Last drill: <number>

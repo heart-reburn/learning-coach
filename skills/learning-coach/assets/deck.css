@@ -1,4 +1,4 @@
-/* Course decks. Load after lesson.css (quiz components); one <section class="slide"> per slide; deck.js shows one at a time. */
+/* Course decks. Load after lesson.css (quiz components and the .en/.l2 language rules); .term is an inline gloss in the other language; one <section class="slide"> per slide; deck.js shows one at a time. */
 :root {
   --bg: #fbfaf7;
   --surface: #ffffff;
@@ -50,7 +50,7 @@ h2 small, .kicker { display: block; font-size: 0.6em; font-weight: 500; color: v
 h3 { font-size: 1.1em; margin: 1.2em 0 0.4em; }
 p, li { margin: 0.35em 0; }
 ul, ol { padding-left: 1.3em; }
-.en { color: var(--muted); font-size: 0.85em; }
+.term { color: var(--muted); font-size: 0.85em; }
 .muted { color: var(--muted); }
 
 .big { font-size: 1.6em; line-height: 1.35; font-weight: 600; margin: 0.4em 0; }
@@ -107,3 +107,5 @@ th { background: var(--note-bg); }
   .slide, .slide.title { display: block !important; min-height: auto; page-break-after: always; padding: 24px 0; }
   .deck-bar, .slide.quiz { display: none !important; }
 }
+
+.langbar { position: fixed; top: 0; right: 0; left: auto; border: 0; background: transparent; z-index: 20; }

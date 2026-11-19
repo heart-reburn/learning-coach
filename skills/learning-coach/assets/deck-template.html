@@ -1,7 +1,10 @@
 <!doctype html>
 <!-- Course deck template. Save as decks/slug.html in the learner's folder; assets/ sits beside decks/.
      Per lesson: content slides, then one question slide per question (class="slide quiz", holding data-quiz="lN";
-     the question carries at: "lN"). Rules for the questions are in references/lessons.md. -->
+     the question carries at: "lN"). Rules for the questions are in references/lessons.md.
+     Bilingual deck (the default for a learner who writes in another language): add data-l2="zh" data-l2-name="中文"
+     to <html>, load ../assets/lang.js in <head>, pair every text block as class="en" / class="l2" (inside each slide),
+     and give quiz fields as { en, l2 }. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
