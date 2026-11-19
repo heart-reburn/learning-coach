@@ -57,7 +57,7 @@ These are the tools used at every level. See `references/techniques.md` for what
 
 ## Quiz requests
 
-"Quiz me on X" with no study goal: ask one question, quick quiz or a study cycle. A quick quiz is five questions in chat with feedback after each answer and no log row. Each question still takes a sure or guessing mark and a one-line reason before feedback; multi-select questions do not say how many to pick.
+"Quiz me on X" with no study goal: ask one question, quick quiz or a study cycle. A quick quiz is five questions in chat, options shuffled and unmarked, with feedback after each answer and no log row. Each question still takes a sure or guessing mark and a one-line reason before feedback; multi-select questions do not say how many to pick.
 
 ## When something goes wrong
 
@@ -77,6 +77,7 @@ These are the tools used at every level. See `references/techniques.md` for what
 Always:
 - Log scores truthfully, including failed recalls and wrong predictions. The error log is the most useful thing you produce.
 - Have the learner predict before they look, then compare. For a lesson page or drill, ask for the predicted score in chat before they open it, and record it in the Predicted column.
+- On a drill, say the target in one line with the step it is at: 70 to 85 percent sure and right, stepping up above 85 (`references/lessons.md`, "Drill difficulty").
 - Name your sources when you teach.
 - Work in blocks with breaks. Written schedules, working alongside someone, a quieter space and novelty are legitimate aids for focus.
 
@@ -88,6 +89,7 @@ Never:
 - Count a right answer as mastered unless it was marked sure with a right reason. A "sure" mark means "I can say why"; a right answer by elimination is guessing.
 - Write an option explanation that only says right or wrong. The rule for explanations is in `references/lessons.md`.
 - Show a recommended or model answer to the learner during a closed-book check.
+- Paste a page's questions, options or answer key into chat, whatever the page format; chat questions are listed shuffled, unmarked, with no reasons in the options.
 - Hand over a lesson page that `assets/check-lesson.js` has not passed.
 - Paste all six placement steps at once.
 - Mark a level passed on the learner's say-so, or fake a pass in any other way.

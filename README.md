@@ -27,13 +27,13 @@ Features:
 
 - **Recall before reading:** write an answer from memory, then reveal the model answer and mark it got it, partly, or missed.
 - **Worked examples:** scenario, common wrong instinct, right design and why, with an unscored sample question after each idea and a glossary before the quiz.
-- **Exam-style questions:** six options by default; multi-select questions do not say how many to pick, and each option is scored on its own with partial credit. Mock exams, when there is a formal test, copy its format. Options state only the choice, never a reason, and no wrong option can be removed by common sense alone.
+- **Exam-style questions:** four or five options (matching the formal test where there is one); multi-select questions do not say how many to pick, and each option is scored on its own with partial credit. Mock exams, when there is a formal test, copy its format. Options state only the choice, never a reason, and no wrong option can be removed by common sense alone.
 - **Closed book practice:** scrolling back or opening the reference while answering is cheating; opening a glossary term is allowed but makes the question a guess. Order is shuffled once per learner and page, and the order is saved.
 - **Sure or guessing:** mark each answer before checking, so the score also shows overconfidence (wrong but sure) and luck (right but guessing). After checking, mark your own reason right, partly right or wrong; the score that counts is the share of answers that are right, sure and given a right reason.
 - **Reason first on drills:** drills also ask for a one-line reason before the answer is checked.
 - **Explanations after answering:** every option explains why it is right or wrong once you have checked.
 - **Timed practice:** in the last days before a formal test, drills show a soft timer at the exam's pace.
-- **Difficulty that adapts:** drills aim at 70 to 85 percent sure and right and step up above 85 percent on the last page (see `levels.md`).
+- **Difficulty that adapts:** lessons and drills aim at 70 to 85 percent sure and right and step up above 85 percent on the last page (see `levels.md`).
 - **Result line:** one line to paste back, which goes into the learning log and queues the ideas you got wrong for review at 1, 3 and 7 days.
 - **Bilingual option:** English by default, with a second language switch.
 - **Checker:** `assets/check-lesson.js` flags answer cues in option length and in reasons written into options.
