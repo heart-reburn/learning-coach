@@ -18,7 +18,7 @@
 //   - recall answers stay hidden until the learner has written something
 //   - each scored question needs a sure / guessing mark (and a reason when LESSON.reason is set) before checking
 //   - each question locks once checked; no changing answers after seeing feedback
-//   - after checking, each option carries a text marker ("Correct answer" / "Your choice, wrong"), not colour alone
+//   - after checking, each option carries a text marker ("Correct answer. You chose it." / "Correct answer. You did not choose it." / "Wrong answer. You chose it."), not colour alone
 //   - after checking, the learner marks their own reason right / partly right / wrong; the next question stays locked until they do
 //   - multi-select questions give partial credit: the share of options judged correctly
 (function () {
@@ -60,7 +60,7 @@
     copied: "Copied", selected: "Selected: copy it",
     startover: "Start over",
     sure: "Sure", guess: "Guessing", reason: "Why this answer? One line, at least 10 characters, before you check.",
-    markright: "Correct answer", markwrong: "Your choice, wrong",
+    markright: "Correct answer. You chose it.", markmissed: "Correct answer. You did not choose it.", markwrong: "Wrong answer. You chose it.",
     tocheck: "To check: {list}.", pick1: "choose one answer", pickn: "choose {n} answers", pickany: "choose at least one option",
     marksure: "mark sure or guessing", writereason: "write a reason (at least 10 characters)",
     reasonask: "Was your reason right? Read the explanations, then mark it.",
@@ -321,7 +321,7 @@
         if (r.o.correct) r.label.classList.add("correct");
         else if (r.input.checked) r.label.classList.add("wrong");
         if (r.o.correct || r.input.checked) {
-          setText(r.mark, ui(r.o.correct ? "markright" : "markwrong"));
+          setText(r.mark, ui(r.o.correct ? (r.input.checked ? "markright" : "markmissed") : "markwrong"));
           r.mark.hidden = false;
         }
         if (r.o.correct !== r.input.checked) right = false; else same++;

@@ -16,7 +16,7 @@
       got: "对了", partly: "部分对", missed: "没对", check: "检查",
       correct: "正确。", wrong: "不对。看每个选项的对错理由。", copied: "已复制", selected: "已选中，请复制",
       startover: "重新开始", sure: "确定", guess: "蒙的", reason: "为什么选这个？检查前写一行，至少 10 个字。",
-      markright: "正确答案", markwrong: "你的选择，错误",
+      markright: "正确答案，你选了。", markmissed: "正确答案，你没选。", markwrong: "错误答案，你选了。",
       tocheck: "要检查：{list}。", pick1: "选 1 项", pickn: "选 {n} 项",
       marksure: "标记确定或蒙的", writereason: "写理由（至少 10 个字）",
       sample: "例题 {n}（不计分）", selectany: "选出所有正确的选项。", showexp: "看解析",

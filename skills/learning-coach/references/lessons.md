@@ -35,6 +35,10 @@ Ask for the predicted score in chat first, and open the lesson for the learner o
 10. **Read next:** one primary source, and why that one.
 11. **Sources**, and a link to the reference sheet.
 
+No intro or instruction lines under a section heading when the page already shows what to do (no "After each idea, try one question"); keep only the glossary line about dotted terms.
+
+Map nodes are plain sentences a newcomer understands on first sight ("Ask about normal days and bad days"), never cryptic labels ("Four things in writing"); one node per idea of this part, none for material from another part. Lay a map out top to bottom, centered. A stem that says "first" or names one flaw signals a single answer; when several apply, ask "which of these" as select-all.
+
 Maps nest: each part opens with its own map; the last part of a chapter ends with a chapter map joining every part's nodes, used as the recall prompt; the course map in the progress file is the course-level map, and the course's last page closes with it redrawn from memory. Section headings: "The big picture", "Idea by idea", "Putting it together".
 
 ## Open book policy
