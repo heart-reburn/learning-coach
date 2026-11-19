@@ -46,10 +46,12 @@ List the specific gaps and send the learner back to study just those. The coach 
 
 Two separate rules. Keep them separate.
 
-**Difficulty of practice** (drills and lesson pages; placement steps use the pass mark instead). Aim for 70 to 85 percent "sure and right": the share of questions that are right, marked sure, and given a right reason. A "sure" mark means "I can say why"; a right answer from common-sense elimination is guessing. Plain percent right is not the measure. Learning is fastest when some answers are hard to reach (Wilson et al., 2019, a computational study, so a guide). Judge on the last page's sure-and-right share:
-- Above 85 percent: step difficulty up (in the last days before a formal test, also add the exam-pace timer).
+**Difficulty of practice** (drills and lesson pages; placement steps use the pass mark instead). Aim for 70 to 85 percent "sure and right" (defined in `lessons.md`). Plain percent right is not the measure. Learning is fastest when some answers are hard to reach (Wilson et al., 2019, a computational study, so a guide). Judge on the last page's sure-and-right share:
+- Above 85 percent: step difficulty up.
 - 70 to 85 percent: stay.
 - Below 70 percent: step down. Below 60 percent, reteach before the next page.
+
+Timer is separate from difficulty: from 7 days before a formal test, every drill sets `secondsPerQuestion` to the exam's time per item, whatever the score.
 
 The steps are listed in `lessons.md`. Practice scores never pass or drop a level.
 

@@ -59,7 +59,7 @@
 
 <h2>Practice</h2>
 <div class="note">
-  <strong>Closed book.</strong> While you answer a scored question, do not scroll back to the explanation, open the reference sheet or any other source, or ask anyone. Opening a dotted term is the one exception, and it makes the question a guess. Mark each answer sure only if you can say why; a right answer from common-sense elimination is a guess. After checking, mark whether your reason was right.
+  <strong>Closed book.</strong> While you answer a scored question, do not scroll back to the explanation, open the reference sheet or any other source, or ask anyone. Scrolling up to the glossary block counts as scrolling back. Opening a dotted term inside the question is the one exception, and it makes the question a guess. Mark each answer sure only if you can say why; a right answer from common-sense elimination is a guess. After checking, mark whether your reason was right.
 </div>
 <p>NUMBER (ABOUT 10) scored questions, mixed on purpose. Some questions have more than one right answer; the page does not say how many, and each option is scored on its own. Option order is shuffled once for you and saved on this device.</p>
 <div id="quiz"></div>
@@ -89,7 +89,7 @@
 window.LESSON = {
   id: "NNNN", // a part suffix is fine: "01a"
   kind: "lesson", // drills set "drill"
-  reason: false, // true on drills: a one-line reason is required before checking
+  reason: true, // a one-line reason is required before checking, on every lesson and drill
   // showCount: true, // only on a mock exam whose real format states how many to pick; lesson pages and drills never show it
   // secondsPerQuestion: 90, // only in the last days before a formal test: soft timer at the exam's pace, recorded in the result line
   glossary: [

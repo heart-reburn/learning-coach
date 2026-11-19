@@ -1,14 +1,15 @@
 // Shared quiz and recall components for lesson pages.
 // A lesson defines window.LESSON = { id, kind, recall: [...], questions: [...], reason, glossary, showCount, secondsPerQuestion } before loading this file.
 // kind: "lesson" (default) or "drill"; it names the page in the result line.
-// reason: true asks for a one-line reason (at least 10 characters, counted as code points) on every scored question before it can be checked.
+// reason: a one-line reason (at least 10 characters, counted as code points) is required on every scored question before it can be checked. On by default; only `reason: false` turns it off.
 // glossary: [{ term, def }] shown in #glossary before the quiz; the terms are links inside question text. Opening one before checking forces the "guessing" mark.
 // showCount: true shows "Select N." on multi-select questions (mock exams that state the count). Default: the count is hidden and each option is scored on its own.
 // secondsPerQuestion: a number turns on a soft timer per scored question (it never stops the learner); the time goes in the result line.
 // Questions: { stem, options: [{ text, correct, why }], sample?: true, at?: "idea1", multi?: true }.
 //   sample: true is an unscored worked-example question; it shows its explanation at once and is left out of the result line.
 //   at: "idea1" renders a sample into <div id="sample-idea1"> inside the explanation; without it the sample goes first in #quiz.
-//   multi: true forces checkboxes when only one option is correct.
+//   multi: true forces checkboxes when only one option is correct (counts-shown pages only).
+//   single: true renders radios on a hidden-count page. By default every question there is select-all-that-apply, so the input type never gives the count away.
 // Any text field may be a string, or { en, l2 } on a bilingual page (see lang.js).
 // Rules this component enforces:
 //   - answer options are shuffled once per learner and page; the order is saved, so a reload keeps it
@@ -289,7 +290,8 @@
     const opts = Array.isArray(q.options) ? q.options.filter((o) => o && typeof o === "object") : [];
     if (!opts.length) { root.append(card); return; }
     const need = opts.filter((o) => o.correct).length;
-    const multi = q.multi === true || need > 1;
+    // Hidden-count pages render every question as select-all-that-apply, so the input type never signals the count; only `single: true` makes radios.
+    const multi = L.showCount === true ? q.multi === true || need > 1 : q.single !== true;
     if (multi) card.append(bi("p", { class: "pick" }, L.showCount === true ? ui("select", need) : ui("selectany")));
     const type = multi ? "checkbox" : "radio";
     const rows = orderFor(name, opts.length).map((idx) => {
@@ -383,7 +385,7 @@
       ready();
     }
     let reason = null;
-    if (L.reason) {
+    if (L.reason !== false) {
       reason = el("textarea", { rows: "2", class: "reason" });
       const lab = ui("reason");
       reason.placeholder = plain(lab);
@@ -564,7 +566,7 @@
       " | sure and right: " + sureRight + "/" + done + (done ? " (" + Math.round((100 * sureRight) / done) + "%)" : "") +
       " | right but guessing: " + list((k) => state.results[k] && !state.sure[k]) +
       " | wrong but sure: " + list((k) => !state.results[k] && state.sure[k]) +
-      " | right answer, reason not right: " + list((k) => state.results[k] && state.rself[k] !== "right") +
+      " | right answer, reason not right: " + list((k) => state.results[k] && state.sure[k] && state.rself[k] !== "right") +
       (SECS ? " | timed " + SECS + "s per question, over: " + (over.join(", ") || "none") : "") +
       " | recall: " + recall +
       " | marks: " + marks;

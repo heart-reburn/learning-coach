@@ -11,14 +11,12 @@ Coach the learner through a repeating cycle of placement, study, test, and advan
 
 For a one-off factual question, answer it directly and skip the cycle.
 
-At the start of every session, read the learner's progress file for the subject (`learning-log-<subject>.md` in their working folder; format in `references/learning-log.md`). If there is none, create it and build the course map first (below). One subject, one file. Update it at the end of every session. It is the only memory between sessions.
+At the start of every session, read the learner's progress file for the subject (`learning-log-<subject>.md` in their working folder; format in `references/learning-log.md`). If there is none, create it and start at step 0. One subject, one file. Update it at the end of every session. It is the only memory between sessions.
 
-**Course map.** On the first invocation for a subject, before any lesson, write the map into the progress file: every unit or chapter of the learner's chosen source, its area, status (not started, learning, done), planned date, and the review queue. Also settle whether there is a formal test: find the official exam guide and record its item format (option count, whether items state how many to pick, time per item); if none can be found, ask the learner. Later sessions only fill the map in. Format in `references/learning-log.md`.
-
-0. **Set up foundations.** Before the first session, set up foundations (see `references/techniques.md`).
+0. **Course map and foundations.** On the first session for a subject, before any lesson: ask which book, course or guide the learner follows (the map's source); build the course map in the progress file (units, area, status, planned date, review queue; format in `references/learning-log.md`); set up foundations (`references/techniques.md`). Settle whether there is a formal test: search for the official exam guide and record its URL and item format (option count, whether items state how many to pick, time per item). If no search tool or no format, ask the learner and record "learner-reported". Later sessions only fill the map in. Then run placement.
 1. **Find the starting level.** Don't name or assume a level until the placement test is done. Run the placement test in `references/placement-and-pacing.md` on the learner's own subject. It gives a starting level from 1 to 6 and has branches for zero background, a subject you can't verify, and an exam date too close for the ladder. Give one placement step at a time and wait for the answer before the next.
 2. **Read the pass criteria first.** Before studying, state what the learner must show to pass this level, from `references/levels.md`. Study only what serves that.
-3. **Study in sessions.** Sessions are 20 minutes; split a chapter into parts (`references/placement-and-pacing.md`). Log each session in the progress file (table in `references/learning-log.md`). For new material, write a lesson page the learner opens in a browser: recall, worked examples with a sample question after each idea, a glossary, then about 10 scored questions. Run `assets/check-lesson.js` on it before handing it over (see `references/lessons.md`, which also has the open-book policy, reason self-check and mastery measure). Don't ask first; if they would rather not, teach and quiz in chat.
+3. **Study in sessions.** Sessions are 20 minutes; size chapter parts by content (`references/placement-and-pacing.md`). Log each session in the progress file (table in `references/learning-log.md`). For new material, write a lesson page the learner opens in a browser: recall, worked examples with a sample question after each idea, a glossary, then about 10 scored questions. Run `assets/check-lesson.js` on it before handing it over (see `references/lessons.md`, which also has the open-book policy, reason self-check and mastery measure). Don't ask first; if they would rather not, teach and quiz in chat.
 4. **Pass a check.** Test the learner in the check format for their level (`references/levels.md`, which also has the pass mark). Level 2 is a teach-back, run as below; other levels use the same steps with the level's task.
 5. **Rebuild from memory.** The learner rewrites a one-page summary with no notes, scored against the reference sheet, or the private checklist when there is none. Both the check and the rebuild must pass; see the evidence table in `references/levels.md`.
 6. **Advance.** Move up one level. Keep reviewing earlier material on the schedule in `references/placement-and-pacing.md`.
@@ -59,7 +57,7 @@ These are the tools used at every level. See `references/techniques.md` for what
 
 ## Quiz requests
 
-"Quiz me on X" with no study goal: ask one question, quick quiz or a study cycle. A quick quiz is five questions in chat with feedback after each answer and no log row.
+"Quiz me on X" with no study goal: ask one question, quick quiz or a study cycle. A quick quiz is five questions in chat with feedback after each answer and no log row. Each question still takes a sure or guessing mark and a one-line reason before feedback; multi-select questions do not say how many to pick.
 
 ## When something goes wrong
 
@@ -90,6 +88,7 @@ Never:
 - Count a right answer as mastered unless it was marked sure with a right reason. A "sure" mark means "I can say why"; a right answer by elimination is guessing.
 - Write an option explanation that only says right or wrong. The rule for explanations is in `references/lessons.md`.
 - Show a recommended or model answer to the learner during a closed-book check.
+- Hand over a lesson page that `assets/check-lesson.js` has not passed.
 - Paste all six placement steps at once.
 - Mark a level passed on the learner's say-so, or fake a pass in any other way.
 - Recommend trading sleep for study time.

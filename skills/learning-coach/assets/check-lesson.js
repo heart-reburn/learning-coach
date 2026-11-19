@@ -4,7 +4,7 @@
 // Flags, for every language on the page: a length pattern across the page (the correct option
 // is the unique longest, or unique shortest, in more than a quarter of the questions, or never
 // either one, so length predicts the answer in some direction; in multi-select questions the
-// correct options count together), a scored count outside 8 to 18, a stem that says how many to pick
+// correct options count together), a scored count outside 6 to 18, a stem that says how many to pick
 // when the page does not show counts (LESSON.showCount), a glossary entry with a missing term or
 // definition, a reason or purpose written into an option ("because",
 // "since", "so that", "to verify", "因为", "以便" and the like; skipped when the stem asks "why"),
@@ -29,7 +29,9 @@ const langs = typeof (L.questions[0] || {}).stem === "string" ? [null] : ["en", 
 const pick = (t, lang) => (lang ? (t && t[lang]) || "" : t || "");
 const len = (s) => [...s].length;
 const problems = [];
-if (scored.length < 8 || scored.length > 18) problems.push("page has " + scored.length + " scored questions (samples excluded); write 8 to 18");
+if (scored.length < 6 || scored.length > 18) problems.push("page has " + scored.length + " scored questions (samples excluded); write 6 to 18, about 10");
+if (!Array.isArray(L.glossary) || !L.glossary.length) problems.push("no glossary");
+L.questions.filter((q) => q && q.sample === true && q.at).forEach((q) => { if (!html.includes('id="sample-' + q.at + '"')) problems.push('sample at "' + q.at + '": no matching div id="sample-' + q.at + '"'); });
 if (Array.isArray(L.glossary)) L.glossary.forEach((g, i) => {
   langs.forEach((lang) => {
     if (!g || !pick(g.term, lang) || !pick(g.def, lang)) problems.push("glossary entry " + (i + 1) + (lang ? " (" + lang + ")" : "") + ": missing term or definition");
@@ -56,7 +58,7 @@ L.questions.forEach((q) => {
       if (w && (c < 2 || c > 4)) problems.push(tag + ": option " + (k + 1) + " why has " + c + " sentences; write two to four (see references/lessons.md)");
     });
     if (texts.some((t) => /\b(all|none) of the above\b/i.test(t))) problems.push(tag + ": all/none of the above");
-    if (!L.showCount && /\b(select|choose|pick)\s+(two|three|four|five|[2-5])\b|选\s*[2-5二三四五]\s*项/i.test(pick(q.stem, lang)))
+    if (!L.showCount && /\b(select|choose|pick|which)\s+(the\s+)?(two|three|four|five|[2-5])\b|\(\s*[2-5]\s*(answers|options)\s*\)|选\s*[2-5二三四五]\s*项|[两二三四]项/i.test(pick(q.stem, lang)))
       problems.push(tag + ": stem says how many to pick; the page hides counts (set LESSON.showCount only for a mock that copies the exam's format)");
     const asksWhy = /\bwhy\b|为什么|为何/i.test(pick(q.stem, lang));
     const REASON = /\b(because|since|so that|in order to|to confirm|to verify|which fixes)\b|;\s*that fixes it|\bso\s+\w+\s+(can|will|would|returns|applies)\b|因为|所以|以便|为了|这样就能/i;
