@@ -11,7 +11,11 @@
 // a question with no correct option, a single-choice question (declared with `single: true`,
 // `multiple: false` or `type: "single"`) with more than one, "all/none of the above", a missing "why", a "why" that
 // is not two to four sentences (the form only; references/lessons.md says what a good one contains),
-// a missing second-language field, and (lessons) a big-picture map, a picture and at most 100 words per idea section, and a closing together section. Sample questions (`sample: true`, unscored worked examples)
+// a missing second-language field, a question with fewer than 3 or more than 5 options, and (lessons) a big-picture map, a picture and at most 100 words per idea section,
+// and a closing together section. Lesson pictures are also checked: every svg needs role="img", an aria-label and a <title>; a <text> longer than 40 characters,
+// with an inline font-size under 11px, or a caption of more than 6 words (10 in the big-picture and together maps, whose nodes are sentences; 50 characters there) is flagged, because captions collide with the
+// bilingual label shift. Two content checks: a correct option sharing a run of 6 or more words with the idea text (echo; it should test transfer to a new case), and a
+// glossary term (English) that the page body never uses outside the glossary and the questions (taught before use; a simple plural counts). Sample questions (`sample: true`, unscored worked examples)
 // get the per-question checks but are left out of the count and length rules.
 const fs = require("fs");
 const vm = require("vm");
@@ -61,11 +65,62 @@ if (L.kind !== "drill") {
   else if (!/<svg/.test(tog[1])) problems.push("together section has no inline svg map");
 }
 
+// Content checks (lessons only): svg accessibility and captions, glossary terms used in the body, options echoing idea text.
+let ideaText = "";
+if (L.kind !== "drill") {
+  const stripScripts = (h) => h.replace(/<script[\s\S]*?<\/script>/g, " ");
+  const stripL2 = (h) => h.replace(/<(\w+)\b[^>]*class="[^"]*\bl2\b[^"]*"[^>]*>[\s\S]*?<\/\1>/g, " ");
+  const plainText = (h) => stripL2(h).replace(/<svg[\s\S]*?<\/svg>/g, " ").replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ");
+  const svgs = [...html.matchAll(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/g)];
+  const mapRanges = ["bigpicture", "together"].map((id) => { const x = html.match(new RegExp('<section[^>]*id="' + id + '"[^>]*>[\\s\\S]*?</section>')); return x ? [x.index, x.index + x[0].length] : null; }).filter(Boolean);
+  svgs.forEach((m, i) => {
+    // A map's nodes are plain sentences (references/lessons.md), so maps get a looser limit than the small pictures.
+    const isMap = mapRanges.some(([a, b]) => m.index >= a && m.index < b);
+    const maxChars = isMap ? 50 : 40, maxWords = isMap ? 10 : 6;
+    const tag = "svg " + (i + 1) + (isMap ? " (map)" : "");
+    if (!/\brole="img"/.test(m[1])) problems.push(tag + ': missing role="img"');
+    if (!/\baria-label="[^"]+"/.test(m[1])) problems.push(tag + ": missing aria-label");
+    if (!/<title>[^<]+<\/title>/.test(m[2])) problems.push(tag + ": missing <title>");
+    [...m[2].matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)].forEach((t) => {
+      const txt = t[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      const fs0 = (t[1].match(/font-size\s*[=:]\s*"?'?(\d+(?:\.\d+)?)/) || [])[1];
+      if (len(txt) > maxChars) problems.push(tag + ': text of ' + len(txt) + ' characters (at most ' + maxChars + '): "' + txt + '"');
+      if (fs0 && Number(fs0) < 11) problems.push(tag + ": text with font-size " + fs0 + " (at least 11): \"" + txt + "\"");
+      const w = txt.split(" ").filter(Boolean).length;
+      if (w > maxWords) problems.push(tag + ': caption of ' + w + ' words (labels only, at most ' + maxWords + '; put the explanation in the idea text): "' + txt + '"');
+    });
+  });
+  const ideaHtml = [...html.matchAll(/<section[^>]*class="[^"]*\bidea\b[^"]*"[^>]*>([\s\S]*?)<\/section>/g)].map((m) => m[1]).join(" ");
+  ideaText = plainText(ideaHtml);
+  // Terms: the English term must be used in the page body, outside the glossary and the questions (scripts are not body).
+  const body = plainText(stripScripts(html).replace(/<div[^>]*id="glossary"[^>]*>[\s\S]*?<\/div>/, " ").replace(/<section[^>]*id="glossary"[^>]*>[\s\S]*?<\/section>/, " ")).toLowerCase();
+  const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  (Array.isArray(L.glossary) ? L.glossary : []).forEach((g) => {
+    const term = ((g && (typeof g.term === "string" ? g.term : g.term && g.term.en)) || "").trim().toLowerCase();
+    if (!term) return;
+    const re = new RegExp("(?<![a-z0-9])" + esc(term) + "(?:s|es)?(?![a-z0-9])");
+    const stem = term.replace(/(ies|es|s)$/, "");
+    if (!re.test(body) && !(stem.length > 3 && new RegExp("(?<![a-z0-9])" + esc(stem) + "(?:s|es|ies|y)?(?![a-z0-9])").test(body)))
+      problems.push('glossary term "' + term + '" is never used in the page body before the quiz; teach it inline where first used');
+  });
+}
+const wordsOf = (t) => (t.toLowerCase().match(/[a-z0-9]+(?:'[a-z]+)?/g) || []);
+const ideaWords = wordsOf(ideaText);
+const RUN = 6;
+const ideaRuns = new Set();
+for (let i = 0; i + RUN <= ideaWords.length; i++) ideaRuns.add(ideaWords.slice(i, i + RUN).join(" "));
+
 let qn = 0, sn = 0;
 L.questions.forEach((q) => {
   const n = q.sample === true ? "sample " + ++sn : "q" + ++qn;
   if (!Array.isArray(q.options) || !q.options.length) { problems.push(n + ": no options"); return; }
   const need = q.options.filter((o) => o.correct).length;
+  if (q.options.length < 3 || q.options.length > 5) problems.push(n + ": " + q.options.length + " options; write 3 to 5");
+  if (L.kind !== "drill" && q.sample !== true) q.options.forEach((o, k) => {
+    if (!o.correct) return;
+    const w = wordsOf(pick(o.text, langs[0] === null ? null : "en"));
+    for (let i = 0; i + RUN <= w.length; i++) if (ideaRuns.has(w.slice(i, i + RUN).join(" "))) { problems.push(n + ": correct option " + (k + 1) + " repeats the idea text (\"" + w.slice(i, i + RUN).join(" ") + "...\"); test a new case instead"); break; }
+  });
   if (need === 0) problems.push(n + ": no correct option");
   const declaredSingle = q.single === true || q.multiple === false || q.type === "single";
   if (declaredSingle && need > 1) problems.push(n + ": declared single-choice but " + need + " options are marked correct");

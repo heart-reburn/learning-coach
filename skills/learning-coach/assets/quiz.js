@@ -36,7 +36,7 @@
     return h.toString(36);
   }
   const KEY = "learning-coach-progress:" + L.id + ":" + location.pathname + ":" + signature();
-  let saved = { order: {}, answers: {}, sure: {}, reason: {}, checked: {}, recall: {}, rself: {}, opened: {}, time: {}, fb: {}, changes: {} };
+  let saved = { order: {}, answers: {}, sure: {}, reason: {}, checked: {}, recall: {}, rself: {}, opened: {}, time: {}, fb: {}, changes: {}, redraw: {} };
 
   function load() {
     try {
@@ -68,7 +68,9 @@
     markreason: "Mark your reason to unlock the next question.",
     locked: "Finish the question above first.",
     opened: "You opened a term, so this question counts as guessing.",
-    terms: "Open the definition of {term}", pace: "Pace {t} of {m}"
+    terms: "Open the definition of {term}", pace: "Pace {t} of {m}",
+    redrawask: "Redraw the map from memory, then mark how it went.",
+    redrawfull: "Redrew it fully", redrawpart: "Partly", redrawnot: "Not yet"
   };
   const MIN_REASON = 10;
   // Length in code points, so Chinese and emoji count as one each.
@@ -235,6 +237,23 @@
         state.recall[rid] = rs.mark;
       }
     });
+  }
+
+  // Explain it back: the learner redraws or fills the map from memory, closed book, then self-marks.
+  const REDRAW = [["fully", "redrawfull"], ["partly", "redrawpart"], ["not yet", "redrawnot"]];
+  function renderRedraw(root) {
+    if (!root) return;
+    const row = el("div", { class: "row", role: "group", "aria-label": "Redraw the map from memory" });
+    row.append(bi("span", { class: "selfask" }, ui("redrawask")));
+    const btns = REDRAW.map(([key, labelKey]) => {
+      const b = bi("button", { class: "secondary", type: "button", "aria-pressed": "false" }, ui(labelKey));
+      b.onclick = () => { saved.redraw.mark = key; save(); paint(); updateResult(); };
+      return b;
+    });
+    function paint() {
+      btns.forEach((b, i) => { const on = saved.redraw.mark === REDRAW[i][0]; b.setAttribute("aria-pressed", String(on)); b.classList.toggle("secondary", !on); });
+    }
+    row.append(...btns); root.append(row); paint();
   }
 
   // Saved option order, if it is a valid permutation; otherwise a fresh shuffle.
@@ -602,6 +621,7 @@
       " | right answer, reason not right: " + list((k) => state.results[k] && state.sure[k] && state.rself[k] !== "right") +
       (SECS ? " | timed " + SECS + "s per question, over: " + (over.join(", ") || "none") : "") +
       " | recall: " + recall +
+      (document.getElementById("redraw") ? " | redraw: " + (saved.redraw.mark || "not marked") : "") +
       " | marks: " + marks +
       (nChanged ? " | answers changed before checking: " + nChanged : "") +
       " | page feedback: " + fbText();
@@ -613,6 +633,7 @@
     load();
     renderRecall(document.getElementById("recall"));
     renderGlossary();
+    renderRedraw(document.getElementById("redraw"));
     renderFeedback(document.getElementById("feedback"));
     const quiz = document.getElementById("quiz");
     let sn = 0, qn = 0;

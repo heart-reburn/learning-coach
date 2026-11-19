@@ -23,7 +23,8 @@
       partial: "部分正确：{m} 个选项中判断对了 {k} 个。看每个选项的对错理由。", pickany: "至少选 1 项",
       reasonask: "你的理由对吗？先看解析，再自己标记。", rsright: "理由对", rspartly: "理由部分对", rswrong: "理由错",
       markreason: "标记你的理由后，才能做下一题。", locked: "请先完成上面的题。",
-      opened: "你打开了术语定义，这题按蒙的算。", terms: "查看“{term}”的定义", pace: "用时 {t}，目标 {m}"
+      opened: "你打开了术语定义，这题按蒙的算。", terms: "查看“{term}”的定义", pace: "用时 {t}，目标 {m}",
+      redrawask: "凭记忆重画这张图，然后标记完成情况。", redrawfull: "完整重画", redrawpart: "部分重画", redrawnot: "还不会"
     }
   };
   window.LESSON_L2_UI = UI[root.getAttribute("data-l2")] || null;
