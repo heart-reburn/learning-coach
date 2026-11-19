@@ -140,3 +140,16 @@ html[data-lang="both"] button .en + .l2::before { content: " · "; }
   h2 { break-after: avoid; }
   table { display: table; }
 }
+
+.idea { border-left: 3px solid var(--rule); padding: .1rem 1rem; margin: 1rem 0; }
+.idea h3 { margin-top: .5rem; }
+#bigpicture svg, #together svg, .idea svg { display: block; width: 100%; height: auto; max-width: 640px; margin: .6rem 0; }
+.idea svg { max-width: 360px; }
+svg .node { fill: var(--note-bg); stroke: var(--rule); stroke-width: 1.5; }
+svg text { fill: currentColor; font: 13px -apple-system, BlinkMacSystemFont, sans-serif; }
+svg .arrow { stroke: currentColor; stroke-width: 1.5; fill: none; }
+svg text.l2 { display: none; }
+html[data-lang="l2"] svg text.l2, html[data-lang="both"] svg text.l2 { display: inline; }
+html[data-lang="both"] svg text.l2 { font-size: 11px; fill: var(--muted); margin: 0; }
+html[data-lang="l2"] svg text.en { display: none; }
+svg .node.on { stroke: var(--accent); stroke-width: 3; }

@@ -11,7 +11,7 @@
 // a question with no correct option, a single-choice question (declared with `single: true`,
 // `multiple: false` or `type: "single"`) with more than one, "all/none of the above", a missing "why", a "why" that
 // is not two to four sentences (the form only; references/lessons.md says what a good one contains),
-// and a missing second-language field. Sample questions (`sample: true`, unscored worked examples)
+// a missing second-language field, and (lessons) a big-picture map, a picture and at most 80 words per idea section, and a closing together section. Sample questions (`sample: true`, unscored worked examples)
 // get the per-question checks but are left out of the count and length rules.
 const fs = require("fs");
 const vm = require("vm");
@@ -37,6 +37,29 @@ if (Array.isArray(L.glossary)) L.glossary.forEach((g, i) => {
     if (!g || !pick(g.term, lang) || !pick(g.def, lang)) problems.push("glossary entry " + (i + 1) + (lang ? " (" + lang + ")" : "") + ": missing term or definition");
   });
 });
+
+// Page shape (lessons only; drills have no teaching sections): a big-picture map, one picture and
+// at most 80 words of text per idea, and a closing "together" section.
+if (L.kind !== "drill") {
+  const words = (h, lang) => {
+    let t = h.replace(/<svg[\s\S]*?<\/svg>/g, " ").replace(/<script[\s\S]*?<\/script>/g, " ");
+    t = lang === "en" ? t.replace(/<span class="l2">[\s\S]*?<\/span>/g, " ") : t;
+    t = t.replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ");
+    return (t.match(/[A-Za-z0-9'][A-Za-z0-9'\-]*/g) || []).length;
+  };
+  const big = html.match(/<section[^>]*id="bigpicture"[^>]*>([\s\S]*?)<\/section>/);
+  if (!big) problems.push('no <section id="bigpicture"> (the part\'s map)'); else if (!/<svg/.test(big[1])) problems.push("big picture has no inline svg map");
+  const ideas = [...html.matchAll(/<section[^>]*class="[^"]*\bidea\b[^"]*"[^>]*>([\s\S]*?)<\/section>/g)];
+  if (!ideas.length) problems.push('no <section class="idea"> sections');
+  ideas.forEach((m, i) => {
+    if (!/<svg/.test(m[1])) problems.push("idea " + (i + 1) + ": no inline svg picture");
+    const w = words(m[1], "en");
+    if (w > 80) problems.push("idea " + (i + 1) + ": " + w + " words of text; at most 80");
+  });
+  const tog = html.match(/<section[^>]*id="together"[^>]*>([\s\S]*?)<\/section>/);
+  if (!tog) problems.push('no <section id="together"> (putting it together)');
+  else if (!/<svg/.test(tog[1])) problems.push("together section has no inline svg map");
+}
 
 let qn = 0, sn = 0;
 L.questions.forEach((q) => {
