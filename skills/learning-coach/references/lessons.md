@@ -82,7 +82,16 @@ One page, tables over prose: the core ideas, when each applies, and a traps tabl
 
 ## After the lesson
 
-When the learner pastes the result line, record it in the progress file as the learning-log reference describes. Questions wrong but sure, and right answers with a wrong or partly right reason, come first: they show a misconception, not a gap. Questions right but guessing also go to review; they are not yet known. A lesson quiz is practice: it never passes a level on its own.
+The pasted result line starts a debrief in chat, before the next lesson and before any logging. Log it as the learning-log reference describes, but the debrief is the point.
+
+1. **The picture first.** Score against the 70–85% target, sure-and-right share, how many sure answers were wrong (miscalibration), recall results, questions changed before checking. Two or three sentences.
+2. **Every miss and every partial, using the learner's own reason line.** Say which kind it was (did not know, misread the stem, fell for a plausible option, half knew), the exact misconception in one sentence, the rule that settles it, and why the option they chose fails. Wrong but sure comes first, then right with a wrong or vague reason, then right but guessing.
+3. **Reasons that are not reasons.** Name reasons such as "I think this is the one" or "makes sense" and ask what rule they would apply. A reason line is practice for the exam's justification, not a formality.
+4. **The pattern.** Which idea or which habit (skipping the stem's constraint, picking the most specific option) explains several misses. Say it once.
+5. **Their questions and their feedback block.** Answer every question they wrote. Where they call a question unfair, unclear or tricky, check it honestly against the page: if the page is wrong, fix the page and say what changed; if it is fair, show why.
+6. **One retry.** Ask one fresh question on the weakest idea and have them answer in chat before the debrief ends; then set what goes into the review queue and how the next page's difficulty changes.
+
+Chat follows the learner's language; keep it a conversation, not a report. A lesson quiz is practice: it never passes a level on its own.
 
 ## Language
 
