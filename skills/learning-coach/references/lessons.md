@@ -39,6 +39,8 @@ Practice on a page is closed book for each scored question. Cheating, plainly: s
 
 ## Reason self-check and mastery
 
+- Before Check, answers and the sure or guessing mark can be changed freely (miss-click protection); Check locks them, and the result line counts questions whose answer changed before checking.
+- Every page ends with a short feedback block (explanations clear, questions fair, difficulty, one free-text note) just above the result line, with a `<div id="feedback"></div>` in the page. It goes into the result line as `page feedback`. The coach fixes the page from it: unfair or tricky wording first, then unclear explanations.
 - After checking, the learner reads the explanations and marks their own reason right, partly right or wrong. The result line records it per question. The coach grades the pasted reason lines one by one against the explanations and corrects a mark that is too generous.
 - **Mastery measure:** the score that counts is the share of questions that are right, marked sure, and given a right reason ("sure and right"). A "sure" mark means "I can say why", not "it looks familiar". A right answer reached by common-sense elimination is guessing. The 70 to 85 percent drill target in `levels.md` uses this measure.
 - Review categories, in priority order: wrong but sure; right answer with a wrong or partly right reason (ranks with wrong but sure); wrong but guessing; right but guessing.

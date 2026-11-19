@@ -36,7 +36,7 @@
     return h.toString(36);
   }
   const KEY = "learning-coach-progress:" + L.id + ":" + location.pathname + ":" + signature();
-  let saved = { order: {}, answers: {}, sure: {}, reason: {}, checked: {}, recall: {}, rself: {}, opened: {}, time: {} };
+  let saved = { order: {}, answers: {}, sure: {}, reason: {}, checked: {}, recall: {}, rself: {}, opened: {}, time: {}, fb: {}, changes: {} };
 
   function load() {
     try {
@@ -450,7 +450,8 @@
         check.removeAttribute("title");
       }
     }
-    card.addEventListener("change", () => {
+    card.addEventListener("change", (ev) => {
+      if (ev.target && ev.target.type !== "text" && Array.isArray(saved.answers[name])) saved.changes[name] = (saved.changes[name] || 0) + 1;
       saved.answers[name] = rows.filter((r) => r.input.checked).map((r) => r.idx);
       save();
       ready();
@@ -537,6 +538,37 @@
 
   const scored = () => (L.questions || []).filter((q) => !(q && q.sample === true));
 
+  const FB = [
+    ["clarity", "Explanations", ["clear", "okay", "confusing"]],
+    ["fairness", "Questions", ["fair", "some unfair or tricky wording", "many unfair"]],
+    ["level", "Difficulty", ["too easy", "about right", "too hard"]],
+  ];
+  function fbText() {
+    const parts = FB.filter(([k]) => saved.fb[k]).map(([k, label]) => label.toLowerCase() + " " + saved.fb[k]);
+    if (saved.fb.note) parts.push('note "' + oneLine(saved.fb.note) + '"');
+    return parts.join(", ") || "none";
+  }
+  function renderFeedback(root) {
+    if (!root) return;
+    FB.forEach(([k, label, opts]) => {
+      const row = el("div", { class: "row", role: "group", "aria-label": label });
+      row.append(el("strong", {}, label + ": "));
+      const btns = opts.map((o) => {
+        const b = el("button", { class: "secondary", type: "button", "aria-pressed": "false" }, o);
+        b.onclick = () => { saved.fb[k] = o; save(); paint(); updateResult(); };
+        return b;
+      });
+      function paint() {
+        btns.forEach((b, i) => { const on = saved.fb[k] === opts[i]; b.setAttribute("aria-pressed", String(on)); b.classList.toggle("secondary", !on); });
+      }
+      row.append(...btns); root.append(row); paint();
+    });
+    const note = el("textarea", { rows: "3", style: "width:100%", "aria-label": "What would make this lesson or quiz better?", placeholder: "What would make this lesson or quiz better? Unclear terms, unfair questions, missing steps." });
+    note.value = typeof saved.fb.note === "string" ? saved.fb.note : "";
+    note.addEventListener("input", () => { saved.fb.note = note.value; save(); updateResult(); });
+    root.append(note);
+  }
+
   // The result line stays in English: it is pasted into the learning log.
   // A question counts as finished only after it is checked and the learner has marked their reason.
   function updateResult() {
@@ -557,6 +589,7 @@
       (state.reasons[k] ? ' "' + oneLine(state.reasons[k]) + '"' : "")
     ).join("; ") || "none";
     const partial = fin.filter((k) => state.partial[k] && state.credit[k] > 0).map((k) => k + " " + state.partial[k]);
+    const nChanged = fin.filter((k) => saved.changes[k] > 0).length;
     const over = SECS ? fin.filter((k) => typeof state.time[k] === "number" && state.time[k] > SECS) : [];
     out.textContent =
       KIND.charAt(0).toUpperCase() + KIND.slice(1) + " " + L.id +
@@ -569,7 +602,9 @@
       " | right answer, reason not right: " + list((k) => state.results[k] && state.sure[k] && state.rself[k] !== "right") +
       (SECS ? " | timed " + SECS + "s per question, over: " + (over.join(", ") || "none") : "") +
       " | recall: " + recall +
-      " | marks: " + marks;
+      " | marks: " + marks +
+      (nChanged ? " | answers changed before checking: " + nChanged : "") +
+      " | page feedback: " + fbText();
     const again = document.getElementById("startover");
     if (again) again.hidden = done < nq;
   }
@@ -578,6 +613,7 @@
     load();
     renderRecall(document.getElementById("recall"));
     renderGlossary();
+    renderFeedback(document.getElementById("feedback"));
     const quiz = document.getElementById("quiz");
     let sn = 0, qn = 0;
     (L.questions || []).forEach((q0) => {
