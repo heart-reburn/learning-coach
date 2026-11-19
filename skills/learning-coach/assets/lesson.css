@@ -153,3 +153,5 @@ html[data-lang="l2"] svg text.l2, html[data-lang="both"] svg text.l2 { display: 
 html[data-lang="both"] svg text.l2 { font-size: 11px; fill: var(--muted); margin: 0; }
 html[data-lang="l2"] svg text.en { display: none; }
 svg .node.on { stroke: var(--accent); stroke-width: 3; }
+html[data-lang="both"] svg text.en { transform: translateY(-12px); }
+html[data-lang="both"] svg text.l2 { transform: translateY(14px); }

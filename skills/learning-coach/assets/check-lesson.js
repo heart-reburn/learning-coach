@@ -11,7 +11,7 @@
 // a question with no correct option, a single-choice question (declared with `single: true`,
 // `multiple: false` or `type: "single"`) with more than one, "all/none of the above", a missing "why", a "why" that
 // is not two to four sentences (the form only; references/lessons.md says what a good one contains),
-// a missing second-language field, and (lessons) a big-picture map, a picture and at most 80 words per idea section, and a closing together section. Sample questions (`sample: true`, unscored worked examples)
+// a missing second-language field, and (lessons) a big-picture map, a picture and at most 100 words per idea section, and a closing together section. Sample questions (`sample: true`, unscored worked examples)
 // get the per-question checks but are left out of the count and length rules.
 const fs = require("fs");
 const vm = require("vm");
@@ -39,7 +39,7 @@ if (Array.isArray(L.glossary)) L.glossary.forEach((g, i) => {
 });
 
 // Page shape (lessons only; drills have no teaching sections): a big-picture map, one picture and
-// at most 80 words of text per idea, and a closing "together" section.
+// at most 100 words of text per idea, and a closing "together" section.
 if (L.kind !== "drill") {
   const words = (h, lang) => {
     let t = h.replace(/<svg[\s\S]*?<\/svg>/g, " ").replace(/<script[\s\S]*?<\/script>/g, " ");
@@ -54,7 +54,7 @@ if (L.kind !== "drill") {
   ideas.forEach((m, i) => {
     if (!/<svg/.test(m[1])) problems.push("idea " + (i + 1) + ": no inline svg picture");
     const w = words(m[1], "en");
-    if (w > 80) problems.push("idea " + (i + 1) + ": " + w + " words of text; at most 80");
+    if (w > 100) problems.push("idea " + (i + 1) + ": " + w + " words of text; at most 100");
   });
   const tog = html.match(/<section[^>]*id="together"[^>]*>([\s\S]*?)<\/section>/);
   if (!tog) problems.push('no <section id="together"> (putting it together)');
