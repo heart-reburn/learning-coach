@@ -20,7 +20,7 @@
 //   - each question locks once checked; no changing answers after seeing feedback
 //   - after checking, each option carries a text marker ("Correct answer. You chose it." / "Correct answer. You did not choose it." / "Wrong answer. You chose it."), not colour alone
 //   - after checking, the learner marks their own reason right / partly right / wrong; the next question stays locked until they do
-//   - multi-select questions give partial credit: the share of options judged correctly
+//   - multi-select questions give partial credit: the right options found minus wrong ones picked, over the right ones
 (function () {
   const L = window.LESSON;
   const state = { results: {}, credit: {}, sure: {}, recall: {}, reasons: {}, rself: {}, opened: {}, time: {}, partial: {} };
@@ -56,11 +56,12 @@
     select: "Select {n}.", selectany: "Select all that apply.", show: "Show answer", showexp: "Show explanation",
     got: "Got it", partly: "Partly", missed: "Missed", check: "Check",
     correct: "Correct.", wrong: "Not quite. Read why each option is right or wrong.",
-    partial: "Partly right: {k} of {m} options judged correctly. Read why each option is right or wrong.",
+    partial: "Partly right: you found {k} of {m} right options. Read why each option is right or wrong.",
+    partialx: "Partly right: you found {k} of {m} right options but also picked {x} wrong. Read why each option is right or wrong.",
     copied: "Copied", selected: "Selected: copy it",
     startover: "Start over",
     sure: "Sure", guess: "Guessing", reason: "Why this answer? One line, at least 10 characters, before you check.",
-    markright: "Correct answer. You chose it.", markmissed: "Correct answer. You did not choose it.", markwrong: "Wrong answer. You chose it.",
+    markright: "Right option. You picked it.", markmissed: "Right option. You missed it.", markwrong: "Wrong option. You picked it.",
     tocheck: "To check: {list}.", pick1: "choose one answer", pickn: "choose {n} answers", pickany: "choose at least one option",
     marksure: "mark sure or guessing", writereason: "write a reason (at least 10 characters)",
     reasonask: "Was your reason right? Read the explanations, then mark it.",
@@ -333,7 +334,7 @@
     let locked = false;
 
     function reveal() {
-      let right = true, same = 0;
+      let right = true, same = 0, hits = 0, extra = 0;
       rows.forEach((r) => {
         r.input.disabled = true;
         r.why.hidden = false;
@@ -343,10 +344,12 @@
           setText(r.mark, ui(r.o.correct ? (r.input.checked ? "markright" : "markmissed") : "markwrong"));
           r.mark.hidden = false;
         }
+        if (r.o.correct && r.input.checked) hits++;
+        if (!r.o.correct && r.input.checked) extra++;
         if (r.o.correct !== r.input.checked) right = false; else same++;
       });
       locked = true;
-      return { right, same };
+      return { right, same, hits, extra };
     }
 
     if (sample) {
@@ -504,16 +507,17 @@
     function lock(elapsed) {
       confButtons.forEach((b) => (b.disabled = true));
       if (reason) reason.readOnly = true;
-      const { right, same } = reveal();
+      const { right, same, hits, extra } = reveal();
+      const need = rows.filter((r) => r.o.correct).length;
       if (tick) { clearInterval(tick); tick = null; }
       check.disabled = true;
       check.removeAttribute("title");
-      const credit = right ? 1 : multi ? same / rows.length : 0;
-      setText(verdict, right ? ui("correct") : multi && credit > 0 ? ui("partial", { k: same, m: rows.length }) : ui("wrong"));
+      const credit = right ? 1 : multi ? Math.max(0, (hits - extra) / need) : 0;
+      setText(verdict, right ? ui("correct") : multi && credit > 0 ? ui(extra ? "partialx" : "partial", { k: hits, m: need, x: extra }) : ui("wrong"));
       verdict.className = "verdict " + (right ? "good" : "bad");
       state.results[name] = right;
       state.credit[name] = credit;
-      if (multi && !right) state.partial[name] = same + "/" + rows.length;
+      if (multi && !right) state.partial[name] = hits + "/" + need + (extra ? " +" + extra + " wrong" : "");
       state.sure[name] = sure;
       state.opened[name] = opened;
       if (reason) state.reasons[name] = reason.value;

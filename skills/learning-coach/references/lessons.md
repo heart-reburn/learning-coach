@@ -24,7 +24,7 @@ Ask for the predicted score in chat first, and open the lesson for the learner o
 ## What goes on a lesson page, in this order
 
 1. **The win:** one concrete thing the learner can do after the page, tied to the pass criteria.
-2. **Recall first:** one to three questions on earlier or due material, answered from memory before the page shows its own map. When the previous part ended with a map, one recall item is that map: the learner redraws or lists it from memory, using the previous part's map and not this part's. The answer stays hidden until the learner has written something.
+2. **Recall first:** one to three questions on earlier or due material, answered from memory before the page shows its own map. The learner may take parts back to back, so recall never covers only the part just before: draw it from an earlier chapter or the review queue. The first part of a chapter opens with a map of the whole chapter; the last part ends with the chapter map, which the next chapter's recall asks the learner to redraw. The answer stays hidden until the learner has written something.
 3. **The big picture:** one inline SVG map of the part: the problem it solves and its ideas as nodes joined in the order they connect. Name the idea count in one line. The number of ideas follows the content: a part holds as many ideas as fit a 20-minute session (see the time budget below); more ideas mean more parts, fewer mean a shorter part or a merge with its neighbour.
 4. **Idea by idea:** one section per idea: one small inline SVG (contrast, flow or checklist), at most 100 words, plain short sentences, a quoted source for definitions. Add one complete example when the idea is a decision, a procedure or a contrast (something the learner will have to apply); a pure definition needs none. Right after each idea, one unscored sample question (`sample: true`, `at: "idea1"`, `<div id="sample-idea1">`); its explanation shows on answering. **Every term used in any question must be taught here first, and defined inline at its first use in the idea text (a short clause or a quoted definition); the glossary is a recap and never the first place a term is explained.** Before handing the page over, write in the reply one line per scored question: the terms it uses and the idea that teaches each.
 5. **Putting it together:** the conclusion that answers the big picture: one unscored scenario sample (`at: "together"`, `<div id="sample-together">`) that needs several ideas at once, then the same map again with the learner's task: name how each node leads to the next.
@@ -44,6 +44,8 @@ Maps nest: each part opens with its own map; the last part of a chapter ends wit
 ## Pictures and time
 
 - **No captions in SVGs.** An SVG holds labels only: each label short, two lines at most, text no smaller than 11px. Any explanation goes in the idea text. On a bilingual page the stylesheet moves every `text.en` up and every `text.l2` down, so a caption beside or under a node lands on top of it.
+- **Sequences read in order.** An SVG that shows steps has arrows between the nodes and reads top to bottom or left to right; nodes without a visible relation do not go in one picture.
+- **One entry per term.** The glossary lists each term once; a generator must never append a term already present.
 - **Accessible names.** Every SVG has `role="img"`, an `aria-label` that says what it shows, and a `<title>` with the same words.
 - **Time budget.** One lesson is about 20 minutes. Count it: each idea costs one reading and one unscored sample (about 2 minutes), and each scored question costs about 1 minute. Ideas times 2 plus scored questions should come to about 20, so 3 ideas leave room for about 10 questions, 4 ideas for 8 to 10 (the page minimum is 6), and 6 ideas leave about 8, which is too few to test each idea twice: split a part with 6 ideas into two pages.
 
@@ -89,7 +91,7 @@ One page, tables over prose: the core ideas, when each applies, and a traps tabl
 
 ## After the lesson
 
-The pasted result line starts a debrief in chat, before the next lesson and before any logging. Log it as the learning-log reference describes, but the debrief is the point.
+The pasted result line starts a debrief in chat, before the next lesson. Log it in the progress file automatically in the same turn, as the learning-log reference describes: never ask the learner whether to log. The debrief is the point; the log is not optional.
 
 1. **The picture first.** Score against the 70–85% target, sure-and-right share, how many sure answers were wrong (miscalibration), recall results, questions changed before checking. Two or three sentences.
 2. **Every miss and every partial, using the learner's own reason line.** Say which kind it was (did not know, misread the stem, fell for a plausible option, half knew), the exact misconception in one sentence, the rule that settles it, and why the option they chose fails. Wrong but sure comes first, then right with a wrong or vague reason, then right but guessing.
