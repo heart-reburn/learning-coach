@@ -3,13 +3,16 @@
 //   node assets/check-lesson.js lessons/0001-slug.html
 // Flags, for every language on the page: a length pattern across the page (the correct option
 // is the unique longest, or unique shortest, in more than a quarter of the questions, or never
-// either one, so length predicts the answer in some direction; in "select N" questions the N
-// correct options count together), a reason or purpose written into an option ("because",
+// either one, so length predicts the answer in some direction; in multi-select questions the
+// correct options count together), a scored count outside 8 to 18, a stem that says how many to pick
+// when the page does not show counts (LESSON.showCount), a glossary entry with a missing term or
+// definition, a reason or purpose written into an option ("because",
 // "since", "so that", "to verify", "因为", "以便" and the like; skipped when the stem asks "why"),
 // a question with no correct option, a single-choice question (declared with `single: true`,
 // `multiple: false` or `type: "single"`) with more than one, "all/none of the above", a missing "why", a "why" that
 // is not two to four sentences (the form only; references/lessons.md says what a good one contains),
-// and a missing second-language field.
+// and a missing second-language field. Sample questions (`sample: true`, unscored worked examples)
+// get the per-question checks but are left out of the count and length rules.
 const fs = require("fs");
 const vm = require("vm");
 const html = fs.readFileSync(process.argv[2], "utf8");
@@ -21,13 +24,21 @@ try { vm.runInNewContext(m[1], { window }, { timeout: 1000 }); }
 catch (e) { console.error("window.LESSON could not be evaluated: " + e.message); process.exit(2); }
 const L = window.LESSON;
 if (!L || !Array.isArray(L.questions) || !L.questions.length) { console.error("window.LESSON has no questions"); process.exit(2); }
+const scored = L.questions.filter((q) => !(q && q.sample === true));
 const langs = typeof (L.questions[0] || {}).stem === "string" ? [null] : ["en", "l2"];
 const pick = (t, lang) => (lang ? (t && t[lang]) || "" : t || "");
 const len = (s) => [...s].length;
 const problems = [];
+if (scored.length < 8 || scored.length > 18) problems.push("page has " + scored.length + " scored questions (samples excluded); write 8 to 18");
+if (Array.isArray(L.glossary)) L.glossary.forEach((g, i) => {
+  langs.forEach((lang) => {
+    if (!g || !pick(g.term, lang) || !pick(g.def, lang)) problems.push("glossary entry " + (i + 1) + (lang ? " (" + lang + ")" : "") + ": missing term or definition");
+  });
+});
 
-L.questions.forEach((q, i) => {
-  const n = "q" + (i + 1);
+let qn = 0, sn = 0;
+L.questions.forEach((q) => {
+  const n = q.sample === true ? "sample " + ++sn : "q" + ++qn;
   if (!Array.isArray(q.options) || !q.options.length) { problems.push(n + ": no options"); return; }
   const need = q.options.filter((o) => o.correct).length;
   if (need === 0) problems.push(n + ": no correct option");
@@ -45,6 +56,8 @@ L.questions.forEach((q, i) => {
       if (w && (c < 2 || c > 4)) problems.push(tag + ": option " + (k + 1) + " why has " + c + " sentences; write two to four (see references/lessons.md)");
     });
     if (texts.some((t) => /\b(all|none) of the above\b/i.test(t))) problems.push(tag + ": all/none of the above");
+    if (!L.showCount && /\b(select|choose|pick)\s+(two|three|four|five|[2-5])\b|选\s*[2-5二三四五]\s*项/i.test(pick(q.stem, lang)))
+      problems.push(tag + ": stem says how many to pick; the page hides counts (set LESSON.showCount only for a mock that copies the exam's format)");
     const asksWhy = /\bwhy\b|为什么|为何/i.test(pick(q.stem, lang));
     const REASON = /\b(because|since|so that|in order to|to confirm|to verify|which fixes)\b|;\s*that fixes it|\bso\s+\w+\s+(can|will|would|returns|applies)\b|因为|所以|以便|为了|这样就能/i;
     if (!asksWhy) texts.forEach((t) => {
@@ -68,7 +81,7 @@ const rank = (q, lang) => {
 };
 langs.forEach((lang) => {
   const tag = lang ? "(" + lang + ") " : "";
-  const ranks = L.questions.map((q) => rank(q, lang));
+  const ranks = scored.map((q) => rank(q, lang));
   const n = ranks.length, cap = Math.ceil(n / 4);
   const count = (r) => ranks.filter((x) => x === r).length;
   const where = (r) => ranks.map((x, i) => (x === r ? "q" + (i + 1) : null)).filter(Boolean).join(" ");
@@ -79,4 +92,4 @@ langs.forEach((lang) => {
 });
 
 if (problems.length) { console.log(problems.join("\n")); process.exit(1); }
-console.log("ok: " + L.questions.length + " questions, no answer cues");
+console.log("ok: " + scored.length + " scored questions" + (L.questions.length > scored.length ? " and " + (L.questions.length - scored.length) + " sample" : "") + ", no answer cues");

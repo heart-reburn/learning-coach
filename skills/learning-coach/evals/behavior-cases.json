@@ -63,11 +63,13 @@
   },
   {
     "name": "lesson result goes into the log",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nChat before the page: I predicted 6/9.\nHere is the result line from the lesson page: Lesson 0003 | score 5/9 | missed: q2, q6, q7, q9 | right but guessing: q4 | wrong but sure: q6, q9 | recall: r1 got it, r2 missed",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review due\n| Material | Next review | Last result |\n|---|---|---|\n| SELECT and WHERE | 15 Nov | 4/5 |\n\nChat before the page: I predicted 6/9.\nHere is the result line from the lesson page: Lesson 0003 | score 5/9 | missed: q2, q6, q7, q9 | sure and right: 2/9 (22%) | right but guessing: q4 | wrong but sure: q6, q9 | right answer, reason not right: q3 | recall: r1 got it, r2 missed",
     "checklist": [
       "Records the session in learning-log-<subject>.md with the score",
+      "Records the sure-and-right count as the score that counts for mastery, not plain percent right",
       "Takes the predicted score (6/9) from the chat, not from the page, and puts it in the Predicted column",
       "Treats the wrong-but-sure questions as overconfidence and schedules them for review first",
+      "Treats the right answer with a wrong or partly right reason (q3) as a review item that ranks with wrong but sure, and records the review by idea with what was wrong, due 1, 3 and 7 days later",
       "Treats the right-but-guessing question as not yet known and schedules it for review",
       "Does not mark Level 1 passed on this result"
     ]
@@ -90,7 +92,11 @@
       "Does not list the questions, options or answer key in chat",
       "Runs or plans to run check-lesson.js on the page and fix it until it passes, before opening it",
       "Tells the learner each answer is marked sure or guessing before checking",
-      "Ends with a result line or similar for the learner to paste back into learning-log-<subject>.md"
+      "Ends with a result line or similar for the learner to paste back into learning-log-<subject>.md",
+      "The page has worked examples (scenario, wrong instinct, right design, why) with one unscored sample question right after each idea, and a glossary before the questions",
+      "Plans about 10 scored questions for a 20-minute part of a chapter, and says every term used in a question is taught in the examples first",
+      "Multi-select questions do not say how many to pick",
+      "States that scored questions are closed book (no scrolling back or opening the reference), that opening a glossary term makes the question a guess, and that the learner marks their own reason right, partly right or wrong after checking"
     ]
   },
   {
@@ -367,6 +373,23 @@
       "Asks five questions in chat, one at a time, giving feedback after each answer",
       "Does not write a session row in the progress file",
       "Does not run placement or make a lesson page"
+    ]
+  },
+  {
+    "name": "first invocation builds the course map",
+    "prompt": "I want to pass the Certified Kubernetes Administrator exam. I'll study from the official curriculum and the Kubernetes docs. Start me off.",
+    "checklist": [
+      "Before any lesson, creates the progress file with a course map: every unit of the chosen source, its area, status (not started, learning, done) and planned date, plus a review queue",
+      "Settles whether there is a formal test: looks for the official exam guide and records its item format (option count, whether items state how many to pick, time per item), or asks the learner if none can be found",
+      "Does not write a lesson page or lecture in this reply"
+    ]
+  },
+  {
+    "name": "no formal test means no mock exams",
+    "prompt": "Current learning-log-guitar.md:\n\n# Learning log: guitar theory\nGoal: understand chord construction for my own playing.\nFormal test: none\nCurrent level: 2, Explain.\n\nCan you set me a full mock exam this week?",
+    "checklist": [
+      "Says there is no formal test to copy, so no mock exam is set",
+      "Offers regular lesson pages or drills instead, where multi-select questions do not state how many options to pick"
     ]
   }
 ]

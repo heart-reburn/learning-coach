@@ -15,7 +15,7 @@
 <noscript><p class="note">This page needs JavaScript for the recall boxes and questions. Turn it on, or open the page in another browser.</p></noscript>
 
 <h1>TITLE: WHAT THE LEARNER WILL BE ABLE TO DO</h1>
-<p class="meta">Lesson NNNN · about NN minutes · LEVEL NAME</p>
+<p class="meta">Lesson NNNN · about 20 minutes · LEVEL NAME</p>
 
 <div class="win">
   <strong>Your win today:</strong> ONE CONCRETE THING THE LEARNER CAN DO AFTER THIS PAGE, TIED TO THE LEVEL'S PASS CRITERIA.
@@ -25,15 +25,47 @@
 <p>Write your answer from memory first. The answer appears only after you have written something.</p>
 <div id="recall"></div>
 
-<h2>PART ONE HEADING</h2>
-<p>SHORT, PLAIN EXPLANATION. QUOTE THE PRIMARY SOURCE FOR DEFINITIONS.<sup><a href="#s1">1</a></sup></p>
+<h2>Worked examples</h2>
+<p>PART OF A CHAPTER, ABOUT 20 MINUTES. SAY IN ONE LINE WHICH PART THIS IS (PART 1 OF 3). TEACH EVERY TERM THE QUESTIONS USE HERE FIRST. QUOTE THE PRIMARY SOURCE FOR DEFINITIONS.<sup><a href="#s1">1</a></sup></p>
+
+<section class="example">
+  <h3>Idea one: NAME OF THE IDEA</h3>
+  <dl>
+    <dt>Scenario</dt><dd>A SHORT, CONCRETE SITUATION THE LEARNER MIGHT MEET.</dd>
+    <dt>The common wrong instinct</dt><dd>WHAT MOST PEOPLE DO FIRST, AND WHY IT FEELS RIGHT.</dd>
+    <dt>The right design</dt><dd>WHAT TO DO INSTEAD.</dd>
+    <dt>Why</dt><dd>THE RULE BEHIND IT, SO THE LEARNER CAN REUSE IT.</dd>
+  </dl>
+  <pre class="diagram">OPTIONAL SMALL DIAGRAM
+  request --> A --> B --> result</pre>
+</section>
+<p><strong>Try one.</strong> Not scored. The explanation shows as soon as you answer.</p>
+<div id="sample-idea1"></div>
+
+<section class="example">
+  <h3>Idea two: NAME OF THE IDEA</h3>
+  <dl>
+    <dt>Scenario</dt><dd>...</dd>
+    <dt>The common wrong instinct</dt><dd>...</dd>
+    <dt>The right design</dt><dd>...</dd>
+    <dt>Why</dt><dd>...</dd>
+  </dl>
+</section>
+<div id="sample-idea2"></div>
+
+<h2>Terms on this page</h2>
+<p>Read these before the practice. In a question, a dotted term opens its definition. Opening one is allowed, but that question then counts as guessing.</p>
+<div id="glossary"></div>
 
 <h2>Practice</h2>
-<p>NUMBER scenario questions, mixed on purpose. Option order is shuffled once for you and saved on this device. Mark each answer sure or guessing before you check.</p>
+<div class="note">
+  <strong>Closed book.</strong> While you answer a scored question, do not scroll back to the explanation, open the reference sheet or any other source, or ask anyone. Opening a dotted term is the one exception, and it makes the question a guess. Mark each answer sure only if you can say why; a right answer from common-sense elimination is a guess. After checking, mark whether your reason was right.
+</div>
+<p>NUMBER (ABOUT 10) scored questions, mixed on purpose. Some questions have more than one right answer; the page does not say how many, and each option is scored on its own. Option order is shuffled once for you and saved on this device.</p>
 <div id="quiz"></div>
 
 <h2>Explain it back</h2>
-<p>Close this page. In three or four sentences, as if to a smart 12-year-old, explain: THE ONE OR TWO IDEAS THAT MATTER MOST. Bring it to your coach; that is the start of your next check.</p>
+<p>Close this page. Closed book. In three or four sentences, as if to a smart 12-year-old, explain: THE ONE OR TWO IDEAS THAT MATTER MOST. Bring it to your coach; that is the start of your next check.</p>
 
 <h2>Your result</h2>
 <p>Copy this line and paste it to your coach so it goes into your learning log.</p>
@@ -55,20 +87,107 @@
 
 <script>
 window.LESSON = {
-  id: "NNNN",
+  id: "NNNN", // a part suffix is fine: "01a"
   kind: "lesson", // drills set "drill"
   reason: false, // true on drills: a one-line reason is required before checking
+  // showCount: true, // only on a mock exam whose real format states how many to pick; lesson pages and drills never show it
+  // secondsPerQuestion: 90, // only in the last days before a formal test: soft timer at the exam's pace, recorded in the result line
+  glossary: [
+    { term: "TERM", def: "SHORT DEFINITION, FROM THE SOURCE'S GLOSSARY WHERE IT HAS ONE" }
+    // bilingual page: { term: { en: "TERM", l2: "..." }, def: { en: "...", l2: "..." } }
+  ],
   recall: [
     { prompt: "QUESTION ON EARLIER OR DUE MATERIAL", answer: "MODEL ANSWER" }
   ],
   questions: [
     {
-      stem: "SCENARIO, THEN THE QUESTION",
+      sample: true, at: "idea1", // unscored; shows its explanation at once; place it right after the idea it follows
+      stem: "SAMPLE QUESTION ON IDEA 1, USING ONLY TERMS TAUGHT ABOVE",
       options: [
-        { text: "CORRECT OPTION", correct: true, why: "WHY IT IS RIGHT" },
-        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS" },
-        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS" },
-        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS" }
+        { text: "CORRECT OPTION", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "ANOTHER PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      sample: true, at: "idea2", // unscored; shows its explanation at once; place it right after the idea it follows
+      stem: "SAMPLE QUESTION ON IDEA 2, USING ONLY TERMS TAUGHT ABOVE",
+      options: [
+        { text: "CORRECT OPTION", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "ANOTHER PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      stem: "SCENARIO 1, THEN THE QUESTION",
+      options: [
+        { text: "CORRECT OPTION, THE LONGEST OF THE FOUR HERE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION TWO", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION THREE", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      stem: "SCENARIO 2, THEN THE QUESTION",
+      options: [
+        { text: "CORRECT OPTION, ALSO THE LONGEST OF ITS FOUR", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION TWO", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION THREE", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      stem: "SCENARIO 3, THEN THE QUESTION",
+      options: [
+        { text: "RIGHT", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
+        { text: "PLAUSIBLE WRONG OPTION ONE", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION TWO", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION THREE", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      stem: "SCENARIO 4, THEN THE QUESTION",
+      options: [
+        { text: "RIGHT ONE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
+        { text: "PLAUSIBLE WRONG OPTION ONE", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION TWO", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION THREE", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      stem: "SCENARIO 5, THEN THE QUESTION",
+      options: [
+        { text: "CORRECT OPTION, MIDDLE LENGTH", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
+        { text: "PLAUSIBLE WRONG OPTION LONGER THAN IT", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "SHORT WRONG", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      stem: "SCENARIO 6, THEN THE QUESTION",
+      options: [
+        { text: "CORRECT OPTION, MIDDLE SIZE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
+        { text: "PLAUSIBLE WRONG OPTION MUCH LONGER THAN IT", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "WRONG", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      stem: "SCENARIO 7, THEN THE QUESTION",
+      options: [
+        { text: "CORRECT OPTION IN THE MIDDLE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
+        { text: "A LONG PLAUSIBLE WRONG OPTION HERE", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "SHORT WRONG", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
+      ]
+    },
+    {
+      stem: "SCENARIO 8, THEN THE QUESTION",
+      options: [
+        { text: "CORRECT OPTION, AGAIN MIDDLE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
+        { text: "A LONGER PLAUSIBLE WRONG OPTION", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "SHORT", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." },
+        { text: "PLAUSIBLE WRONG OPTION TOO", correct: false, why: "THE MISCONCEPTION IT TESTS. WHEN IT WOULD BE RIGHT." }
       ]
     }
   ]

@@ -8,7 +8,7 @@ The agent runs a repeating cycle:
 
 1. **Place:** a 25-minute test (first step 4 minutes) finds the starting level (1 to 6).
 2. **Set the bar:** it states what you must show to pass the level, before you study.
-3. **Study:** sessions of practice, reading, and self-testing (60 minutes by default), logged in a progress file the agent reads each time. New material can come as a short HTML lesson page: recall first, a plain explanation, then practice questions, each marked sure or guessing before it is checked.
+3. **Study:** 20-minute sessions, logged in a progress file the agent reads each time. On the first invocation the agent builds a course map of the whole source and settles whether there is a formal test. New material comes as a short HTML lesson page: recall first, worked examples with a sample question after each idea, a glossary, then about 10 practice questions, each marked sure or guessing before it is checked.
 4. **Check:** a check in the format for your level (a 10-question self-test, a teach-back that may be written or spoken, or a finished task scored against a private checklist), passed at 80%.
 5. **Rebuild:** you rewrite a one-page summary from memory.
 6. **Advance:** pass, move up, and keep reviewing earlier levels.
@@ -17,7 +17,7 @@ It covers eight techniques: foundations (sleep, focus), retrieval practice, spac
 
 ## Lesson pages
 
-New material can come as a self-contained HTML page you open in the browser: recall first, a short explanation with sources, then practice questions. No server, no account.
+New material can come as a self-contained HTML page you open in the browser: recall first, worked examples with sources, a glossary, then practice questions. No server, no account.
 
 ![A lesson page: recall box, short explanation, practice question](docs/img/lesson-page.png)
 
@@ -26,12 +26,15 @@ The sample page is in [`docs/sample/`](docs/sample/lessons/0001-inner-vs-left-jo
 Features:
 
 - **Recall before reading:** write an answer from memory, then reveal the model answer and mark it got it, partly, or missed.
-- **Exam-style questions:** six options by default; multi-select questions say how many to pick. Options state only the choice, never a reason. Order is shuffled once per learner and page, and the order is saved.
-- **Sure or guessing:** mark each answer before checking, so the score also shows overconfidence (wrong but sure) and luck (right but guessing).
+- **Worked examples:** scenario, common wrong instinct, right design and why, with an unscored sample question after each idea and a glossary before the quiz.
+- **Exam-style questions:** six options by default; multi-select questions do not say how many to pick, and each option is scored on its own with partial credit. Mock exams, when there is a formal test, copy its format. Options state only the choice, never a reason, and no wrong option can be removed by common sense alone.
+- **Closed book practice:** scrolling back or opening the reference while answering is cheating; opening a glossary term is allowed but makes the question a guess. Order is shuffled once per learner and page, and the order is saved.
+- **Sure or guessing:** mark each answer before checking, so the score also shows overconfidence (wrong but sure) and luck (right but guessing). After checking, mark your own reason right, partly right or wrong; the score that counts is the share of answers that are right, sure and given a right reason.
 - **Reason first on drills:** drills also ask for a one-line reason before the answer is checked.
 - **Explanations after answering:** every option explains why it is right or wrong once you have checked.
-- **Difficulty that adapts:** drills aim at 70 to 85 percent right and step up above 85 percent on the last page (see `levels.md`).
-- **Result line:** one line to paste back, which goes into the learning log and queues missed questions for review.
+- **Timed practice:** in the last days before a formal test, drills show a soft timer at the exam's pace.
+- **Difficulty that adapts:** drills aim at 70 to 85 percent sure and right and step up above 85 percent on the last page (see `levels.md`).
+- **Result line:** one line to paste back, which goes into the learning log and queues the ideas you got wrong for review at 1, 3 and 7 days.
 - **Bilingual option:** English by default, with a second language switch.
 - **Checker:** `assets/check-lesson.js` flags answer cues in option length and in reasons written into options.
 
@@ -72,7 +75,7 @@ Other tools that read `SKILL.md` folders: copy `skills/learning-coach/` into tha
 >
 > *(You stumble at how chromosomes separate.)*
 >
-> **Coach:** You start at Level 2: Explain. To pass, you need to explain why each phase happens, in your own words. This week: 4 sessions of 60 minutes. Session 1 comes as a lesson page: recall first, a short explanation, then practice questions. Tell me your predicted score first, then I'll open it.
+> **Coach:** You start at Level 2: Explain. To pass, you need to explain why each phase happens, in your own words. This week: 4 sessions of 20 minutes. Session 1 comes as a lesson page: recall first, a short explanation, then practice questions. Tell me your predicted score first, then I'll open it.
 
 ## Evidence
 

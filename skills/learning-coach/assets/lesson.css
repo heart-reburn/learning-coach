@@ -98,6 +98,25 @@ input[type="number"] { width: 6rem; }
 .verdict.bad { color: var(--bad); }
 .model-answer { display: none; margin-top: .75rem; padding: .75rem; background: var(--note-bg); border-radius: 6px; }
 .selfmark { display: none; gap: .5rem; margin-top: .6rem; flex-wrap: wrap; }
+.card.sample { border-style: dashed; }
+.card.locked { opacity: .45; }
+.card .lockmsg { margin: .2rem 0 0; }
+.term-link { font: inherit; background: none; color: inherit; border: 0; border-bottom: 1px dotted var(--accent); border-radius: 0; padding: 0; cursor: help; }
+.termdef { margin: .4rem 0 .6rem; padding: .5rem .75rem; background: var(--note-bg); border-radius: 6px; font-size: .92rem; }
+.termdef[hidden] { display: none; }
+dl.glossary { margin: 1rem 0; }
+dl.glossary dt { font: 600 .95rem -apple-system, BlinkMacSystemFont, sans-serif; margin-top: .6rem; }
+dl.glossary dd { margin: .1rem 0 0; font-size: .95rem; }
+.timer { font: 600 .8rem ui-monospace, Menlo, monospace; color: var(--muted); margin: .4rem 0 0; }
+.timer.over { color: var(--bad); }
+.selfcheck { margin-top: .75rem; display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.selfcheck[hidden] { display: none; }
+.selfcheck .selfask { flex-basis: 100%; margin: 0; font-size: .9rem; }
+.example { border-left: 3px solid var(--rule); padding: .1rem 1rem; margin: 1rem 0; }
+.example h3 { margin-top: .5rem; }
+.example dt { font: 600 .85rem -apple-system, BlinkMacSystemFont, sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-top: .5rem; }
+.example dd { margin: .1rem 0 0; }
+.example pre.diagram { font: .85rem/1.35 ui-monospace, Menlo, monospace; background: var(--note-bg); padding: .6rem .75rem; border-radius: 6px; overflow-x: auto; }
 .result { font-family: ui-monospace, Menlo, monospace; font-size: .85rem; background: var(--note-bg); padding: .75rem; border-radius: 6px; word-break: break-word; }
 .row { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
 

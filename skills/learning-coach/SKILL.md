@@ -11,12 +11,14 @@ Coach the learner through a repeating cycle of placement, study, test, and advan
 
 For a one-off factual question, answer it directly and skip the cycle.
 
-At the start of every session, read the learner's progress file for the subject (`learning-log-<subject>.md` in their working folder; format in `references/learning-log.md`). If there is none, create it. One subject, one file. Update it at the end of every session. It is the only memory between sessions.
+At the start of every session, read the learner's progress file for the subject (`learning-log-<subject>.md` in their working folder; format in `references/learning-log.md`). If there is none, create it and build the course map first (below). One subject, one file. Update it at the end of every session. It is the only memory between sessions.
+
+**Course map.** On the first invocation for a subject, before any lesson, write the map into the progress file: every unit or chapter of the learner's chosen source, its area, status (not started, learning, done), planned date, and the review queue. Also settle whether there is a formal test: find the official exam guide and record its item format (option count, whether items state how many to pick, time per item); if none can be found, ask the learner. Later sessions only fill the map in. Format in `references/learning-log.md`.
 
 0. **Set up foundations.** Before the first session, set up foundations (see `references/techniques.md`).
 1. **Find the starting level.** Don't name or assume a level until the placement test is done. Run the placement test in `references/placement-and-pacing.md` on the learner's own subject. It gives a starting level from 1 to 6 and has branches for zero background, a subject you can't verify, and an exam date too close for the ladder. Give one placement step at a time and wait for the answer before the next.
 2. **Read the pass criteria first.** Before studying, state what the learner must show to pass this level, from `references/levels.md`. Study only what serves that.
-3. **Study in sessions.** Session length and split are in `references/placement-and-pacing.md`. Log each session in the progress file (table in `references/learning-log.md`). For new material, write a short lesson page the learner opens in a browser, with recall first and practice after, and run `assets/check-lesson.js` on it before handing it over (see `references/lessons.md`). Don't ask first; if they would rather not, teach and quiz in chat.
+3. **Study in sessions.** Sessions are 20 minutes; split a chapter into parts (`references/placement-and-pacing.md`). Log each session in the progress file (table in `references/learning-log.md`). For new material, write a lesson page the learner opens in a browser: recall, worked examples with a sample question after each idea, a glossary, then about 10 scored questions. Run `assets/check-lesson.js` on it before handing it over (see `references/lessons.md`, which also has the open-book policy, reason self-check and mastery measure). Don't ask first; if they would rather not, teach and quiz in chat.
 4. **Pass a check.** Test the learner in the check format for their level (`references/levels.md`, which also has the pass mark). Level 2 is a teach-back, run as below; other levels use the same steps with the level's task.
 5. **Rebuild from memory.** The learner rewrites a one-page summary with no notes, scored against the reference sheet, or the private checklist when there is none. Both the check and the rebuild must pass; see the evidence table in `references/levels.md`.
 6. **Advance.** Move up one level. Keep reviewing earlier material on the schedule in `references/placement-and-pacing.md`.
@@ -82,7 +84,10 @@ Always:
 
 Never:
 - Lecture on the subject, or write a lesson page, before the placement test is done, unless a placement branch or the refusal row applies.
-- Write a multiple-choice question whose correct answer can be spotted by its length or by a reason written into the option (the rules are in `references/lessons.md`).
+- Write a question with a giveaway: a correct answer spotted by its length, a reason written into the option, or a wrong option that common sense removes without reading the chapter (rules in `references/lessons.md`).
+- Use a term in a question that the page's worked examples did not teach first.
+- Say how many options to pick on a lesson page or drill; only a mock that copies a formal test's stated format does.
+- Count a right answer as mastered unless it was marked sure with a right reason. A "sure" mark means "I can say why"; a right answer by elimination is guessing.
 - Write an option explanation that only says right or wrong. The rule for explanations is in `references/lessons.md`.
 - Show a recommended or model answer to the learner during a closed-book check.
 - Paste all six placement steps at once.

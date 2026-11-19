@@ -1,30 +1,41 @@
 // Shared quiz and recall components for lesson pages.
-// A lesson defines window.LESSON = { id, kind, recall: [...], questions: [...], reason } before loading this file.
+// A lesson defines window.LESSON = { id, kind, recall: [...], questions: [...], reason, glossary, showCount, secondsPerQuestion } before loading this file.
 // kind: "lesson" (default) or "drill"; it names the page in the result line.
-// reason: true asks for a one-line reason (at least 10 characters, counted as code points) on every question before it can be checked.
+// reason: true asks for a one-line reason (at least 10 characters, counted as code points) on every scored question before it can be checked.
+// glossary: [{ term, def }] shown in #glossary before the quiz; the terms are links inside question text. Opening one before checking forces the "guessing" mark.
+// showCount: true shows "Select N." on multi-select questions (mock exams that state the count). Default: the count is hidden and each option is scored on its own.
+// secondsPerQuestion: a number turns on a soft timer per scored question (it never stops the learner); the time goes in the result line.
+// Questions: { stem, options: [{ text, correct, why }], sample?: true, at?: "idea1", multi?: true }.
+//   sample: true is an unscored worked-example question; it shows its explanation at once and is left out of the result line.
+//   at: "idea1" renders a sample into <div id="sample-idea1"> inside the explanation; without it the sample goes first in #quiz.
+//   multi: true forces checkboxes when only one option is correct.
 // Any text field may be a string, or { en, l2 } on a bilingual page (see lang.js).
 // Rules this component enforces:
 //   - answer options are shuffled once per learner and page; the order is saved, so a reload keeps it
 //   - progress (answers, marks, reasons, checked state) is saved in localStorage per page, so a reload
 //     cannot reset a question (edited page content starts fresh); a finished page offers "Start over". Without storage the page still works.
 //   - recall answers stay hidden until the learner has written something
-//   - each question needs a sure / guessing mark (and a reason when LESSON.reason is set) before checking
+//   - each scored question needs a sure / guessing mark (and a reason when LESSON.reason is set) before checking
 //   - each question locks once checked; no changing answers after seeing feedback
 //   - after checking, each option carries a text marker ("Correct answer" / "Your choice, wrong"), not colour alone
+//   - after checking, the learner marks their own reason right / partly right / wrong; the next question stays locked until they do
+//   - multi-select questions give partial credit: the share of options judged correctly
 (function () {
   const L = window.LESSON;
-  const state = { results: {}, sure: {}, recall: {}, reasons: {} };
+  const state = { results: {}, credit: {}, sure: {}, recall: {}, reasons: {}, rself: {}, opened: {}, time: {}, partial: {} };
   const KINDS = ["lesson", "drill"];
   const KIND = KINDS.indexOf(L.kind) >= 0 ? L.kind : "lesson";
+  const SECS = Number(L.secondsPerQuestion) > 0 ? Math.round(Number(L.secondsPerQuestion)) : 0;
+  const GLOSSARY = (Array.isArray(L.glossary) ? L.glossary : []).filter((g) => g && typeof g === "object" && g.term);
   // A content signature in the key: if the page's questions change, old saved answers no longer apply.
   function signature() {
-    const t = JSON.stringify([L.questions, L.recall]);
+    const t = JSON.stringify([L.questions, L.recall, L.glossary]);
     let h = 5381;
     for (let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0;
     return h.toString(36);
   }
   const KEY = "learning-coach-progress:" + L.id + ":" + location.pathname + ":" + signature();
-  let saved = { order: {}, answers: {}, sure: {}, reason: {}, checked: {}, recall: {} };
+  let saved = { order: {}, answers: {}, sure: {}, reason: {}, checked: {}, recall: {}, rself: {}, opened: {}, time: {} };
 
   function load() {
     try {
@@ -40,27 +51,39 @@
   }
 
   const EN = {
-    recall: "Recall", question: "Question {n}", select: "Select {n}.", show: "Show answer",
+    recall: "Recall", question: "Question {n}", sample: "Sample {n} (not scored)",
+    select: "Select {n}.", selectany: "Select all that apply.", show: "Show answer", showexp: "Show explanation",
     got: "Got it", partly: "Partly", missed: "Missed", check: "Check",
     correct: "Correct.", wrong: "Not quite. Read why each option is right or wrong.",
+    partial: "Partly right: {k} of {m} options judged correctly. Read why each option is right or wrong.",
     copied: "Copied", selected: "Selected: copy it",
     startover: "Start over",
     sure: "Sure", guess: "Guessing", reason: "Why this answer? One line, at least 10 characters, before you check.",
     markright: "Correct answer", markwrong: "Your choice, wrong",
-    tocheck: "To check: {list}.", pick1: "choose one answer", pickn: "choose {n} answers",
-    marksure: "mark sure or guessing", writereason: "write a reason (at least 10 characters)"
+    tocheck: "To check: {list}.", pick1: "choose one answer", pickn: "choose {n} answers", pickany: "choose at least one option",
+    marksure: "mark sure or guessing", writereason: "write a reason (at least 10 characters)",
+    reasonask: "Was your reason right? Read the explanations, then mark it.",
+    rsright: "Reason right", rspartly: "Reason partly right", rswrong: "Reason wrong",
+    markreason: "Mark your reason to unlock the next question.",
+    locked: "Finish the question above first.",
+    opened: "You opened a term, so this question counts as guessing.",
+    terms: "Open the definition of {term}", pace: "Pace {t} of {m}"
   };
   const MIN_REASON = 10;
   // Length in code points, so Chinese and emoji count as one each.
   const chars = (s) => [...String(s).trim()].length;
 
   // Interface label in English, plus the second language when lang.js supplied one.
-  function ui(key, n) {
-    const fill = (s) => s.replace("{n}", n);
+  // vars is a number (for {n}) or an object of {name: value}.
+  function ui(key, vars) {
+    const v = vars && typeof vars === "object" ? vars : { n: vars };
+    const fill = (s) => s.replace(/\{(\w+)\}/g, (m, k) => (v[k] != null ? v[k] : m));
     if (!EN[key]) return "";
     const l2 = window.LESSON_L2_UI;
     return l2 && l2[key] ? { en: fill(EN[key]), l2: fill(l2[key]) } : fill(EN[key]);
   }
+  const plain = (t) => (typeof t === "string" ? t : t.en + " / " + t.l2);
+  const plainEn = (t) => (typeof t === "string" ? t : t.en);
 
   function el(tag, attrs, text) {
     const e = document.createElement(tag);
@@ -88,6 +111,42 @@
   // A text field that is not a string (missing or malformed) counts as empty.
   function text(t) { return typeof t === "string" ? t : ""; }
 
+  // One field of a glossary entry in one language ("en" for a plain page).
+  function field(f, lang) { return typeof f === "string" ? f : f && typeof f === "object" ? text(f[lang]) : ""; }
+  const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  // Text with glossary terms turned into buttons that open the definition. ctx: { onOpen(entry) }.
+  function fillRich(target, str, lang, ctx) {
+    target.textContent = "";
+    const terms = GLOSSARY.map((g) => ({ g, t: field(g.term, lang) })).filter((x) => x.t).sort((a, b) => b.t.length - a.t.length);
+    if (!ctx || !terms.length || !str) { target.textContent = str; return; }
+    const part = (x) => /^[\x00-\x7f]+$/.test(x.t) ? "(?<![A-Za-z0-9])" + escapeRe(x.t) + "(?![A-Za-z0-9])" : escapeRe(x.t);
+    let re;
+    try { re = new RegExp(terms.map(part).join("|"), "gi"); } catch (e) { target.textContent = str; return; }
+    let last = 0, m;
+    while ((m = re.exec(str))) {
+      if (m.index > last) target.append(document.createTextNode(str.slice(last, m.index)));
+      const hit = terms.find((x) => x.t.toLowerCase() === m[0].toLowerCase());
+      const b = el("button", { type: "button", class: "term-link", "aria-expanded": "false", title: plain(ui("terms", { term: m[0] })) }, m[0]);
+      b.onclick = () => ctx.onOpen(hit.g, b);
+      target.append(b);
+      last = m.index + m[0].length;
+      if (m[0].length === 0) re.lastIndex++;
+    }
+    if (last < str.length) target.append(document.createTextNode(str.slice(last)));
+  }
+  function rich(tag, attrs, t, ctx) {
+    const e = el(tag, attrs);
+    if (typeof t === "string") fillRich(e, t, "en", ctx);
+    else if (t && typeof t === "object") {
+      const en = el("span", { class: "en" }), l2 = el("span", { class: "l2" });
+      fillRich(en, text(t.en), "en", ctx);
+      fillRich(l2, text(t.l2), "l2", ctx);
+      e.append(en, l2);
+    }
+    return e;
+  }
+
   function shuffle(a) {
     const b = a.slice();
     for (let i = b.length - 1; i > 0; i--) {
@@ -95,6 +154,23 @@
       [b[i], b[j]] = [b[j], b[i]];
     }
     return b;
+  }
+
+  // Terms for this page, shown before the quiz.
+  function renderGlossary() {
+    if (!GLOSSARY.length) return;
+    let root = document.getElementById("glossary");
+    if (!root) {
+      const quiz = document.getElementById("quiz");
+      if (!quiz) return;
+      root = el("div", { id: "glossary" });
+      quiz.before(root);
+    }
+    const dl = el("dl", { class: "glossary" });
+    GLOSSARY.forEach((g) => {
+      dl.append(bi("dt", {}, g.term), bi("dd", {}, g.def));
+    });
+    root.append(dl);
   }
 
   // Free recall: write first, then reveal, then self-mark.
@@ -172,31 +248,109 @@
     return fresh;
   }
 
-  function renderQuestion(q, n, root) {
-    const card = el("div", { class: "card" });
-    card.append(bi("div", { class: "qnum" }, ui("question", n)));
-    card.append(bi("div", { class: "stem" }, q.stem));
+  const gates = []; // scored questions in order: { card, done(), activate() }
+  function refreshGates() {
+    let blocked = false;
+    gates.forEach((g) => {
+      g.card.classList.toggle("locked", blocked);
+      if (blocked) g.card.setAttribute("inert", ""); else g.card.removeAttribute("inert");
+      g.lockmsg.hidden = !blocked;
+      if (!blocked) g.activate();
+      if (!g.done()) blocked = true;
+    });
+  }
+
+  // label: the heading shown on the card; name: the storage key ("q3" scored, "s1" sample).
+  function renderQuestion(q, label, name, root, sample) {
+    const card = el("div", { class: "card" + (sample ? " sample" : "") });
+    const lockmsg = bi("p", { class: "hint lockmsg" }, ui("locked"));
+    lockmsg.hidden = true;
+    card.append(bi("div", { class: "qnum" }, label));
+    if (!sample) card.append(lockmsg);
+    // Glossary terms opened from this question.
+    let opened = !sample && saved.opened[name] === true;
+    const defBox = el("div", { class: "termdef", "aria-live": "polite" });
+    defBox.hidden = true;
+    let openTerm = null;
+    const ctx = GLOSSARY.length ? {
+      onOpen(g, button) {
+        if (openTerm === g) { defBox.hidden = true; openTerm = null; button.setAttribute("aria-expanded", "false"); return; }
+        openTerm = g;
+        const both = typeof g.term === "object" || typeof g.def === "object";
+        setText(defBox, both
+          ? { en: field(g.term, "en") + ": " + field(g.def, "en"), l2: field(g.term, "l2") + ": " + field(g.def, "l2") }
+          : field(g.term, "en") + ": " + field(g.def, "en"));
+        defBox.hidden = false;
+        button.setAttribute("aria-expanded", "true");
+        if (!sample && !locked) markOpened();
+      }
+    } : null;
+    card.append(rich("div", { class: "stem" }, q.stem, ctx), defBox);
     const opts = Array.isArray(q.options) ? q.options.filter((o) => o && typeof o === "object") : [];
     if (!opts.length) { root.append(card); return; }
     const need = opts.filter((o) => o.correct).length;
-    if (need > 1) card.append(bi("p", { class: "pick" }, ui("select", need)));
-    const type = need > 1 ? "checkbox" : "radio";
-    const name = "q" + n;
+    const multi = q.multi === true || need > 1;
+    if (multi) card.append(bi("p", { class: "pick" }, L.showCount === true ? ui("select", need) : ui("selectany")));
+    const type = multi ? "checkbox" : "radio";
     const rows = orderFor(name, opts.length).map((idx) => {
       const o = opts[idx];
-      const label = el("label", { class: "option" });
+      const lab = el("label", { class: "option" });
       const input = el("input", { type, name });
       const body = el("span");
-      body.append(bi("span", {}, o.text));
+      body.append(rich("span", {}, o.text, ctx));
       const why = bi("span", { class: "why" }, o.why);
       why.hidden = true;
       const mark = el("strong", { class: "mark" });
       mark.hidden = true;
       body.append(why, mark);
-      label.append(input, body);
-      card.append(label);
-      return { o, idx, input, label, why, mark };
+      lab.append(input, body);
+      card.append(lab);
+      return { o, idx, input, label: lab, why, mark };
     });
+    const hint = el("p", { class: "hint", id: name + "-need" });
+    const verdict = el("div", { class: "verdict", "aria-live": "polite" });
+    let locked = false;
+
+    function reveal() {
+      let right = true, same = 0;
+      rows.forEach((r) => {
+        r.input.disabled = true;
+        r.why.hidden = false;
+        if (r.o.correct) r.label.classList.add("correct");
+        else if (r.input.checked) r.label.classList.add("wrong");
+        if (r.o.correct || r.input.checked) {
+          setText(r.mark, ui(r.o.correct ? "markright" : "markwrong"));
+          r.mark.hidden = false;
+        }
+        if (r.o.correct !== r.input.checked) right = false; else same++;
+      });
+      locked = true;
+      return { right, same };
+    }
+
+    if (sample) {
+      const showBtn = bi("button", { style: "margin-top:.6rem", type: "button" }, ui("showexp"));
+      showBtn.disabled = true;
+      card.addEventListener("change", () => {
+        saved.answers[name] = rows.filter((r) => r.input.checked).map((r) => r.idx);
+        save();
+        showBtn.disabled = locked || !rows.some((r) => r.input.checked);
+      });
+      showBtn.onclick = () => {
+        reveal();
+        showBtn.disabled = true;
+        saved.checked[name] = true;
+        save();
+      };
+      card.append(showBtn);
+      root.append(card);
+      const a = saved.answers[name];
+      if (Array.isArray(a)) rows.forEach((r) => (r.input.checked = a.indexOf(r.idx) >= 0));
+      showBtn.disabled = !rows.some((r) => r.input.checked);
+      if (saved.checked[name]) { reveal(); showBtn.disabled = true; }
+      return;
+    }
+
     let sure = null;
     function setSure(value) {
       sure = value;
@@ -217,12 +371,23 @@
       conf.append(b);
       return b;
     });
+    // Opening a glossary term makes the question a guess: the learner did not know the term.
+    function markOpened() {
+      if (locked) return;
+      opened = true;
+      saved.opened[name] = true;
+      setSure(false);
+      saved.sure[name] = false;
+      confButtons[0].disabled = true;
+      save();
+      ready();
+    }
     let reason = null;
     if (L.reason) {
       reason = el("textarea", { rows: "2", class: "reason" });
-      const label = ui("reason");
-      reason.placeholder = typeof label === "string" ? label : label.en + " / " + label.l2;
-      reason.setAttribute("aria-label", typeof label === "string" ? label : label.en);
+      const lab = ui("reason");
+      reason.placeholder = plain(lab);
+      reason.setAttribute("aria-label", plainEn(lab));
       reason.oninput = () => {
         saved.reason[name] = reason.value;
         save();
@@ -231,12 +396,32 @@
     }
     const check = bi("button", { style: "margin-top:.6rem", type: "button", "aria-describedby": name + "-need" }, ui("check"));
     check.disabled = true;
-    const hint = el("p", { class: "hint", id: name + "-need" });
-    const verdict = el("div", { class: "verdict", "aria-live": "polite" });
+    // Timer: starts when the question unlocks, never stops the learner.
+    let t0 = null, tick = null, timerEl = null;
+    if (SECS) {
+      timerEl = el("p", { class: "timer", role: "timer" });
+      card.append(timerEl);
+    }
+    const mmss = (s) => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+    function paintTimer() {
+      if (!timerEl || t0 === null) return;
+      const s = Math.round((Date.now() - t0) / 1000);
+      setText(timerEl, ui("pace", { t: mmss(s), m: mmss(SECS) }));
+      timerEl.classList.toggle("over", s > SECS);
+    }
+    function startTimer() {
+      if (!SECS || t0 !== null || locked) return;
+      t0 = Date.now();
+      paintTimer();
+      tick = setInterval(paintTimer, 1000);
+    }
     // What is still missing before Check works, as one sentence per language.
     function missing() {
       const keys = [];
-      if (rows.filter((r) => r.input.checked).length !== need) keys.push(need === 1 ? "pick1" : "pickn");
+      const picked = rows.filter((r) => r.input.checked).length;
+      if (!multi) { if (picked !== 1) keys.push("pick1"); }
+      else if (L.showCount === true) { if (picked !== need) keys.push("pickn"); }
+      else if (picked < 1) keys.push("pickany");
       if (sure === null) keys.push("marksure");
       if (reason && chars(reason.value) < MIN_REASON) keys.push("writereason");
       return keys;
@@ -245,18 +430,21 @@
       const parts = keys.map((k) => ui(k, need));
       const tpl = ui("tocheck");
       const join = (pick) => parts.map(pick).join(", ");
-      if (typeof tpl === "string") return tpl.replace("{list}", join((p) => (typeof p === "string" ? p : p.en)));
-      return { en: tpl.en.replace("{list}", join((p) => (typeof p === "string" ? p : p.en))), l2: tpl.l2.replace("{list}", join((p) => (typeof p === "string" ? p : p.l2))) };
+      if (typeof tpl === "string") return tpl.replace("{list}", join(plainEn));
+      return { en: tpl.en.replace("{list}", join(plainEn)), l2: tpl.l2.replace("{list}", join((p) => (typeof p === "string" ? p : p.l2))) };
     }
     function ready() {
+      if (locked) return;
       const keys = missing();
       check.disabled = keys.length > 0;
+      const note = opened ? ui("opened") : "";
       if (keys.length) {
         const h = hintText(keys);
         setText(hint, h);
-        check.title = typeof h === "string" ? h : h.en + " / " + h.l2;
+        if (note) hint.append(document.createTextNode(" "), bi("span", {}, note));
+        check.title = plain(h);
       } else {
-        hint.textContent = "";
+        if (note) setText(hint, note); else hint.textContent = "";
         check.removeAttribute("title");
       }
     }
@@ -265,46 +453,78 @@
       save();
       ready();
     });
-    function lock() {
+    // Reason self-check, shown after the explanation.
+    const selfcheck = el("div", { class: "selfcheck", role: "group", "aria-label": "Was your reason right?" });
+    selfcheck.hidden = true;
+    const selfButtons = [["right", "rsright"], ["partly", "rspartly"], ["wrong", "rswrong"]].map(([key, labelKey]) => {
+      const b = bi("button", { class: "secondary", type: "button", "aria-pressed": "false" }, ui(labelKey));
+      b.dataset.key = key;
+      b.onclick = () => {
+        saved.rself[name] = key;
+        save();
+        applySelf(key);
+        updateResult();
+        refreshGates();
+      };
+      return b;
+    });
+    selfcheck.append(bi("p", { class: "selfask" }, ui("reasonask")), ...selfButtons);
+    function applySelf(key) {
+      state.rself[name] = key;
+      selfButtons.forEach((b) => {
+        const on = b.dataset.key === key;
+        b.setAttribute("aria-pressed", String(on));
+        b.classList.toggle("secondary", !on);
+        b.disabled = !on;
+      });
+      hint.textContent = "";
+    }
+    function lock(elapsed) {
       confButtons.forEach((b) => (b.disabled = true));
       if (reason) reason.readOnly = true;
-      let right = true;
-      rows.forEach((r) => {
-        r.input.disabled = true;
-        r.why.hidden = false;
-        if (r.o.correct) r.label.classList.add("correct");
-        else if (r.input.checked) r.label.classList.add("wrong");
-        if (r.o.correct || r.input.checked) {
-          setText(r.mark, ui(r.o.correct ? "markright" : "markwrong"));
-          r.mark.hidden = false;
-        }
-        if (r.o.correct !== r.input.checked) right = false;
-      });
+      const { right, same } = reveal();
+      if (tick) { clearInterval(tick); tick = null; }
       check.disabled = true;
       check.removeAttribute("title");
-      hint.textContent = "";
-      setText(verdict, ui(right ? "correct" : "wrong"));
+      const credit = right ? 1 : multi ? same / rows.length : 0;
+      setText(verdict, right ? ui("correct") : multi && credit > 0 ? ui("partial", { k: same, m: rows.length }) : ui("wrong"));
       verdict.className = "verdict " + (right ? "good" : "bad");
       state.results[name] = right;
+      state.credit[name] = credit;
+      if (multi && !right) state.partial[name] = same + "/" + rows.length;
       state.sure[name] = sure;
+      state.opened[name] = opened;
       if (reason) state.reasons[name] = reason.value;
+      if (typeof elapsed === "number") state.time[name] = elapsed;
+      selfcheck.hidden = false;
+      if (!state.rself[name]) setText(hint, ui("markreason"));
     }
     check.onclick = () => {
+      const elapsed = t0 === null ? null : Math.round((Date.now() - t0) / 1000);
       saved.checked[name] = true;
+      if (elapsed !== null) saved.time[name] = elapsed;
       save();
-      lock();
+      lock(elapsed);
       updateResult();
+      refreshGates();
     };
     if (reason) card.append(reason);
-    card.append(conf, check, hint, verdict);
+    card.append(conf, check, hint, verdict, selfcheck);
     root.append(card);
     // Restore saved progress.
     const a = saved.answers[name];
     if (Array.isArray(a)) rows.forEach((r) => (r.input.checked = a.indexOf(r.idx) >= 0));
     if (typeof saved.sure[name] === "boolean") setSure(saved.sure[name]);
+    if (opened) { setSure(false); confButtons[0].disabled = true; }
     if (reason && typeof saved.reason[name] === "string") reason.value = saved.reason[name];
     ready();
-    if (saved.checked[name]) lock();
+    if (saved.checked[name]) {
+      lock(typeof saved.time[name] === "number" ? saved.time[name] : undefined);
+      const rs = saved.rself[name];
+      if (rs === "right" || rs === "partly" || rs === "wrong") applySelf(rs);
+      if (timerEl && typeof saved.time[name] === "number") setText(timerEl, ui("pace", { t: mmss(saved.time[name]), m: mmss(SECS) }));
+    }
+    gates.push({ card, lockmsg, done: () => !!state.rself[name], activate: startTimer });
   }
 
   // Compact one-line text for the result line: no pipes or line breaks, capped length.
@@ -313,26 +533,39 @@
     return s.length > 120 ? s.slice(0, 117) + "..." : s;
   }
 
+  const scored = () => (L.questions || []).filter((q) => !(q && q.sample === true));
+
   // The result line stays in English: it is pasted into the learning log.
+  // A question counts as finished only after it is checked and the learner has marked their reason.
   function updateResult() {
     const out = document.getElementById("result");
     if (!out) return;
     const byNumber = (o) => Object.keys(o).sort((a, b) => parseInt(a.slice(1), 10) - parseInt(b.slice(1), 10));
-    const nq = (L.questions || []).length;
-    const done = Object.keys(state.results).length;
-    const right = Object.values(state.results).filter(Boolean).length;
-    const missed = byNumber(state.results).filter((k) => !state.results[k]);
-    const list = (f) => byNumber(state.results).filter(f).join(", ") || "none";
+    const nq = scored().length;
+    const fin = byNumber(state.results).filter((k) => state.rself[k]);
+    const done = fin.length;
+    const credit = Math.round(fin.reduce((s, k) => s + state.credit[k], 0) * 10) / 10;
+    const missed = fin.filter((k) => !state.results[k]);
+    const list = (f) => fin.filter(f).join(", ") || "none";
+    const sureRight = fin.filter((k) => state.results[k] && state.sure[k] && state.rself[k] === "right").length;
     const recall = byNumber(state.recall).map((k) => k + " " + state.recall[k]).join(", ") || "not marked";
-    const marks = byNumber(state.results).map((k) =>
-      k + " " + (state.sure[k] ? "sure" : "guessing") + (state.reasons[k] ? ' "' + oneLine(state.reasons[k]) + '"' : "")
+    const marks = fin.map((k) =>
+      k + " " + (state.sure[k] ? "sure" : "guessing" + (state.opened[k] ? " (term opened)" : "")) + ", reason " + state.rself[k] +
+      (typeof state.time[k] === "number" ? ", " + state.time[k] + "s" : "") +
+      (state.reasons[k] ? ' "' + oneLine(state.reasons[k]) + '"' : "")
     ).join("; ") || "none";
+    const partial = fin.filter((k) => state.partial[k] && state.credit[k] > 0).map((k) => k + " " + state.partial[k]);
+    const over = SECS ? fin.filter((k) => typeof state.time[k] === "number" && state.time[k] > SECS) : [];
     out.textContent =
       KIND.charAt(0).toUpperCase() + KIND.slice(1) + " " + L.id +
-      " | score " + right + "/" + done + (done < nq ? " (unfinished, " + nq + " total)" : "") +
+      " | score " + credit + "/" + done + (done < nq ? " (unfinished, " + nq + " total)" : "") +
       " | missed: " + (missed.join(", ") || "none") +
+      (partial.length ? " | partial credit: " + partial.join(", ") : "") +
+      " | sure and right: " + sureRight + "/" + done + (done ? " (" + Math.round((100 * sureRight) / done) + "%)" : "") +
       " | right but guessing: " + list((k) => state.results[k] && !state.sure[k]) +
       " | wrong but sure: " + list((k) => !state.results[k] && state.sure[k]) +
+      " | right answer, reason not right: " + list((k) => state.results[k] && state.rself[k] !== "right") +
+      (SECS ? " | timed " + SECS + "s per question, over: " + (over.join(", ") || "none") : "") +
       " | recall: " + recall +
       " | marks: " + marks;
     const again = document.getElementById("startover");
@@ -342,10 +575,24 @@
   document.addEventListener("DOMContentLoaded", () => {
     load();
     renderRecall(document.getElementById("recall"));
+    renderGlossary();
     const quiz = document.getElementById("quiz");
-    if (quiz) (L.questions || []).forEach((q, i) => {
-      try { renderQuestion(q || {}, i + 1, quiz); } catch (e) { console.error("question " + (i + 1) + " could not render", e); }
+    let sn = 0, qn = 0;
+    (L.questions || []).forEach((q0) => {
+      const q = q0 || {};
+      try {
+        if (q.sample === true) {
+          sn++;
+          const at = typeof q.at === "string" ? document.getElementById("sample-" + q.at) : null;
+          const root = at || quiz;
+          if (root) renderQuestion(q, ui("sample", sn), "s" + sn, root, true);
+        } else {
+          qn++;
+          if (quiz) renderQuestion(q, ui("question", qn), "q" + qn, quiz, false);
+        }
+      } catch (e) { console.error("question " + (q.sample === true ? "sample " + sn : qn) + " could not render", e); }
     });
+    refreshGates();
     const copy = document.getElementById("copy");
     if (copy) {
       const again = el("button", { id: "startover", class: "secondary", type: "button", style: "margin-left:.5rem" });

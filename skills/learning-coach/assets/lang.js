@@ -18,7 +18,12 @@
       startover: "重新开始", sure: "确定", guess: "蒙的", reason: "为什么选这个？检查前写一行，至少 10 个字。",
       markright: "正确答案", markwrong: "你的选择，错误",
       tocheck: "要检查：{list}。", pick1: "选 1 项", pickn: "选 {n} 项",
-      marksure: "标记确定或蒙的", writereason: "写理由（至少 10 个字）"
+      marksure: "标记确定或蒙的", writereason: "写理由（至少 10 个字）",
+      sample: "例题 {n}（不计分）", selectany: "选出所有正确的选项。", showexp: "看解析",
+      partial: "部分正确：{m} 个选项中判断对了 {k} 个。看每个选项的对错理由。", pickany: "至少选 1 项",
+      reasonask: "你的理由对吗？先看解析，再自己标记。", rsright: "理由对", rspartly: "理由部分对", rswrong: "理由错",
+      markreason: "标记你的理由后，才能做下一题。", locked: "请先完成上面的题。",
+      opened: "你打开了术语定义，这题按蒙的算。", terms: "查看“{term}”的定义", pace: "用时 {t}，目标 {m}"
     }
   };
   window.LESSON_L2_UI = UI[root.getAttribute("data-l2")] || null;
