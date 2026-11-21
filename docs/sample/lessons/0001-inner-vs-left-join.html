@@ -8,45 +8,250 @@
 </head>
 <body>
 <main>
+
 <noscript><p class="note">This page needs JavaScript for the recall boxes and questions. Turn it on, or open the page in another browser.</p></noscript>
+
 <h1>INNER JOIN vs LEFT JOIN: predict which rows come back</h1>
 <p class="meta">Lesson 0001 · about 20 minutes · Level 1, Recall</p>
-<div class="win"><strong>Your win today:</strong> given two small tables, you can say which rows each join returns.</div>
+
+<div class="win">
+  <strong>Your win today:</strong> given two small tables and a query, you can say which rows come back and where a condition belongs.
+</div>
+
 <h2>Before you read: recall</h2>
 <p>Write your answer from memory first. The answer appears only after you have written something.</p>
 <div id="recall"></div>
-<h2>Which rows survive</h2>
-<p>An INNER JOIN keeps only rows with a match in both tables. A LEFT JOIN keeps every row from the left table and fills the right side with NULL when nothing matches.<sup><a href="#s1">1</a></sup> A WHERE on a right-table column removes the NULL rows again, so a LEFT JOIN with such a filter behaves like an INNER JOIN.<sup><a href="#s2">2</a></sup></p>
+
+<h2>The big picture</h2>
+<section id="bigpicture">
+  <p>A report needs rows from two tables, and the join type decides which rows survive. This page has three ideas, in this order.<sup><a href="#s1">1</a></sup></p>
+  <svg viewBox="0 0 640 150" role="img" aria-label="Map: INNER JOIN keeps only matches, then LEFT JOIN keeps every left row, then where a condition goes decides which rows survive"><title>Map: INNER JOIN keeps only matches, then LEFT JOIN keeps every left row, then where a condition goes decides which rows survive</title>
+    <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="40" width="170" height="60" rx="8"/><rect x="235" y="40" width="170" height="60" rx="8"/><rect x="460" y="40" width="170" height="60" rx="8"/>
+    <path d="M180,70 H233" marker-end="url(#a1)"/><path d="M405,70 H458" marker-end="url(#a1)"/></g>
+    <g fill="currentColor" font-size="13" text-anchor="middle"><text x="95" y="66">INNER JOIN keeps</text><text x="95" y="84">only matches</text><text x="320" y="66">LEFT JOIN keeps</text><text x="320" y="84">every left row</text><text x="545" y="66">A condition goes in</text><text x="545" y="84">ON or WHERE</text></g>
+  </svg>
+</section>
+
+<h2>Idea by idea</h2>
+
+<section class="idea">
+  <h3>Idea one: INNER JOIN keeps matches only</h3>
+  <svg viewBox="0 0 320 110" role="img" aria-label="Two tables, customers and orders; only the rows that find a partner appear in the result" ><title>Two tables, customers and orders; only the rows that find a partner appear in the result</title>
+    <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="15" width="90" height="80" rx="6"/><rect x="220" y="15" width="90" height="80" rx="6"/><path d="M100,35 H220"/><path d="M100,60 H220" stroke-dasharray="4 4"/></g>
+    <g fill="currentColor" font-size="12" text-anchor="middle"><text x="55" y="40">Ana</text><text x="55" y="60">Ben</text><text x="55" y="80">Caro</text><text x="265" y="40">order 1</text><text x="265" y="80">order 2</text></g>
+  </svg>
+  <p>The manual defines it: <q>For each row R1 of T1, the joined table has a row for each row in T2 that satisfies the join condition with R1.</q> The join condition sits in the ON clause. A row with no partner is dropped, and a NULL key never equals anything, so it never has one.</p>
+</section>
+<div id="sample-idea1"></div>
+
+<section class="idea">
+  <h3>Idea two: LEFT JOIN keeps every left row</h3>
+  <svg viewBox="0 0 320 110" role="img" aria-label="Every row of the left table appears; a row with no partner shows NULL on the right" ><title>Every row of the left table appears; a row with no partner shows NULL on the right</title>
+    <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="15" width="90" height="80" rx="6"/><rect x="220" y="15" width="90" height="80" rx="6"/><path d="M100,35 H220"/><path d="M100,60 H220" stroke-dasharray="4 4"/></g>
+    <g fill="currentColor" font-size="12" text-anchor="middle"><text x="55" y="40">Ana</text><text x="55" y="60">Ben</text><text x="55" y="80">Caro</text><text x="265" y="40">order 1</text><text x="265" y="60">NULL</text><text x="265" y="80">order 2</text></g>
+  </svg>
+  <p>The left table is the one named before the join keyword. <q>First, an inner join is performed. Then, for each row in T1 that does not satisfy the join condition with any row in T2, a joined row is added with null values in columns of T2.</q> A left row with several matches appears once per match. To find unmatched rows, test <code>IS NULL</code> on a right-table column.</p>
+</section>
+<div id="sample-idea2"></div>
+
+<section class="idea">
+  <h3>Idea three: ON or WHERE</h3>
+  <svg viewBox="0 0 320 110" role="img" aria-label="ON decides which rows match; WHERE then removes rows from the finished result" ><title>ON decides which rows match; WHERE then removes rows from the finished result</title>
+    <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="35" width="90" height="40" rx="6"/><rect x="115" y="35" width="90" height="40" rx="6"/><rect x="220" y="35" width="90" height="40" rx="6"/><path d="M100,55 H113" marker-end="url(#a3)"/><path d="M205,55 H218" marker-end="url(#a3)"/></g>
+    <g fill="currentColor" font-size="13" text-anchor="middle"><text x="55" y="60">ON</text><text x="160" y="60">add NULL rows</text><text x="265" y="60">WHERE</text></g>
+  </svg>
+  <p>WHERE runs on the finished result, and a comparison with NULL is never true. A WHERE test on a right-table column therefore removes the unmatched rows, and the LEFT JOIN acts like an INNER JOIN. A test that should only limit which matches count goes in ON. A test on the left table goes in WHERE, since ON never removes left rows.</p>
+</section>
+<div id="sample-idea3"></div>
+
+<h2>Putting it together</h2>
+<section id="together">
+  <p>Say, in your own words, how each node leads to the next: what INNER JOIN drops, what LEFT JOIN adds back, and what WHERE can take away again.</p>
+  <svg viewBox="0 0 640 150" role="img" aria-label="The same map again: INNER JOIN keeps only matches, LEFT JOIN keeps every left row, ON or WHERE decides what survives; write how each leads to the next" ><title>The same map again: INNER JOIN keeps only matches, LEFT JOIN keeps every left row, ON or WHERE decides what survives; write how each leads to the next</title>
+    <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="40" width="170" height="60" rx="8"/><rect x="235" y="40" width="170" height="60" rx="8"/><rect x="460" y="40" width="170" height="60" rx="8"/>
+    <path d="M180,70 H233" marker-end="url(#a1)"/><path d="M405,70 H458" marker-end="url(#a1)"/></g>
+    <g fill="currentColor" font-size="13" text-anchor="middle"><text x="95" y="66">INNER JOIN keeps</text><text x="95" y="84">only matches</text><text x="320" y="66">LEFT JOIN keeps</text><text x="320" y="84">every left row</text><text x="545" y="66">A condition goes in</text><text x="545" y="84">ON or WHERE</text></g>
+  </svg>
+</section>
+<div id="sample-together"></div>
+
+<h2>Terms on this page</h2>
+<p>Read these before the practice. In a question, a dotted term opens its definition. Opening one is allowed, but that question then counts as guessing.</p>
+<div id="glossary"></div>
+
 <h2>Practice</h2>
-<p>Scenario questions, mixed on purpose. Option order is shuffled once for you and saved on this device. Mark each answer sure or guessing before you check.</p>
+<div class="note">
+  <strong>Closed book.</strong> While you answer a scored question, do not scroll back to the explanation, open the reference sheet or any other source, or ask anyone. Scrolling up to the glossary block counts as scrolling back. Opening a dotted term inside the question is the one exception, and it makes the question a guess. Mark each answer sure only if you can say why; a right answer from common-sense elimination is a guess. After checking, mark whether your reason was right.
+</div>
 <div id="quiz"></div>
+
 <h2>Explain it back</h2>
-<p>Close this page. In three or four sentences, as if to a smart 12-year-old, explain which rows an INNER JOIN and a LEFT JOIN return, and why a WHERE on the right table can undo a LEFT JOIN. Bring it to your coach; that is the start of your next check.</p>
+<p>Close this page. Closed book. In three or four sentences, as if to a smart 12-year-old, explain which rows an INNER JOIN and a LEFT JOIN return, and why a WHERE on the right table can undo a LEFT JOIN. Bring it to your coach; that is the start of your next check.</p>
+<div id="redraw"></div>
+
+<h2>Feedback on this page</h2>
+<p>Optional, 30 seconds. It goes into your result line so the coach can fix the lesson.</p>
+<div id="feedback"></div>
+
 <h2>Your result</h2>
 <p>Copy this line and paste it to your coach so it goes into your learning log.</p>
 <div class="result" id="result"></div>
 <p class="row" style="margin-top:.6rem"><button id="copy">Copy result</button></p>
+
 <h2>Read next</h2>
-<p><strong>Primary source:</strong> <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-FROM">PostgreSQL manual, Table Expressions</a>. Read the Joined Tables section for the exact definition of each join type.</p>
+<p><strong>Primary source:</strong> <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-JOIN">PostgreSQL manual, Table Expressions</a>. It gives the exact definition of each join type, which every question here applies.</p>
+
 <ol class="sources">
-  <li id="s1">PostgreSQL Global Development Group, <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-FROM">Table Expressions: Joined Tables</a> (current manual).</li>
-  <li id="s2">PostgreSQL Global Development Group, <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-FROM">Table Expressions: outer joins and the WHERE clause</a> (current manual).</li>
+  <li id="s1">PostgreSQL Global Development Group, <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-JOIN">Table Expressions: Joined Tables</a> (current manual).</li>
 </ol>
+
 </main>
+
 <script>
 window.LESSON = {
-  id: "0001", kind: "lesson", // drills set "drill"
-  reason: false,
-  recall: [{ prompt: "What does WHERE do to the rows of a SELECT?", answer: "It keeps only the rows for which the condition is true." }],
-  questions: [{
-    stem: "A report must list every customer, including those who never ordered. Which join do you write from customers to orders?",
-    options: [
-      { text: "LEFT JOIN", correct: true, why: "A common misunderstanding is that a join can only return rows that match on both sides. LEFT JOIN keeps every customer row and fills the order columns with NULL when there is no order. That makes it the join to use whenever the left table must be fully listed." },
-      { text: "INNER JOIN", correct: false, why: "It tempts because INNER JOIN is the default join and is often taught first. Here it drops customers with no order, so the report would silently miss them. It is the right choice only when you want rows that exist on both sides." },
-      { text: "INNER JOIN, then add a WHERE on the order id", correct: false, why: "It tempts as a way to bring back the missing customers, but the idea is backwards. Any WHERE on the order columns discards rows whose order columns are NULL, so it makes the gap worse. A filter belongs in the ON clause, or on the left table, when you want to keep unmatched rows." },
-      { text: "Two separate queries combined by hand", correct: false, why: "It tempts because it feels safe to treat customers with orders and customers without as two separate problems. In SQL one LEFT JOIN returns both groups in a single result. Combining by hand is only worth it when the two groups need different columns or logic." }
-    ]
-  }]
+  id: "0001",
+  kind: "lesson",
+  reason: true,
+  glossary: [
+    { term: "ON clause", def: "The condition after ON that decides which pairs of rows count as a match." },
+    { term: "left table", def: "The table named before the join keyword; a LEFT JOIN keeps all of its rows." },
+    { term: "NULL", def: "A marker for a missing value; a comparison with NULL is never true." },
+    { term: "INNER JOIN", def: "A join that keeps only the pairs of rows that satisfy the join condition." },
+    { term: "LEFT JOIN", def: "An inner join plus one row for each left row with no match, filled with NULL on the right." }
+  ],
+  recall: [
+    { prompt: "What does WHERE do to the rows of a SELECT?", answer: "It keeps only the rows for which the condition is true." }
+  ],
+  questions: [
+    {
+      sample: true, at: "idea1",
+      stem: "customers holds Ana, Ben and Caro. orders holds two orders for Ana and one for Caro, and none for Ben. What does customers INNER JOIN orders ON orders.customer_id = customers.id return?",
+      options: [
+        { text: "Three rows, and Ben is absent", correct: true, why: "Each order pairs with its customer, giving Ana twice and Caro once. Ben has no partner, so an inner join drops him. The rule: no match, no row." },
+        { text: "Four rows, with Ben shown beside an empty order", correct: false, why: "This confuses the inner join with a join that adds unmatched rows back. That behaviour belongs to LEFT JOIN, which is the next idea." },
+        { text: "Two rows, one for each customer who ordered", correct: false, why: "It assumes a join returns one row per customer. A join returns one row per matching pair, so Ana's two orders give two rows." }
+      ]
+    },
+    {
+      sample: true, at: "idea2",
+      stem: "Same tables. What does customers LEFT JOIN orders ON orders.customer_id = customers.id return?",
+      options: [
+        { text: "Four rows: Ana twice, Ben with NULL order columns, Caro once", correct: true, why: "The inner join result gives Ana twice and Caro once. Ben has no match, so one extra row is added with NULL on the right. A left row appears at least once." },
+        { text: "Three rows, with Ben absent", correct: false, why: "That is the inner join result. It would be right only if Ben were not in the left table at all." },
+        { text: "Three rows, one per customer, with Ana's two orders combined", correct: false, why: "A join never merges rows by itself. Combining needs a grouping step, which this page does not cover." }
+      ]
+    },
+    {
+      sample: true, at: "idea3",
+      stem: "A report lists every customer. Orders must be shown only when their status is paid. Where does the status test go in customers LEFT JOIN orders?",
+      options: [
+        { text: "In the ON clause, next to the key test", correct: true, why: "ON limits which orders count as a match, and customers with no paid order still get their NULL row. This keeps the whole left table." },
+        { text: "In a WHERE after the join", correct: false, why: "WHERE runs on the result, where the NULL rows fail the test. Ben would disappear, and the join would act like an inner join." },
+        { text: "Nowhere; a LEFT JOIN cannot filter the right table", correct: false, why: "It can, as long as the test is in ON. Filtering the right table and keeping the left table are compatible." }
+      ]
+    },
+    {
+      sample: true, at: "together",
+      stem: "customers has a region column. A report must list every customer in region EU, with only their paid orders. Which query does this?",
+      options: [
+        { text: "LEFT JOIN, with the paid test in ON and the region test in WHERE", correct: true, why: "The paid test belongs on the right table, so it goes in ON. The region test is on the left table, so it goes in WHERE, where it removes left rows as asked." },
+        { text: "LEFT JOIN, with both tests in WHERE", correct: false, why: "The paid test then removes the NULL rows, so EU customers with no paid order vanish. It is right only if such customers should be hidden." },
+        { text: "INNER JOIN, with both tests in ON", correct: false, why: "An inner join drops EU customers with no paid order. The report must list every EU customer, so those rows are needed." }
+      ]
+    },
+    {
+      stem: "A support tool must list customers who have never placed an order. Which query finds them?",
+      options: [
+        { text: "customers LEFT JOIN orders, then WHERE orders.id IS NULL", correct: true, why: "Unmatched customers are the rows where every right column is NULL, so testing a right key for IS NULL isolates them. This is the one case where a WHERE on the right table is the goal." },
+        { text: "customers INNER JOIN orders, then WHERE orders.id IS NULL", correct: false, why: "An inner join has already dropped every customer without an order, so nothing is left to test. People reach for it because IS NULL looks like the answer by itself." },
+        { text: "customers LEFT JOIN orders, then WHERE orders.id IS NOT NULL", correct: false, why: "This keeps the customers who did order, the opposite group. It would be right for a list of active buyers." },
+        { text: "orders LEFT JOIN customers, then WHERE customers.id IS NULL", correct: false, why: "Swapping the tables finds orders that have no customer, not customers that have no orders. The left table decides which rows are protected." }
+      ]
+    },
+    {
+      stem: "An analyst runs: SELECT c.name, o.total FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.total > 50. Ben has no orders, and the analyst expected a Ben row with NULL. Which statements explain why Ben is missing?",
+      options: [
+        { text: "The WHERE test on total is not true for NULL", correct: true, why: "The join did add Ben with NULL, then WHERE removed him. A comparison with NULL is never true, which is why a right-table test undoes a LEFT JOIN." },
+        { text: "A LEFT JOIN drops unmatched rows whenever the query has any WHERE", correct: false, why: "The join does not change when WHERE is present. Only a test that fails on NULL removes the row, and a WHERE on a left column or an IS NULL test would keep it." },
+        { text: "The customers table lacks a Ben row", correct: false, why: "The analyst says Ben has no orders, so he is in customers. If he were absent there, no join with customers on the left could show him." },
+        { text: "The ON clause must also mention total", correct: false, why: "Adding total to ON would stop the discard only by moving the test there. Having ON mention a column does not by itself keep unmatched rows." }
+      ]
+    },
+    {
+      stem: "Same query. A customer whose orders are all 50 or less must still appear, with NULL in total, and orders over 50 must show normally. Which change fixes it?",
+      options: [
+        { text: "Move the total test into ON and remove the WHERE", correct: true, why: "In ON the test only decides which orders match. Customers left with no matching order get their NULL row from the join." },
+        { text: "Change LEFT JOIN to INNER JOIN", correct: false, why: "An inner join drops every customer without a matching order, which is what went wrong. It suits a report of customers with large orders only." },
+        { text: "Keep the WHERE and add OR o.total IS NULL as a second condition", correct: false, why: "It rescues customers with no orders at all, but a customer whose orders are all small has non-NULL totals and is still removed. It looks complete because it covers the case the analyst noticed." },
+        { text: "Change > 50 to >= 50", correct: false, why: "The boundary is not the problem. The test still runs after the join and still discards NULL rows." }
+      ]
+    },
+    {
+      stem: "customers has 5 rows and orders has 8 rows. Every order belongs to a customer, and 2 customers have no orders. How many rows does customers LEFT JOIN orders return?",
+      options: [
+        { text: "Ten rows, two with NULL order columns", correct: true, why: "The eight orders each give one matched row. The two customers without orders add one NULL row each. A left row with several matches appears once per match, so the count can exceed the left table." },
+        { text: "Five rows, one per customer in the table", correct: false, why: "This treats the join as lookup that preserves the left row count. That holds only when each customer has at most one order." },
+        { text: "Eight rows, one per order, none with NULL", correct: false, why: "This is the inner join count. The two customers with no orders are the rows a LEFT JOIN adds back." },
+        { text: "Thirteen rows, all customers plus all orders", correct: false, why: "A join pairs rows by the ON condition rather than stacking the tables. Adding the sizes would be right for stacking rows, not for joining." }
+      ]
+    },
+    {
+      stem: "A report must list every customer in region EU, each with their orders, and EU customers with no orders must still appear. Region is a column of customers. Where does the region test go in customers LEFT JOIN orders?",
+      options: [
+        { text: "In WHERE after the join", correct: true, why: "Region is a left-table column and WHERE removes left rows as intended. EU customers without orders stay, since their region is not NULL." },
+        { text: "In ON, after the key test", correct: false, why: "In a LEFT JOIN, ON never removes left rows, so every customer in every region would still appear. It would filter the right side only, which is not the goal." },
+        { text: "In ON, with INNER JOIN instead of LEFT JOIN", correct: false, why: "The test would work, but the inner join then drops EU customers who have no orders. The report needs them, so the join type must stay LEFT." },
+        { text: "In WHERE, written as region = 'EU' OR orders.id IS NULL", correct: false, why: "The extra clause also lets in unmatched customers from other regions. It looks careful, but it widens the report past EU." }
+      ]
+    },
+    {
+      stem: "Which of these queries could return a customer who has no orders? Assume the key test is written in ON.",
+      options: [
+        { text: "customers LEFT JOIN orders, with no WHERE", correct: true, why: "The left table is customers, and an unmatched customer gets a NULL row. With no WHERE, nothing removes it." },
+        { text: "customers LEFT JOIN orders, with the paid test in ON", correct: true, why: "A test in ON only limits which orders match. Customers with no paid order still get their NULL row." },
+        { text: "orders LEFT JOIN customers, with no WHERE", correct: false, why: "This protects orders, not customers. A customer with no orders has no row on the left side and never appears." },
+        { text: "customers INNER JOIN orders", correct: false, why: "An inner join keeps matched pairs only, so a customer with no orders is dropped. It is the right join only when unmatched rows are unwanted." },
+        { text: "customers LEFT JOIN orders, with the paid test in WHERE", correct: false, why: "The test is not true for NULL, so unmatched customers are discarded after the join. Moving it into ON would keep them." }
+      ]
+    },
+    {
+      stem: "In a code review, a colleague says: \"A LEFT JOIN from customers always returns exactly as many rows as customers has.\" Which reply is correct?",
+      options: [
+        { text: "It is wrong when any customer has more than one matching order", correct: true, why: "Each match gets its own row, so a customer with three orders appears three times. The claim holds only for a one-to-one relationship." },
+        { text: "It is right; one row per left row is guaranteed", correct: false, why: "It mixes up keeping every left row with keeping only one. The guarantee is a minimum of one row each, not a maximum." },
+        { text: "It is right unless the key column contains NULL", correct: false, why: "A NULL key gives that customer one NULL-filled row and does not change the count. The count grows only through multiple matches." },
+        { text: "It is wrong only when the ON clause uses a non-key column", correct: false, why: "The column used in ON does not matter for the rule. Any condition that matches several right rows to one left row multiplies it." }
+      ]
+    },
+    {
+      stem: "orders holds some guest orders whose customer_id is NULL. Finance wants every order in the report, with the customer name when there is one. Which query does this?",
+      options: [
+        { text: "orders LEFT JOIN customers ON orders.customer_id = customers.id", correct: true, why: "Orders is the left table, so each order survives even when its key is NULL and finds no partner. The name column is NULL for guests." },
+        { text: "customers LEFT JOIN orders ON orders.customer_id = customers.id", correct: false, why: "This protects customers and drops guest orders, since a NULL key matches no customer. It suits a report of all customers." },
+        { text: "customers INNER JOIN orders ON orders.customer_id = customers.id", correct: false, why: "It drops guest orders and also customers with no orders. It is right only for orders that have a known customer." },
+        { text: "orders INNER JOIN customers ON orders.customer_id = customers.id", correct: false, why: "The table order is right, but an inner join drops every guest order. The join type decides survival as well." }
+      ]
+    },
+    {
+      stem: "orders has 6 rows. One is a guest order with a NULL customer_id, the other 5 each match one of the 4 customers. How many rows does customers INNER JOIN orders on the customer id return?",
+      options: [
+        { text: "Five rows, with the guest order absent", correct: true, why: "Each of the five matched orders pairs once with its customer. The guest order's NULL key equals nothing, so it has no partner and is dropped." },
+        { text: "Six rows, with the guest order shown beside NULL customer columns", correct: false, why: "Showing an unmatched order needs an outer join with orders on the left. An inner join never adds unmatched rows." },
+        { text: "Four rows, one per customer", correct: false, why: "A join returns one row per matching pair, not per customer. Customers with several orders show several times." },
+        { text: "Ten rows, every customer paired with every order", correct: false, why: "That would be a join with no condition at all. The ON clause cuts the pairs down to matches." }
+      ]
+    },
+    {
+      stem: "A query uses customers LEFT JOIN orders ON orders.customer_id = customers.id WHERE orders.status = 'paid'. A teammate wants the cheapest edit that leaves the output exactly the same. Which edit does that?",
+      options: [
+        { text: "Replace LEFT JOIN with INNER JOIN", correct: true, why: "The WHERE already removes every NULL row, so the LEFT JOIN adds rows that are then deleted. The inner join returns the same rows and states the real intent." },
+        { text: "Move the status test into ON and remove the WHERE", correct: false, why: "This changes the output: customers with no paid order now appear with NULL. It is the right move when those customers should stay." },
+        { text: "Swap the two tables in the join", correct: false, why: "Putting orders on the left would protect orders rather than customers. That changes which rows can appear." }
+      ]
+    }
+  ]
 };
 </script>
 <script src="../assets/quiz.js"></script>
