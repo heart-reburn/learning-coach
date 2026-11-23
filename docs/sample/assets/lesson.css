@@ -159,3 +159,18 @@ html[data-lang="l2"] svg text.en { display: none; }
 svg .node.on { stroke: var(--accent); stroke-width: 3; }
 html[data-lang="both"] svg text.en { transform: translateY(-12px); }
 html[data-lang="both"] svg text.l2 { transform: translateY(14px); }
+
+/* Concept maps: grouped, branching, labelled arrows (assets/cmap.py output) */
+#bigpicture svg, #together svg, #chapter-map svg { max-width: 500px; }
+svg .cluster { fill: none; stroke: var(--rule); stroke-width: 1.5; stroke-dasharray: 2 4; }
+svg .cl { font-size: 10px; letter-spacing: .05em; fill: var(--muted); }
+svg .lab { font-size: 10px; fill: var(--muted); }
+svg .lbg { fill: var(--bg); }
+svg .arrow.dash { stroke-dasharray: 5 4; }
+html[data-lang="both"] svg text.cl { transform: none; }
+html[data-lang="both"] svg text.lab.en { transform: translateY(-6px); }
+html[data-lang="both"] svg text.lab.l2 { transform: translateY(7px); }
+
+.gloss { padding-left: 1.1rem; }
+.gloss li { margin-bottom: .8rem; }
+#bigpicture p.link { color: var(--muted); }

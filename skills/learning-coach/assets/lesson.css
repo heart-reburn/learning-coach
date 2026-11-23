@@ -170,3 +170,7 @@ svg .arrow.dash { stroke-dasharray: 5 4; }
 html[data-lang="both"] svg text.cl { transform: none; }
 html[data-lang="both"] svg text.lab.en { transform: translateY(-6px); }
 html[data-lang="both"] svg text.lab.l2 { transform: translateY(7px); }
+
+.gloss { padding-left: 1.1rem; }
+.gloss li { margin-bottom: .8rem; }
+#bigpicture p.link { color: var(--muted); }
