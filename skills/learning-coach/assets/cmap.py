@@ -1,17 +1,19 @@
 """Concept-map renderer: clusters of rows of nodes, labelled edges, optional loops. Returns an inline bilingual svg."""
 import html
-W=424; X0=4; CW=372; NH=60; GAP=44; HEAD=34; PAD=14; CGAP=14; LOOPX=398
+W=500; X0=4; CW=468; NH=60; GAP=54; HEAD=30; PAD=14; CGAP=36; LOOPX=490
 def esc(s): return html.escape(s)
+_n=[0]
 def render(clusters, edges, aria):
-    N={}; out=[]; y=4; g=0; CL={}
+    _n[0]+=1; mid='ah%d'%_n[0]
+    N={}; out=[]; y=4; g=0; CL={}; CB={}
     for cen,czh,rows in clusters:
         ch=HEAD+len(rows)*NH+(len(rows)-1)*GAP+PAD
         out.append(f'<rect class="cluster" x="{X0}" y="{y}" width="{CW}" height="{ch}" rx="12"/>')
         out.append(f'<text class="en cl" x="{X0+12}" y="{y+18}">{esc(cen)}</text><text class="l2 cl" x="{X0+12+len(cen)*6.6+12:.0f}" y="{y+18}">{esc(czh)}</text>')
-        ry=y+HEAD
+        CB[cen]=(y,y+ch); ry=y+HEAD
         for r,row in enumerate(rows):
-            n=len(row); w={1:220,2:150,3:116}[n]
-            xs={1:[X0+(CW-220)/2],2:[16,206],3:[10,138,266]}[n] if n!=2 else [14,208]
+            n=len(row); w={1:240,2:170,3:120}[n]
+            xs={1:[X0+(CW-240)/2],2:[X0+14,X0+CW-14-170],3:[X0+10,X0+(CW-120)/2,X0+CW-10-120]}[n]
             for (i,en,zh),x in zip(row,xs): N[i]=(x,ry,w,NH,en,zh,g); CL[i]=cen
             g+=1
             ry+=NH+GAP
@@ -38,9 +40,12 @@ def render(clusters, edges, aria):
             if s1 in "bt":
                 ca,cb=p1[0],p2[0]; sh=lambda w:max(-w/2+14,min(w/2-14,0))
                 p1=(p1[0]+max(-N[a][2]/2+14,min(N[a][2]/2-14,(cb-ca)*.3)),p1[1]); p2=(p2[0]+max(-N[b][2]/2+14,min(N[b][2]/2-14,(ca-cb)*.3)),p2[1])
-            pts=[p1,p2]; t=.2 if CL[a]!=CL[b] else .5; lx,ly=p1[0]+(p2[0]-p1[0])*t,p1[1]+(p2[1]-p1[1])*t
+            pts=[p1,p2]; t=.5
+            if CL[a]!=CL[b] and p2[1]!=p1[1]:
+                ym=(CB[CL[a]][1]+CGAP/2) if rb>ra else (CB[CL[a]][0]-CGAP/2); t=(ym-p1[1])/(p2[1]-p1[1])
+            lx,ly=p1[0]+(p2[0]-p1[0])*t,p1[1]+(p2[1]-p1[1])*t
         d="M"+" L".join(f"{px:.0f} {py:.0f}" for px,py in pts)
-        out.append(f'<path class="arrow{dash}" d="{d}" marker-end="url(#ah)"/>')
+        out.append(f'<path class="arrow{dash}" d="{d}" marker-end="url(#{mid})"/>')
         if kind=="loop":
             out.append(f'<g transform="rotate(-90 {lx:.0f} {ly:.0f})"><text class="en lab" x="{lx:.0f}" y="{ly:.0f}" text-anchor="middle">{esc(len_)}</text><text class="l2 lab" x="{lx:.0f}" y="{ly:.0f}" text-anchor="middle">{esc(lzh)}</text></g>')
         else:
@@ -48,4 +53,4 @@ def render(clusters, edges, aria):
             out.append(f'<rect class="lbg" x="{lx-w/2:.1f}" y="{ly-13:.1f}" width="{w:.1f}" height="26" rx="4"/>')
             out.append(f'<text class="en lab" x="{lx:.0f}" y="{ly+3.5:.1f}" text-anchor="middle">{esc(len_)}</text><text class="l2 lab" x="{lx:.0f}" y="{ly+3.5:.1f}" text-anchor="middle">{esc(lzh)}</text>')
     return (f'<svg viewBox="0 0 {W} {H:.0f}" role="img" aria-label="{esc(aria)}"><title>{esc(aria)}</title>'
-      '<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>'+"".join(out)+'</svg>')
+      f'<defs><marker id="{mid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>'+"".join(out)+'</svg>')
