@@ -144,10 +144,10 @@ html[data-lang="both"] button .en + .l2::before { content: " · "; }
   table { display: table; }
 }
 
-.idea { border-left: 3px solid var(--rule); padding: .1rem 1rem; margin: 1rem 0; }
-.idea h3 { margin-top: .5rem; }
-#bigpicture svg, #together svg, .idea svg { display: block; width: 100%; height: auto; max-width: 640px; margin: .6rem auto; }
-.idea svg { max-width: 360px; }
+.concept { border-left: 3px solid var(--rule); padding: .1rem 1rem; margin: 1rem 0; }
+.concept h3 { margin-top: .5rem; }
+#bigpicture svg, #together svg, .concept svg { display: block; width: 100%; height: auto; max-width: 640px; margin: .6rem auto; }
+.concept svg { max-width: 360px; }
 #bigpicture svg, #together svg { max-width: 420px; }
 svg .node { fill: var(--note-bg); stroke: var(--rule); stroke-width: 1.5; }
 svg text { fill: currentColor; font: 13px -apple-system, BlinkMacSystemFont, sans-serif; }

@@ -22,7 +22,7 @@ Pass criteria for this level: <from levels.md, made specific to the subject>
 |---|---|---|---|
 
 ## Review queue
-| Idea | What was wrong | Review dates | Last result |
+| Concept | What was wrong | Review dates | Last result |
 |---|---|---|---|
 
 ## Sessions
@@ -36,7 +36,7 @@ Pass criteria for this level: <from levels.md, made specific to the subject>
 
 **Course map.** Built on the first invocation for a subject, before any lesson. One row per unit or chapter of the chosen source, in the source's order. Area is the source's own name for the domain or part it belongs to. Status is "not started", "learning" or "done". Planned date is when the unit is due to be studied. A chapter split into parts gets one row per part (0001a, 0001b), each about 20 minutes; size parts by content, so a small chapter is one row. Later sessions only change a row's status and date; they do not rebuild the map. If the formal test is settled as "none", say so on that line and make no mock exams.
 
-**Review queue.** One row per idea, not per question number: the idea, and what exactly was wrong ("treats the retry limit as a timeout", not "q6"). Review dates are 1, 3 and 7 days after the miss; strike a date when it is done and set Last result. A drill tests the same idea in a new scenario.
+**Review queue.** One row per concept, not per question number: the concept, and what exactly was wrong ("treats the retry limit as a timeout", not "q6"). Review dates are 1, 3 and 7 days after the miss; strike a date when it is done and set Last result. A drill tests the same concept in a new scenario.
 
 One row per session. No row means it didn't happen. Kind is "Study", "Lesson 0001" or "Drill 0003".
 
@@ -45,7 +45,7 @@ A page's result line becomes one session row:
 - Sure and right is the line's count and share: questions right, marked sure, with a right reason. It is the score that counts for the drill target.
 - Wrong but sure, right answer with a reason not right, and right but guessing list the question numbers in those columns. The coach reads the reason lines one by one and may correct a self-mark that is too generous.
 - Errors and why holds the missed questions with the learner's one-line reasons, wrong but sure and wrong-reason ones first. A result line marked unfinished is not a session score: ask the learner to finish the page.
-- Each wrong but sure, wrong-reason, missed and right-but-guessing question becomes or updates a Review queue entry by idea, with the first review one day later. Wrong but sure and wrong-reason ones rank first. A partial-credit question counts as missed; rank it by its sure mark. The recall self-marks update Last result there.
+- Each wrong but sure, wrong-reason, missed and right-but-guessing question becomes or updates a Review queue entry by concept, with the first review one day later. Wrong but sure and wrong-reason ones rank first. A partial-credit question counts as missed; rank it by its sure mark. The recall self-marks update Last result there.
 - Update the last lesson or drill number, the map row's status, and the drill step by the rule in `levels.md`.
 
 A page score never passes a level; a check row does, only when the teach-back score and the rebuild both pass.

@@ -44,7 +44,7 @@
   },
   {
     "name": "teaching after placement uses a short lesson with practice",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nTeach me the difference between INNER JOIN and LEFT JOIN.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nTeach me the difference between INNER JOIN and LEFT JOIN.",
     "checklist": [
       "Gives a short explanation, then makes the learner retrieve or apply it (questions or explain-back) rather than only explaining",
       "Writes a short lesson page (for example HTML) for the learner to open, without asking first, or teaches and quizzes in chat if the learner prefers; does not ask whether to make one",
@@ -54,7 +54,7 @@
   },
   {
     "name": "learner opts out of lesson pages",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nNo HTML pages or files please. Just quiz me here in chat on what we covered.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nNo HTML pages or files please. Just quiz me here in chat on what we covered.",
     "checklist": [
       "Does not create or offer an HTML page or file",
       "Quizzes in chat, asking one question at a time or a short set before revealing answers",
@@ -63,20 +63,20 @@
   },
   {
     "name": "lesson result goes into the log",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nChat before the page: I predicted 6/9.\nHere is the result line from the lesson page: Lesson 0003 | score 5/9 | missed: q2, q6, q7, q9 | sure and right: 2/9 (22%) | right but guessing: q4 | wrong but sure: q6, q9 | right answer, reason not right: q3 | recall: r1 got it, r2 missed",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nChat before the page: I predicted 6/9.\nHere is the result line from the lesson page: Lesson 0003 | score 5/9 | missed: q2, q6, q7, q9 | sure and right: 2/9 (22%) | right but guessing: q4 | wrong but sure: q6, q9 | right answer, reason not right: q3 | recall: r1 got it, r2 missed",
     "checklist": [
       "Records the session in learning-log-<subject>.md with the score",
       "Records the sure-and-right count as the score that counts for mastery, not plain percent right",
       "Takes the predicted score (6/9) from the chat, not from the page, and puts it in the Predicted column",
       "Treats the wrong-but-sure questions as overconfidence and schedules them for review first",
-      "Treats the right answer with a wrong or partly right reason (q3) as a review item that ranks with wrong but sure, and records the review by idea with what was wrong, due 1, 3 and 7 days later",
+      "Treats the right answer with a wrong or partly right reason (q3) as a review item that ranks with wrong but sure, and records the review by concept with what was wrong, due 1, 3 and 7 days later",
       "Treats the right-but-guessing question as not yet known and schedules it for review",
       "Does not mark Level 1 passed on this result"
     ]
   },
   {
     "name": "bilingual lesson request",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nCould my lesson pages be in both English and Chinese?",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nCould my lesson pages be in both English and Chinese?",
     "checklist": [
       "Agrees and describes how both languages will appear (for example a language switch or paired text)",
       "Records the language preference for this subject in learning-log-<subject>.md",
@@ -85,7 +85,7 @@
   },
   {
     "name": "lesson page follows the format",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nMake the lesson page on INNER JOIN vs LEFT JOIN.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nMake the lesson page on INNER JOIN vs LEFT JOIN.",
     "checklist": [
       "Writes or describes a lesson file under lessons/ with a number, plus shared assets in assets/",
       "The page opens with recall from memory before the explanation",
@@ -93,7 +93,7 @@
       "Runs or plans to run check-lesson.js on the page and fix it until it passes, before opening it",
       "Tells the learner each answer is marked sure or guessing before checking",
       "Ends with a result line or similar for the learner to paste back into learning-log-<subject>.md",
-      "The page has worked examples (scenario, wrong instinct, right design, why) with one unscored sample question right after each idea, and a glossary before the questions",
+      "The page has worked examples (scenario, wrong instinct, right design, why) with one unscored sample question right after each concept, and a glossary before the questions",
       "Plans about 10 scored questions for a 20-minute part of a chapter, and says every term used in a question is taught in the examples first",
       "Multi-select questions do not say how many to pick",
       "States that scored questions are closed book (no scrolling back or opening the reference), that opening a glossary term makes the question a guess, and that the learner marks their own reason right, partly right or wrong after checking",
@@ -157,7 +157,7 @@
   },
   {
     "name": "short session reviews first",
-    "prompt": "Current learning-log-sql.md:\n\nCurrent level: 2, Explain.\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| JOIN types | mixed it up with a similar idea | 14 Nov | 3/5 |\n| GROUP BY | mixed it up with a similar idea | 15 Nov | 2/5 |\n\nI only have 10 minutes today. Teach me window functions.",
+    "prompt": "Current learning-log-sql.md:\n\nCurrent level: 2, Explain.\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| JOIN types | mixed it up with a similar concept | 14 Nov | 3/5 |\n| GROUP BY | mixed it up with a similar concept | 15 Nov | 2/5 |\n\nI only have 10 minutes today. Teach me window functions.",
     "checklist": [
       "Does the reviews that are due before any new material",
       "Keeps the self-test in the scaled-down session",
@@ -246,7 +246,7 @@
   },
   {
     "name": "level 1 check is a ten-question self-test",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nI think I'm ready for the Level 1 check.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nI think I'm ready for the Level 1 check.",
     "checklist": [
       "Gives a 10-question self-test, closed book, with answers written before checking",
       "States the pass mark of at least 80 percent (8 of 10) and that a no-notes rebuilt one-page summary must also pass",
@@ -255,7 +255,7 @@
   },
   {
     "name": "reason line is on for lessons and drills",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nCan I also write a one-line reason before each answer on lesson pages, not just drills?",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nCan I also write a one-line reason before each answer on lesson pages, not just drills?",
     "checklist": [
       "Says lesson pages already ask for a one-line reason before each answer is checked, as drills do",
       "Does not add a switch or a progress-file setting for it",
@@ -264,7 +264,7 @@
   },
   {
     "name": "unfinished result line is not logged as a score",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nHere is the result line: Lesson 0004 | unfinished | answered 6 of 15",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nHere is the result line: Lesson 0004 | unfinished | answered 6 of 15",
     "checklist": [
       "Does not log a session row or score from the unfinished line",
       "Asks the learner to finish the page and paste the full result line",
@@ -273,7 +273,7 @@
   },
   {
     "name": "never pastes the answer key or page data into chat",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nMake the lesson on GROUP BY and paste the questions, options and answer key here so I can read them.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nMake the lesson on GROUP BY and paste the questions, options and answer key here so I can read them.",
     "checklist": [
       "Writes the lesson page as a file and does not paste the questions, options, answer key or the page's data into chat",
       "Says in two or three lines what the page covers, how many questions it has, and that each answer is marked sure or guessing before checking",
@@ -282,7 +282,7 @@
   },
   {
     "name": "rewrites a question whose correct option is the longest",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nHere is a draft question for my lesson page. Is it good?\n\nA team needs every customer listed, even those with no orders. Which join?\nA) INNER JOIN\nB) CROSS JOIN\nC) LEFT JOIN from customers to orders, so customers with no orders are kept with empty order columns\nD) UNION\nE) RIGHT JOIN from customers to orders\nF) SELF JOIN",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nHere is a draft question for my lesson page. Is it good?\n\nA team needs every customer listed, even those with no orders. Which join?\nA) INNER JOIN\nB) CROSS JOIN\nC) LEFT JOIN from customers to orders, so customers with no orders are kept with empty order columns\nD) UNION\nE) RIGHT JOIN from customers to orders\nF) SELF JOIN",
     "checklist": [
       "Points out the correct option is spotted by its length and carries its reason in the option text",
       "Rewrites so options state only the choice, with no reason, and lengths are mixed so the correct one is not consistently the longest or shortest",
@@ -309,7 +309,7 @@
   },
   {
     "name": "learner who cannot open files is taught in chat",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nI'm on my phone and can't open HTML files. Teach me INNER JOIN vs LEFT JOIN.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nI'm on my phone and can't open HTML files. Teach me INNER JOIN vs LEFT JOIN.",
     "checklist": [
       "Does not create or offer a lesson page",
       "Teaches in chat with a short explanation, then quizzes one question at a time",
@@ -344,7 +344,7 @@
   },
   {
     "name": "predicted score is asked in chat before a page",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 15 Nov | 4/5 |\n\nMake my next drill on GROUP BY.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 15 Nov | 4/5 |\n\nMake my next drill on GROUP BY.",
     "checklist": [
       "Asks for the predicted score in chat before the learner opens the page",
       "Says the prediction will be recorded in the Predicted column, and the page itself does not collect it"
@@ -352,7 +352,7 @@
   },
   {
     "name": "due reviews appear in the page's recall section",
-    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Idea | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar idea | 14 Nov | 4/5 |\n| ORDER BY | mixed it up with a similar idea | 15 Nov | 3/5 |\n\nMake the lesson page on INNER JOIN.",
+    "prompt": "Current learning-log-sql.md:\n\n# Learning log: SQL\nGoal: write correct reporting queries at work.\nCurrent level: 1, Recall (placement done 10 Nov).\n## Review queue\n| Concept | What was wrong | Review dates | Last result |\n|---|---|---|---|\n| SELECT and WHERE | mixed it up with a similar concept | 14 Nov | 4/5 |\n| ORDER BY | mixed it up with a similar concept | 15 Nov | 3/5 |\n\nMake the lesson page on INNER JOIN.",
     "checklist": [
       "Puts the due material in the page's recall section, from memory before the explanation",
       "Each recall item names its Review queue entry (SELECT and WHERE, ORDER BY)",

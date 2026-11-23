@@ -3,10 +3,10 @@
 1. **Foundations.** Sleep, attention, and mindset. Get seven to nine hours of sleep the night before a check. Study in focused blocks with breaks. Treat mistakes as information. Do this first. The sleep and foundations advice is practice judgment, not research.
 2. **Retrieval practice.** Recall from memory instead of rereading. Close the book, write what you remember, then check. High utility in Dunlosky et al. (2013); highest priority.
 3. **Spaced repetition.** Review at growing intervals (flashcards or a paper schedule). High utility in Dunlosky et al. (2013): spacing beats cramming for long-term memory.
-4. **Elaboration.** Connect each new idea to something you already know. Ask "why does this work?" and "how does it relate to X?" Elaborative interrogation and self-explanation are moderate utility in Dunlosky et al. (2013), and work best with some base knowledge.
+4. **Elaboration.** Connect each new concept to something you already know. Ask "why does this work?" and "how does it relate to X?" Elaborative interrogation and self-explanation are moderate utility in Dunlosky et al. (2013), and work best with some base knowledge.
 5. **Interleaving.** Mix related problem types in one session instead of doing one type at a time. Moderate utility in Dunlosky et al. (2013). It feels harder and teaches you to tell similar cases apart.
 6. **Metacognition.** Check your own understanding. Predict your score before a test, compare it with the result, and adjust pace and methods. This keeps the other techniques working.
-7. **Teach-back.** Explain the idea simply, find where you stumble, go back and fix it, then explain again. Practice judgment, not research; it doubles as the pass check.
+7. **Teach-back.** Explain the concept simply, find where you stumble, go back and fix it, then explain again. Practice judgment, not research; it doubles as the pass check.
 8. **Decision quality.** Decide what is worth learning and in what order. Take the part of a subject that carries most of the value first, while motivation is high (practice judgment, not research). Keep prerequisites in order.
 
 ## Teach-back example

@@ -11,10 +11,10 @@
 // a question with no correct option, a single-choice question (declared with `single: true`,
 // `multiple: false` or `type: "single"`) with more than one, "all/none of the above", a missing "why", a "why" that
 // is not two to four sentences (the form only; references/lessons.md says what a good one contains),
-// a missing second-language field, a question with fewer than 3 or more than 5 options, and (lessons) a big-picture map, a picture and at most 100 words per idea section,
+// a missing second-language field, a question with fewer than 3 or more than 5 options, and (lessons) a big-picture map, a picture per concept section,
 // and a closing together section. Lesson pictures are also checked: every svg needs role="img", an aria-label and a <title>; a <text> longer than 40 characters,
 // with an inline font-size under 11px, or a caption of more than 6 words (10 in the big-picture and together maps, whose nodes are sentences; 50 characters there) is flagged, because captions collide with the
-// bilingual label shift. Two content checks: a correct option sharing a run of 6 or more words with the idea text (echo; it should test transfer to a new case), and a
+// bilingual label shift. Two content checks: a correct option sharing a run of 6 or more words with the concept text (echo; it should test transfer to a new case), and a
 // glossary term (English) that the page body never uses outside the glossary and the questions (taught before use; a simple plural counts). Sample questions (`sample: true`, unscored worked examples)
 // get the per-question checks but are left out of the count and length rules.
 const fs = require("fs");
@@ -42,8 +42,8 @@ if (Array.isArray(L.glossary)) L.glossary.forEach((g, i) => {
   });
 });
 
-// Page shape (lessons only; drills have no teaching sections): a big-picture map, one picture and
-// at most 100 words of text per idea, and a closing "together" section.
+// Page shape (lessons only; drills have no teaching sections): a big-picture map, one picture
+// per concept, and a closing "together" section.
 if (L.kind !== "drill") {
   const words = (h, lang) => {
     let t = h.replace(/<svg[\s\S]*?<\/svg>/g, " ").replace(/<script[\s\S]*?<\/script>/g, " ");
@@ -53,20 +53,18 @@ if (L.kind !== "drill") {
   };
   const big = html.match(/<section[^>]*id="bigpicture"[^>]*>([\s\S]*?)<\/section>/);
   if (!big) problems.push('no <section id="bigpicture"> (the part\'s map)'); else if (!/<svg/.test(big[1])) problems.push("big picture has no inline svg map");
-  const ideas = [...html.matchAll(/<section[^>]*class="[^"]*\bidea\b[^"]*"[^>]*>([\s\S]*?)<\/section>/g)];
-  if (!ideas.length) problems.push('no <section class="idea"> sections');
-  ideas.forEach((m, i) => {
-    if (!/<svg/.test(m[1])) problems.push("idea " + (i + 1) + ": no inline svg picture");
-    const w = words(m[1], "en");
-    if (w > 100) problems.push("idea " + (i + 1) + ": " + w + " words of text; at most 100");
+  const concepts = [...html.matchAll(/<section[^>]*class="[^"]*\bconcept\b[^"]*"[^>]*>([\s\S]*?)<\/section>/g)];
+  if (!concepts.length) problems.push('no <section class="concept"> sections');
+  concepts.forEach((m, i) => {
+    if (!/<svg/.test(m[1])) problems.push("concept " + (i + 1) + ": no inline svg picture");
   });
   const tog = html.match(/<section[^>]*id="together"[^>]*>([\s\S]*?)<\/section>/);
   if (!tog) problems.push('no <section id="together"> (putting it together)');
   else if (!/<svg/.test(tog[1])) problems.push("together section has no inline svg map");
 }
 
-// Content checks (lessons only): svg accessibility and captions, glossary terms used in the body, options echoing idea text.
-let ideaText = "";
+// Content checks (lessons only): svg accessibility and captions, glossary terms used in the body, options echoing concept text.
+let conceptText = "";
 if (L.kind !== "drill") {
   const stripScripts = (h) => h.replace(/<script[\s\S]*?<\/script>/g, " ");
   const stripL2 = (h) => h.replace(/<(\w+)\b[^>]*class="[^"]*\bl2\b[^"]*"[^>]*>[\s\S]*?<\/\1>/g, " ");
@@ -81,17 +79,22 @@ if (L.kind !== "drill") {
     if (!/\brole="img"/.test(m[1])) problems.push(tag + ': missing role="img"');
     if (!/\baria-label="[^"]+"/.test(m[1])) problems.push(tag + ": missing aria-label");
     if (!/<title>[^<]+<\/title>/.test(m[2])) problems.push(tag + ": missing <title>");
+    // A grouped concept map (has clusters) must name every arrow: as many labels as arrows, and every node-to-node arrow carries a relationship word.
+    if (/class="cluster"/.test(m[2])) {
+      const arrows = (m[2].match(/<path class="arrow/g) || []).length, labels = (m[2].match(/class="en lab"/g) || []).length;
+      if (labels < arrows) problems.push(tag + ": " + arrows + " arrows but " + labels + " relationship labels (every arrow in a grouped map needs one)");
+    }
     [...m[2].matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)].forEach((t) => {
       const txt = t[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
       const fs0 = (t[1].match(/font-size\s*[=:]\s*"?'?(\d+(?:\.\d+)?)/) || [])[1];
       if (len(txt) > maxChars) problems.push(tag + ': text of ' + len(txt) + ' characters (at most ' + maxChars + '): "' + txt + '"');
       if (fs0 && Number(fs0) < 11) problems.push(tag + ": text with font-size " + fs0 + " (at least 11): \"" + txt + "\"");
       const w = txt.split(" ").filter(Boolean).length;
-      if (w > maxWords) problems.push(tag + ': caption of ' + w + ' words (labels only, at most ' + maxWords + '; put the explanation in the idea text): "' + txt + '"');
+      if (w > maxWords) problems.push(tag + ': caption of ' + w + ' words (labels only, at most ' + maxWords + '; put the explanation in the concept text): "' + txt + '"');
     });
   });
-  const ideaHtml = [...html.matchAll(/<section[^>]*class="[^"]*\bidea\b[^"]*"[^>]*>([\s\S]*?)<\/section>/g)].map((m) => m[1]).join(" ");
-  ideaText = plainText(ideaHtml);
+  const conceptHtml = [...html.matchAll(/<section[^>]*class="[^"]*\bconcept\b[^"]*"[^>]*>([\s\S]*?)<\/section>/g)].map((m) => m[1]).join(" ");
+  conceptText = plainText(conceptHtml);
   // Terms: the English term must be used in the page body, outside the glossary and the questions (scripts are not body).
   const body = plainText(stripScripts(html).replace(/<div[^>]*id="glossary"[^>]*>[\s\S]*?<\/div>/, " ").replace(/<section[^>]*id="glossary"[^>]*>[\s\S]*?<\/section>/, " ")).toLowerCase();
   const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -105,10 +108,10 @@ if (L.kind !== "drill") {
   });
 }
 const wordsOf = (t) => (t.toLowerCase().match(/[a-z0-9]+(?:'[a-z]+)?/g) || []);
-const ideaWords = wordsOf(ideaText);
+const conceptWords = wordsOf(conceptText);
 const RUN = 6;
-const ideaRuns = new Set();
-for (let i = 0; i + RUN <= ideaWords.length; i++) ideaRuns.add(ideaWords.slice(i, i + RUN).join(" "));
+const conceptRuns = new Set();
+for (let i = 0; i + RUN <= conceptWords.length; i++) conceptRuns.add(conceptWords.slice(i, i + RUN).join(" "));
 
 let qn = 0, sn = 0;
 L.questions.forEach((q) => {
@@ -119,7 +122,7 @@ L.questions.forEach((q) => {
   if (L.kind !== "drill" && q.sample !== true) q.options.forEach((o, k) => {
     if (!o.correct) return;
     const w = wordsOf(pick(o.text, langs[0] === null ? null : "en"));
-    for (let i = 0; i + RUN <= w.length; i++) if (ideaRuns.has(w.slice(i, i + RUN).join(" "))) { problems.push(n + ": correct option " + (k + 1) + " repeats the idea text (\"" + w.slice(i, i + RUN).join(" ") + "...\"); test a new case instead"); break; }
+    for (let i = 0; i + RUN <= w.length; i++) if (conceptRuns.has(w.slice(i, i + RUN).join(" "))) { problems.push(n + ": correct option " + (k + 1) + " repeats the concept text (\"" + w.slice(i, i + RUN).join(" ") + "...\"); test a new case instead"); break; }
   });
   if (need === 0) problems.push(n + ": no correct option");
   const declaredSingle = q.single === true || q.multiple === false || q.type === "single";

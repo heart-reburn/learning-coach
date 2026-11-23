@@ -4,7 +4,7 @@ Read the criteria for the learner's level before they study. A level is passed w
 
 **Pass mark.** At least 80% of the coach's private checklist points covered correctly (for Level 1, 80% of the self-test questions right). Mastery-learning programs commonly set the bar at 80-90%. Judge points by meaning, not wording.
 
-**Rebuild gate.** After the teach-back, the learner rewrites a one-page summary with no notes. Score it against the reference sheet's core ideas (or, when there is no reference sheet, the coach's private checklist) at the same pass mark. A level needs both. Record the result in the Checks table of the progress file.
+**Rebuild gate.** After the teach-back, the learner rewrites a one-page summary with no notes. Score it against the reference sheet's core concepts (or, when there is no reference sheet, the coach's private checklist) at the same pass mark. A level needs both. Record the result in the Checks table of the progress file.
 
 ## What passing looks like at each level
 
@@ -13,7 +13,7 @@ A **miss** is a check scored under the pass mark.
 | Level | Name | Check format | Pass criteria | Evidence to show |
 |---|---|---|---|---|
 | 1 | Recall | A 10-question self-test | List the core facts from memory. Score at least 80% on the self-test, answers written before checking. | The fact list, the scored self-test, and the rebuilt one-page summary |
-| 2 | Explain | Teach-back | Explain why each core idea works, in own words, with no jargon the learner can't unpack. Phrase it so a smart 12-year-old could follow it. | A recorded or written explanation, the gaps found in it, and the rebuilt summary |
+| 2 | Explain | Teach-back | Explain why each core concept works, in own words, with no jargon the learner can't unpack. Phrase it so a smart 12-year-old could follow it. | A recorded or written explanation, the gaps found in it, and the rebuilt summary |
 | 3 | Use | A finished task scored against the private checklist | Complete a real task unaided, then log what went right and wrong. | The finished task, an error log, and the rebuilt summary |
 | 4 | Diagnose | A diagnosis scored against the private checklist | Given a failed attempt or a flawed plan, find the cause and fix it. Spot a method that feels easy but isn't working. | A written diagnosis, the fix, and the rebuilt summary |
 | 5 | Judge | A judgement scored against the private checklist | Compare two methods or plans, pick one, and defend the choice with evidence and its limits. | A written comparison with reasons, and the rebuilt summary |
@@ -26,7 +26,7 @@ All eight techniques are useful throughout. These are the ones that do the most 
 | Level | Lean on | Typical practice |
 |---|---|---|
 | 1 Recall | Retrieval practice, spaced repetition | Flashcards answered before checking, blank-page dumps, a review schedule |
-| 2 Explain | Elaboration, teach-back | "Why does this work?" in writing, linking each idea to something known, explaining to a 12-year-old |
+| 2 Explain | Elaboration, teach-back | "Why does this work?" in writing, linking each concept to something known, explaining to a 12-year-old |
 | 3 Use | Retrieval practice, interleaving | Real tasks without help, mixed problem types in one session, an error log |
 | 4 Diagnose | Metacognition, interleaving | Finding the cause of failed attempts, predicting scores and comparing, spotting methods that feel easy but don't work |
 | 5 Judge | Elaboration, decision quality | Comparing two approaches with evidence and limits, cutting what doesn't serve the goal |

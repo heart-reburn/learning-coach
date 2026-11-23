@@ -24,7 +24,7 @@
 
 <h2>The big picture</h2>
 <section id="bigpicture">
-  <p>A report needs rows from two tables, and the join type decides which rows survive. This page has three ideas, in this order.<sup><a href="#s1">1</a></sup></p>
+  <p>A report needs rows from two tables, and the join type decides which rows survive. This page has three concepts, in this order.<sup><a href="#s1">1</a></sup></p>
   <svg viewBox="0 0 640 150" role="img" aria-label="Map: INNER JOIN keeps only matches, then LEFT JOIN keeps every left row, then where a condition goes decides which rows survive"><title>Map: INNER JOIN keeps only matches, then LEFT JOIN keeps every left row, then where a condition goes decides which rows survive</title>
     <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
     <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="40" width="170" height="60" rx="8"/><rect x="235" y="40" width="170" height="60" rx="8"/><rect x="460" y="40" width="170" height="60" rx="8"/>
@@ -33,30 +33,30 @@
   </svg>
 </section>
 
-<h2>Idea by idea</h2>
+<h2>Concept by concept</h2>
 
-<section class="idea">
-  <h3>Idea one: INNER JOIN keeps matches only</h3>
+<section class="concept">
+  <h3>Concept one: INNER JOIN keeps matches only</h3>
   <svg viewBox="0 0 320 110" role="img" aria-label="Two tables, customers and orders; only the rows that find a partner appear in the result" ><title>Two tables, customers and orders; only the rows that find a partner appear in the result</title>
     <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="15" width="90" height="80" rx="6"/><rect x="220" y="15" width="90" height="80" rx="6"/><path d="M100,35 H220"/><path d="M100,60 H220" stroke-dasharray="4 4"/></g>
     <g fill="currentColor" font-size="12" text-anchor="middle"><text x="55" y="40">Ana</text><text x="55" y="60">Ben</text><text x="55" y="80">Caro</text><text x="265" y="40">order 1</text><text x="265" y="80">order 2</text></g>
   </svg>
   <p>The manual defines it: <q>For each row R1 of T1, the joined table has a row for each row in T2 that satisfies the join condition with R1.</q> The join condition sits in the ON clause. A row with no partner is dropped, and a NULL key never equals anything, so it never has one.</p>
 </section>
-<div id="sample-idea1"></div>
+<div id="sample-concept1"></div>
 
-<section class="idea">
-  <h3>Idea two: LEFT JOIN keeps every left row</h3>
+<section class="concept">
+  <h3>Concept two: LEFT JOIN keeps every left row</h3>
   <svg viewBox="0 0 320 110" role="img" aria-label="Every row of the left table appears; a row with no partner shows NULL on the right" ><title>Every row of the left table appears; a row with no partner shows NULL on the right</title>
     <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="15" width="90" height="80" rx="6"/><rect x="220" y="15" width="90" height="80" rx="6"/><path d="M100,35 H220"/><path d="M100,60 H220" stroke-dasharray="4 4"/></g>
     <g fill="currentColor" font-size="12" text-anchor="middle"><text x="55" y="40">Ana</text><text x="55" y="60">Ben</text><text x="55" y="80">Caro</text><text x="265" y="40">order 1</text><text x="265" y="60">NULL</text><text x="265" y="80">order 2</text></g>
   </svg>
   <p>The left table is the one named before the join keyword. <q>First, an inner join is performed. Then, for each row in T1 that does not satisfy the join condition with any row in T2, a joined row is added with null values in columns of T2.</q> A left row with several matches appears once per match. To find unmatched rows, test <code>IS NULL</code> on a right-table column.</p>
 </section>
-<div id="sample-idea2"></div>
+<div id="sample-concept2"></div>
 
-<section class="idea">
-  <h3>Idea three: ON or WHERE</h3>
+<section class="concept">
+  <h3>Concept three: ON or WHERE</h3>
   <svg viewBox="0 0 320 110" role="img" aria-label="ON decides which rows match; WHERE then removes rows from the finished result" ><title>ON decides which rows match; WHERE then removes rows from the finished result</title>
     <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
     <g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="35" width="90" height="40" rx="6"/><rect x="115" y="35" width="90" height="40" rx="6"/><rect x="220" y="35" width="90" height="40" rx="6"/><path d="M100,55 H113" marker-end="url(#a3)"/><path d="M205,55 H218" marker-end="url(#a3)"/></g>
@@ -64,7 +64,7 @@
   </svg>
   <p>WHERE runs on the finished result, and a comparison with NULL is never true. A WHERE test on a right-table column therefore removes the unmatched rows, and the LEFT JOIN acts like an INNER JOIN. A test that should only limit which matches count goes in ON. A test on the left table goes in WHERE, since ON never removes left rows.</p>
 </section>
-<div id="sample-idea3"></div>
+<div id="sample-concept3"></div>
 
 <h2>Putting it together</h2>
 <section id="together">
@@ -102,7 +102,7 @@
 
 <h2>Read next</h2>
 <p><strong>Primary source:</strong> <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-JOIN">PostgreSQL manual, Table Expressions</a>. It gives the exact definition of each join type, which every question here applies.</p>
-<p><strong>Also useful:</strong> <a href="https://blog.jooq.org/the-difference-between-sqls-join-on-clause-and-the-where-clause">Eder, the difference between JOIN ON and WHERE</a>, a worked example of idea three; <a href="https://modern-sql.com/concept/null">Modern SQL on NULL</a>, why a NULL comparison is never true; <a href="https://sqlzoo.net/wiki/Using_Null">SQLZoo, Using NULL</a>, for practice.</p>
+<p><strong>Also useful:</strong> <a href="https://blog.jooq.org/the-difference-between-sqls-join-on-clause-and-the-where-clause">Eder, the difference between JOIN ON and WHERE</a>, a worked example of concept three; <a href="https://modern-sql.com/concept/null">Modern SQL on NULL</a>, why a NULL comparison is never true; <a href="https://sqlzoo.net/wiki/Using_Null">SQLZoo, Using NULL</a>, for practice.</p>
 
 <ol class="sources">
   <li id="s1">PostgreSQL Global Development Group, <a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-JOIN">Table Expressions: Joined Tables</a> (current manual).</li>
@@ -127,16 +127,16 @@ window.LESSON = {
   ],
   questions: [
     {
-      sample: true, at: "idea1",
+      sample: true, at: "concept1",
       stem: "customers holds Ana, Ben and Caro. orders holds two orders for Ana and one for Caro, and none for Ben. What does customers INNER JOIN orders ON orders.customer_id = customers.id return?",
       options: [
         { text: "Three rows, and Ben is absent", correct: true, why: "Each order pairs with its customer, giving Ana twice and Caro once. Ben has no partner, so an inner join drops him. The rule: no match, no row." },
-        { text: "Four rows, with Ben shown beside an empty order", correct: false, why: "This confuses the inner join with a join that adds unmatched rows back. That behaviour belongs to LEFT JOIN, which is the next idea." },
+        { text: "Four rows, with Ben shown beside an empty order", correct: false, why: "This confuses the inner join with a join that adds unmatched rows back. That behaviour belongs to LEFT JOIN, which is the next concept." },
         { text: "Two rows, one for each customer who ordered", correct: false, why: "It assumes a join returns one row per customer. A join returns one row per matching pair, so Ana's two orders give two rows." }
       ]
     },
     {
-      sample: true, at: "idea2",
+      sample: true, at: "concept2",
       stem: "Same tables. What does customers LEFT JOIN orders ON orders.customer_id = customers.id return?",
       options: [
         { text: "Four rows: Ana twice, Ben with NULL order columns, Caro once", correct: true, why: "The inner join result gives Ana twice and Caro once. Ben has no match, so one extra row is added with NULL on the right. A left row appears at least once." },
@@ -145,7 +145,7 @@ window.LESSON = {
       ]
     },
     {
-      sample: true, at: "idea3",
+      sample: true, at: "concept3",
       stem: "A report lists every customer. Orders must be shown only when their status is paid. Where does the status test go in customers LEFT JOIN orders?",
       options: [
         { text: "In the ON clause, next to the key test", correct: true, why: "ON limits which orders count as a match, and customers with no paid order still get their NULL row. This keeps the whole left table." },

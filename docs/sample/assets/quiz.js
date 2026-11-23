@@ -5,9 +5,9 @@
 // glossary: [{ term, def }] shown in #glossary before the quiz; the terms are links inside question text. Opening one before checking forces the "guessing" mark.
 // showCount: true shows "Select N." on multi-select questions (mock exams that state the count). Default: the count is hidden and each option is scored on its own.
 // secondsPerQuestion: a number turns on a soft timer per scored question (it never stops the learner); the time goes in the result line.
-// Questions: { stem, options: [{ text, correct, why }], sample?: true, at?: "idea1", multi?: true }.
+// Questions: { stem, options: [{ text, correct, why }], sample?: true, at?: "concept1", multi?: true }.
 //   sample: true is an unscored worked-example question; it shows its explanation at once and is left out of the result line.
-//   at: "idea1" renders a sample into <div id="sample-idea1"> inside the explanation; without it the sample goes first in #quiz.
+//   at: "concept1" renders a sample into <div id="sample-concept1"> inside the explanation; without it the sample goes first in #quiz.
 //   multi: true forces checkboxes when only one option is correct (counts-shown pages only).
 //   single: true renders radios on a hidden-count page. By default every question there is select-all-that-apply, so the input type never gives the count away.
 // Any text field may be a string, or { en, l2 } on a bilingual page (see lang.js).

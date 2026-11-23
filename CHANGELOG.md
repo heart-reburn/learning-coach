@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Changed: lesson redesign. A course map is built first and settles the formal test's format. Sessions are 20 minutes (about 10 scored questions per page). Pages teach with worked examples, unscored sample questions and a glossary. Practice is closed book (glossary opens make a question a guess). Learners mark their own reason; mastery is the share of answers that are right, sure and given a right reason. Multi-select hides the count and gives partial credit. No giveaway questions. Soft timer before a formal test. Review queue is kept by idea at 1, 3 and 7 days.
+- Changed: lesson redesign. A course map is built first and settles the formal test's format. Sessions are 20 minutes (about 10 scored questions per page). Pages teach with worked examples, unscored sample questions and a glossary. Practice is closed book (glossary opens make a question a guess). Learners mark their own reason; mastery is the share of answers that are right, sure and given a right reason. Multi-select hides the count and gives partial credit. No giveaway questions. Soft timer before a formal test. Review queue is kept by concept at 1, 3 and 7 days.
 - Added: lesson pages with recall first and sure or guessing marks, a checker for answer cues, saved page progress, drills, a per-subject progress file, and one source for the difficulty rule.
 
 ## 0.2.0
