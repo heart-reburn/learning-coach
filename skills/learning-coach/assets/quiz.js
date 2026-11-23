@@ -194,14 +194,17 @@
       show.disabled = true;
       const model = bi("div", { class: "model-answer" }, r.answer);
       const marks = el("div", { class: "selfmark row" });
+      // The mark stays changeable until the result is copied.
+      const paintMarks = (key) => [...marks.children].forEach((c) => {
+        const on = c.dataset.key === key;
+        c.classList.toggle("secondary", !on);
+        c.setAttribute("aria-pressed", String(on));
+      });
       [["got it", "got"], ["partly", "partly"], ["missed", "missed"]].forEach(([key, labelKey]) => {
         const b = bi("button", { class: "secondary", type: "button", "aria-pressed": "false" }, ui(labelKey));
         b.onclick = () => {
           state.recall[rid] = key;
-          [...marks.children].forEach((c) => (c.disabled = true));
-          b.disabled = false;
-          b.classList.remove("secondary");
-          b.setAttribute("aria-pressed", "true");
+          paintMarks(key);
           saved.recall[rid] = { text: ta.value, shown: true, mark: key };
           save();
           updateResult();
@@ -231,12 +234,7 @@
       root.append(card);
       if (typeof rs.text === "string" && rs.text) { ta.value = rs.text; show.disabled = ta.value.trim().length < 1; }
       if (rs.shown) reveal();
-      if (rs.shown && rs.mark) {
-        [...marks.children].forEach((c) => {
-          if (c.dataset.key === rs.mark) { c.classList.remove("secondary"); c.setAttribute("aria-pressed", "true"); } else c.disabled = true;
-        });
-        state.recall[rid] = rs.mark;
-      }
+      if (rs.shown && rs.mark) { paintMarks(rs.mark); state.recall[rid] = rs.mark; }
     });
   }
 
