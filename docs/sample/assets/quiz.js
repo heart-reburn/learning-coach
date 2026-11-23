@@ -553,10 +553,10 @@
     gates.push({ card, lockmsg, done: () => !!state.rself[name], activate: startTimer });
   }
 
-  // Compact one-line text for the result line: no pipes or line breaks, capped length.
+  // Compact one-line text for the result line: no pipes or line breaks, capped at 500 characters.
   function oneLine(t) {
     const s = String(t || "").replace(/"/g, "'").replace(/[|\r\n]+/g, " ").replace(/\s+/g, " ").trim();
-    return s.length > 120 ? s.slice(0, 117) + "..." : s;
+    return s.length > 500 ? s.slice(0, 497) + "..." : s;
   }
 
   const scored = () => (L.questions || []).filter((q) => !(q && q.sample === true));
