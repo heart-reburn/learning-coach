@@ -11,7 +11,7 @@ Schedule: <sessions per week and usual length>
 Placement: <starting level, date, and "unverified" if you could not check the facts>
 Formal test: <none, or the exam name and date>; item format: <option count, whether items state how many to pick, seconds per item; from the official exam guide, or the learner's answer if none was found>; format source: <URL or learner-reported>
 Source: <the book, course or guide the map follows>
-Lesson pages: <on or off; language, if not English only>
+Lesson pages: <on or off>; languages: <English and Chinese by default, or the learner's choice, or English only if the learner asks>
 Drill step: <single choice, multi-select, short answer, or design case>
 Last lesson: <number>   Last drill: <number>
 Current level: <1-6, name>
@@ -21,9 +21,7 @@ Pass criteria for this level: <from levels.md, made specific to the subject>
 | Unit or chapter | Area | Status | Planned date |
 |---|---|---|---|
 
-## Review queue
-| Concept | What was wrong | Review dates | Last result |
-|---|---|---|---|
+Review queue: `review-queue.csv` beside this file (format below).
 
 ## Sessions
 | Date | Kind | Level | Minutes | Predicted | Actual | Sure and right | Wrong but sure | Right answer, reason not right | Right but guessing | Errors and why |
@@ -36,7 +34,10 @@ Pass criteria for this level: <from levels.md, made specific to the subject>
 
 **Course map.** Built on the first invocation for a subject, before any lesson. One row per unit or chapter of the chosen source, in the source's order. Area is the source's own name for the domain or part it belongs to. Status is "not started", "learning" or "done". Planned date is when the unit is due to be studied. A chapter split into parts gets one row per part (0001a, 0001b), each about 20 minutes; size parts by content, so a small chapter is one row. Later sessions only change a row's status and date; they do not rebuild the map. If the formal test is settled as "none", say so on that line and make no mock exams.
 
-**Review queue.** One row per concept, not per question number: the concept, and what exactly was wrong ("treats the retry limit as a timeout", not "q6"). Review dates are 1, 3 and 7 days after the miss; strike a date when it is done and set Last result. A drill tests the same concept in a new scenario.
+**Review queue.** A file, not a table: `review-queue.csv` beside this log, one row per concept slug, written by `assets/review.py queue` and never edited by hand. Columns: concept (slug), title, unit, page, last_result (miss, hold or good), last_date, rung, lapses, streak, errors, due, status (new, shaky, ok or solid). Unit is always one text form: digits are padded to two ("07"). Two input files feed it, both in the learner's folder:
+- `concept-registry.json`, written by hand during extraction (`references/concepts.md`): one entry per concept with slug, title, unit, page and questions (the ids of the scored questions that test it, written "<page>.q<number>").
+- `results.json`, a list of attempt records, one per page taken: page, kind, at (ISO time), and per question q, sure, reasonMark, right, credit (opened and id when they apply). `assets/review.py add results.json "<result line>"` appends one from a pasted result line, so nothing parses free text by hand.
+The spacing rule lives in `assets/review.py` and `references/placement-and-pacing.md`. After every pasted result: run `add`, then `queue`, then read the file for what is due. The queue is only as fresh as the results pasted back.
 
 One row per session. No row means it didn't happen. Kind is "Study", "Lesson 0001" or "Drill 0003".
 
@@ -45,7 +46,7 @@ A page's result line becomes one session row:
 - Sure and right is the line's count and share: questions right, marked sure, with a right reason. It is the score that counts for the drill target.
 - Wrong but sure, right answer with a reason not right, and right but guessing list the question numbers in those columns. The coach reads the reason lines one by one and may correct a self-mark that is too generous.
 - Errors and why holds the missed questions with the learner's one-line reasons, wrong but sure and wrong-reason ones first. A result line marked unfinished is not a session score: ask the learner to finish the page.
-- Each wrong but sure, wrong-reason, missed and right-but-guessing question becomes or updates a Review queue entry by concept, with the first review one day later. Wrong but sure and wrong-reason ones rank first. A partial-credit question counts as missed; rank it by its sure mark. The recall self-marks update Last result there.
+- The session row's counts come from the same attempt record that feeds `review-queue.csv`; do not retype them from free text. A partial-credit question counts as missed. Questions in no concept are listed by `review.py queue`; add them to the registry.
 - Update the last lesson or drill number, the map row's status, and the drill step by the rule in `levels.md`.
 
 A page score never passes a level; a check row does, only when the teach-back score and the rebuild both pass.

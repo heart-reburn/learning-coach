@@ -6,8 +6,8 @@ A lesson page is a short, self-contained HTML file the learner opens in a browse
 
 - Only after the placement test, and only for material that serves the current level's pass criteria.
 - Lesson pages are on by default. When new material comes up, write the page in the same turn instead of asking first, and say in one line that the learner can switch to chat. If the progress file says "Lesson pages: off", or the learner declines, teach and quiz in chat instead and note "Lesson pages: off" in the progress file.
-- Not for teach-back checks or the blank-page rebuild: those are closed book and happen in chat. Due reviews happen in chat too; due material may appear only in a page's recall section, and each recall item names its Review queue entry.
-- One lesson is one 20-minute session with about 10 scored questions (6 to 18 accepted). Size parts by the content, not by a fixed count: a small chapter is one page, a large one is two or three parts, and two tiny chapters can share a page. Each concept is tested at least twice on its page. The course map in the progress file lists the parts.
+- Not for teach-back checks or the blank-page rebuild: those are closed book and happen in chat. Due reviews happen in chat too; due material may appear only in a page's recall section, and each recall item names its concept slug from `review-queue.csv`.
+- One lesson is one 20-minute session with about 10 scored questions (6 to 18 accepted). Size parts by the content, not by a fixed count: a small chapter is one page, a large one is two or three parts, and two tiny chapters can share a page. Each concept has at least one scored question on its page, two where the page has room; every scored question carries the slug of the concept it tests (see "Concept tags" below). The course map in the progress file lists the parts.
 - A **drill** is a practice-only page on material already taught: missed questions, weak spots from the log, or a mix of earlier lessons. Make one when the log shows a weak spot, or when the learner asks for practice. It keeps the same format, with a short explanation or none, and sets `kind: "drill"` in `window.LESSON` (a lesson page uses `kind: "lesson"`; the template shows the line).
 
 ## Files
@@ -17,7 +17,7 @@ In the learner's working folder, next to the progress file (`learning-log-<subje
 - `lessons/NNNN-slug.html`, numbered in order (0001, 0002, ...) per subject. A chapter split into parts adds a letter after the number: `0001a-slug.html`, `0001b-slug.html`; the course map lists the same names. If subjects share a folder, put the subject in the slug.
 - `drills/NNNN-slug.html`, numbered separately in the same way.
 - `reference/slug.html`, a one-page reference sheet for the same material.
-- `assets/`, copied once from the `assets/` folder next to this skill's SKILL.md, wherever the skill is installed: `lesson.css`, `quiz.js`, `check-lesson.js`, `cmap.py` (concept-map generator), `walk.py` (map walkthrough builder), and `lang.js` if pages are bilingual. Start new pages from `assets/lesson-template.html` and `assets/reference-template.html`.
+- `assets/`, copied once from the `assets/` folder next to this skill's SKILL.md, wherever the skill is installed: `lesson.css`, `quiz.js`, `check-lesson.js`, `cmap.py` (concept-map generator), `walk.py` (map walkthrough builder), `review.py` (review queue and review page builder), and `lang.js` (language switch, day and night button, diagram label fitter), which pages load by default. Start new pages from `assets/lesson-template.html` and `assets/reference-template.html`.
 
 Ask for the predicted score in chat first, and open the lesson for the learner only after they give it: `open` on macOS, `xdg-open` on Linux, `start` on Windows. In the reply, say in two or three lines what the page covers, how many questions it has, that each answer is marked sure or guessing (and given a one-line reason, when the page asks for one) before it is checked, and that the learner marks their own reason right, partly right or wrong afterwards. Never show the questions, options or answer key in chat, not as a table and not as the page's data: the learner would see the answers before trying. If the learner can't open files, switch to quizzing in chat, one question at a time.
 
@@ -100,11 +100,27 @@ The pasted result line starts a debrief in chat, before the next lesson. Log it 
 3. **Reasons that are not reasons.** Name reasons such as "I think this is the one" or "makes sense" and ask what rule they would apply. A reason line is practice for the exam's justification, not a formality.
 4. **The pattern.** Which concept or which habit (skipping the stem's constraint, picking the most specific option) explains several misses. Say it once.
 5. **Their questions and their feedback block.** Answer every question they wrote. Where they call a question unfair, unclear or tricky, check it honestly against the page: if the page is wrong, fix the page and say what changed; if it is fair, show why.
-6. **One retry.** Ask one fresh question on the weakest concept and have them answer in chat before the debrief ends; then set what goes into the review queue and how the next page's difficulty changes.
-7. **Route the feedback to three places, and keep only what measurably helps.** Sort each piece into the learner (the debrief above), the course (a page or question fix: apply it in place now, and note in the review queue which questions it concerned) and the skill (a rule candidate). A rule enters this skill only when the same pattern shows in a second lesson. Afterwards compare the matching questions on the next lesson: a change that did not improve them is reverted, one that did stays. One-off complaints never become skill rules.
+6. **One retry.** Ask one fresh question on the weakest concept and have them answer in chat before the debrief ends; then record it through `review.py add` and set how the next page's difficulty changes.
+7. **Route the feedback to three places, and keep only what measurably helps.** Sort each piece into the learner (the debrief above), the course (a page or question fix: apply it in place now, and note which questions it concerned in the session row) and the skill (a rule candidate). A rule enters this skill only when the same pattern shows in a second lesson. Afterwards compare the matching questions on the next lesson: a change that did not improve them is reverted, one that did stays. One-off complaints never become skill rules.
 
 Chat follows the learner's language; keep it a conversation, not a report. A lesson quiz is practice: it never passes a level on its own.
 
 ## Language
 
-Pages are in English by default. If the learner asks for a second language, make that subject's pages bilingual with `lang.js`: English stays the default view, with a switch to the second language or to both. Keep subject terms in the original language beside the translation when the learner will be tested in that language. The result line stays English (see the result line above). Record the choice in that subject's progress file only.
+Pages are in two languages by default: English and Chinese, unless the learner names another second language or asks for English only (record it in the log's "languages" field). Every page loads `assets/lang.js` and `lesson.css`: English is the default view, with a switch to the second language or to both, and a day and night button (stored under the key `learning-coach-theme`, first visit follows the system). Text blocks are paired (`class="en"` and `class="l2"`), quiz fields are `{ en, l2 }`, and diagram labels use the pre-broken line markup so that `lang.js` can fit English and Chinese text without overlap (it re-wraps each label per language and shrinks the font until both fit). Keep subject terms in the original language beside the translation when the learner will be tested in that language. The result line stays English. On an English-only subject, leave out the second language and keep `lang.js` for the theme button.
+
+## Concept tags
+
+A page declares the concepts it teaches, `concepts: ["slug", ...]` in `window.LESSON`, and every scored question carries `concept: "slug"` from that list. `check-lesson.js` then fails a question with no slug, a slug not declared, and a declared concept with no scored question (drills and review pages need no teaching). `check-lesson.js page.html --registry concept-registry.json` also fails a slug that is not in the registry. Pages written before tagging have no `concepts` line; they pass with a note, and are tagged when next edited (migration: add the line, tag each question, add the page's question ids to the registry).
+
+## Page kinds
+
+- **Lesson part:** the format above.
+- **Fast version:** the whole unit in one sitting, one short section per concept, at least one scored question per concept; the default when time is short.
+- **Drill:** practice on taught material.
+- **Review round:** `review.py page` builds it from the due concepts (kind `review`, up to 12 questions, two per concept); closed book, no teaching. It is the only recall page; do not write a separate one. Its result line ends with the source id of each question so `review.py add` can credit the right concepts.
+- **Added concepts:** a repair kind only, for concepts found missing after the lessons were built (by the gap audit in `references/concepts.md`). Fold them into the unit's lessons at the next rebuild.
+
+## Superseded pages
+
+Never delete or renumber a superseded page: results logged against it stay valid. Mark it deprecated in the course index (struck through, with the word "deprecated" in both languages), keep its questions in the registry only where a concept has no newer question, and have the review builder prefer the newer page. Ask the owner before any page is marked deprecated.

@@ -19,7 +19,10 @@
 // get the per-question checks but are left out of the count and length rules.
 const fs = require("fs");
 const vm = require("vm");
-const html = fs.readFileSync(process.argv[2], "utf8");
+const args = process.argv.slice(2);
+const regAt = args.indexOf("--registry");
+const registryPath = regAt >= 0 ? args.splice(regAt, 2)[1] : null;
+const html = fs.readFileSync(args[0], "utf8");
 const m = html.match(/<script>\s*(window\.LESSON[\s\S]*?)<\/script>/);
 if (!m) { console.error("no window.LESSON block found"); process.exit(2); }
 // The page data is evaluated in an empty context with a time limit; it gets no require or process of its own. This is not a security boundary; pages are written by the agent.
@@ -27,6 +30,7 @@ const window = {};
 try { vm.runInNewContext(m[1], { window }, { timeout: 1000 }); }
 catch (e) { console.error("window.LESSON could not be evaluated: " + e.message); process.exit(2); }
 const L = window.LESSON;
+const drillLike = L && (L.kind === "drill" || L.kind === "review"); // pages with no teaching sections
 if (!L || !Array.isArray(L.questions) || !L.questions.length) { console.error("window.LESSON has no questions"); process.exit(2); }
 const scored = L.questions.filter((q) => !(q && q.sample === true));
 const langs = typeof (L.questions[0] || {}).stem === "string" ? [null] : ["en", "l2"];
@@ -44,7 +48,7 @@ if (Array.isArray(L.glossary)) L.glossary.forEach((g, i) => {
 
 // Page shape (lessons only; drills have no teaching sections): a big-picture map, one picture
 // per concept, and a closing "together" section.
-if (L.kind !== "drill") {
+if (!drillLike) {
   const words = (h, lang) => {
     let t = h.replace(/<svg[\s\S]*?<\/svg>/g, " ").replace(/<script[\s\S]*?<\/script>/g, " ");
     t = lang === "en" ? t.replace(/<span class="l2">[\s\S]*?<\/span>/g, " ") : t;
@@ -65,7 +69,7 @@ if (L.kind !== "drill") {
 
 // Content checks (lessons only): svg accessibility and captions, glossary terms used in the body, options echoing concept text.
 let conceptText = "";
-if (L.kind !== "drill") {
+if (!drillLike) {
   const stripScripts = (h) => h.replace(/<script[\s\S]*?<\/script>/g, " ");
   const stripL2 = (h) => h.replace(/<(\w+)\b[^>]*class="[^"]*\bl2\b[^"]*"[^>]*>[\s\S]*?<\/\1>/g, " ");
   const plainText = (h) => stripL2(h).replace(/<svg[\s\S]*?<\/svg>/g, " ").replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ");
@@ -118,8 +122,9 @@ L.questions.forEach((q) => {
   const n = q.sample === true ? "sample " + ++sn : "q" + ++qn;
   if (!Array.isArray(q.options) || !q.options.length) { problems.push(n + ": no options"); return; }
   const need = q.options.filter((o) => o.correct).length;
-  if (q.options.length < 3 || q.options.length > 5) problems.push(n + ": " + q.options.length + " options; write 3 to 5");
-  if (L.kind !== "drill" && q.sample !== true) q.options.forEach((o, k) => {
+  const maxOpt = drillLike ? 6 : 5;
+  if (q.options.length < 3 || q.options.length > maxOpt) problems.push(n + ": " + q.options.length + " options; write 3 to " + maxOpt);
+  if (!drillLike && q.sample !== true) q.options.forEach((o, k) => {
     if (!o.correct) return;
     const w = wordsOf(pick(o.text, langs[0] === null ? null : "en"));
     for (let i = 0; i + RUN <= w.length; i++) if (conceptRuns.has(w.slice(i, i + RUN).join(" "))) { problems.push(n + ": correct option " + (k + 1) + " repeats the concept text (\"" + w.slice(i, i + RUN).join(" ") + "...\"); test a new case instead"); break; }
@@ -136,7 +141,7 @@ L.questions.forEach((q) => {
     const sentences = (t) => (t.replace(ABBREV, (a) => a.replace(/\./g, "")).match(/[.!?]["')\]]*(?=\s+[A-Z0-9"'(`]|\s*$)|[。！？]/g) || []).length;
     q.options.forEach((o, k) => {
       const w = pick(o.why, lang), c = sentences(w);
-      if (w && (c < 2 || c > 4)) problems.push(tag + ": option " + (k + 1) + " why has " + c + " sentences; write two to four (see references/lessons.md)");
+      if (w && (c < (drillLike ? 1 : 2) || c > 4)) problems.push(tag + ": option " + (k + 1) + " why has " + c + " sentences; write two to four (see references/lessons.md)");
     });
     if (texts.some((t) => /\b(all|none) of the above\b/i.test(t))) problems.push(tag + ": all/none of the above");
     if (!L.showCount && /\b(select|choose|pick|which)\s+(the\s+)?(two|three|four|five|[2-5])\b|\(\s*[2-5]\s*(answers|options)\s*\)|选\s*[2-5二三四五]\s*项|[两二三四]项/i.test(pick(q.stem, lang)))
@@ -162,7 +167,8 @@ const rank = (q, lang) => {
   if (bottom.every((x) => x.o.correct) && (!above || bottom[0].l < above.l)) return "shortest";
   return "middle";
 };
-langs.forEach((lang) => {
+// A review page mixes questions already checked on their own pages, so the length pattern is not re-checked.
+if (L.kind !== "review") langs.forEach((lang) => {
   const tag = lang ? "(" + lang + ") " : "";
   const ranks = scored.map((q) => rank(q, lang));
   const n = ranks.length, cap = Math.ceil(n / 4);
@@ -174,5 +180,24 @@ langs.forEach((lang) => {
   });
 });
 
+// Concept tags. A page that declares LESSON.concepts (slugs) must tag every scored question with
+// one of them (q.concept), and every declared concept needs at least one scored question.
+// Pages written before tagging have no LESSON.concepts; they pass with a note until migrated.
+// With --registry <concept-registry.json>, every slug must exist in the registry.
+let note = "";
+if (Array.isArray(L.concepts)) {
+  const declared = new Set(L.concepts);
+  scored.forEach((q, i) => {
+    if (!q.concept) problems.push("q" + (i + 1) + ": no concept slug (q.concept)");
+    else if (!declared.has(q.concept)) problems.push("q" + (i + 1) + ': concept "' + q.concept + '" is not in LESSON.concepts');
+  });
+  if (!drillLike) L.concepts.forEach((c) => { if (!scored.some((q) => q.concept === c)) problems.push('concept "' + c + '" has no scored question'); });
+  if (registryPath) {
+    const reg = JSON.parse(fs.readFileSync(registryPath, "utf8"));
+    const known = new Set((Array.isArray(reg) ? reg : reg.concepts || []).map((c) => c.slug));
+    new Set([...L.concepts, ...scored.map((q) => q.concept).filter(Boolean)]).forEach((c) => { if (!known.has(c)) problems.push('concept "' + c + '" is not in the registry'); });
+  }
+} else note = " (note: no LESSON.concepts; questions are untagged, tag them when this page is next edited)";
+
 if (problems.length) { console.log(problems.join("\n")); process.exit(1); }
-console.log("ok: " + scored.length + " scored questions" + (L.questions.length > scored.length ? " and " + (L.questions.length - scored.length) + " sample" : "") + ", no answer cues");
+console.log("ok: " + scored.length + " scored questions" + (L.questions.length > scored.length ? " and " + (L.questions.length - scored.length) + " sample" : "") + ", no answer cues" + note);

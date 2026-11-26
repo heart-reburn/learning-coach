@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- Lesson page template. Save as lessons/NNNN-slug.html in the learner's folder; assets/ sits beside lessons/.
-     Bilingual page: add data-l2="zh" data-l2-name="中文" (or another language) to <html>, load ../assets/lang.js
+     Default is a two-language page (English and Chinese): add data-l2="zh" data-l2-name="中文" (or another language) to <html>, load ../assets/lang.js
      in <head>, pair every text block as class="en" / class="l2", and give quiz fields as { en, l2 }. -->
 <html lang="en">
 <head>
@@ -94,7 +94,8 @@
 <script>
 window.LESSON = {
   id: "NNNN", // a part suffix is fine: "01a"
-  kind: "lesson", // drills set "drill"
+  kind: "lesson", // drills set "drill"; review.py builds kind "review"
+  concepts: ["unit-concept-slug"], // slugs this page teaches, from concept-registry.json; every scored question carries concept: "slug"
   reason: true, // a one-line reason is required before checking, on every lesson and drill
   // showCount: true, // only on a mock exam whose real format states how many to pick; lesson pages and drills never show it
   // secondsPerQuestion: 90, // only in the last days before a formal test: soft timer at the exam's pace, recorded in the result line
@@ -125,6 +126,7 @@ window.LESSON = {
       ]
     },
     {
+      concept: "unit-concept-slug",
       stem: "SCENARIO 1, THEN THE QUESTION",
       options: [
         { text: "CORRECT OPTION, THE LONGEST OF THE FOUR HERE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
@@ -134,6 +136,7 @@ window.LESSON = {
       ]
     },
     {
+      concept: "unit-concept-slug",
       stem: "SCENARIO 2, THEN THE QUESTION",
       options: [
         { text: "CORRECT OPTION, ALSO THE LONGEST OF ITS FOUR", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
@@ -143,6 +146,7 @@ window.LESSON = {
       ]
     },
     {
+      concept: "unit-concept-slug",
       stem: "SCENARIO 3, THEN THE QUESTION",
       options: [
         { text: "RIGHT", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
@@ -152,6 +156,7 @@ window.LESSON = {
       ]
     },
     {
+      concept: "unit-concept-slug",
       stem: "SCENARIO 4, THEN THE QUESTION",
       options: [
         { text: "RIGHT ONE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
@@ -161,6 +166,7 @@ window.LESSON = {
       ]
     },
     {
+      concept: "unit-concept-slug",
       stem: "SCENARIO 5, THEN THE QUESTION",
       options: [
         { text: "CORRECT OPTION, MIDDLE LENGTH", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
@@ -170,6 +176,7 @@ window.LESSON = {
       ]
     },
     {
+      concept: "unit-concept-slug",
       stem: "SCENARIO 6, THEN THE QUESTION",
       options: [
         { text: "CORRECT OPTION, MIDDLE SIZE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
@@ -179,6 +186,7 @@ window.LESSON = {
       ]
     },
     {
+      concept: "unit-concept-slug",
       stem: "SCENARIO 7, THEN THE QUESTION",
       options: [
         { text: "CORRECT OPTION IN THE MIDDLE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },
@@ -188,6 +196,7 @@ window.LESSON = {
       ]
     },
     {
+      concept: "unit-concept-slug",
       stem: "SCENARIO 8, THEN THE QUESTION",
       options: [
         { text: "CORRECT OPTION, AGAIN MIDDLE", correct: true, why: "WHY IT IS RIGHT. NAME THE RULE BEHIND IT." },

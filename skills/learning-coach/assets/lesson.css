@@ -168,9 +168,11 @@ svg .lab { font-size: 10px; fill: var(--muted); }
 svg .lbg { fill: var(--bg); }
 svg .arrow.dash { stroke-dasharray: 5 4; }
 html[data-lang="both"] svg text.cl { transform: none; }
-html[data-lang="both"] svg text.lab.en { transform: translateY(-6px); }
-html[data-lang="both"] svg text.lab.l2 { transform: translateY(7px); }
+html[data-lang="both"] svg text.lab.en { transform: translateY(-8px); }
+html[data-lang="both"] svg text.lab.l2 { transform: translateY(9px); }
 
 .gloss { padding-left: 1.1rem; }
 .gloss li { margin-bottom: .8rem; }
 #bigpicture p.link { color: var(--muted); }
+details.check { margin: .6rem 0 1.6rem; padding: .5rem .8rem; border-left: 3px solid var(--rule, #8884); }
+details.check summary { cursor: pointer; font: 600 .95rem -apple-system, BlinkMacSystemFont, sans-serif; opacity: .85; }

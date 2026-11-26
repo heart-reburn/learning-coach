@@ -24,7 +24,7 @@
 (function () {
   const L = window.LESSON;
   const state = { results: {}, credit: {}, sure: {}, recall: {}, reasons: {}, rself: {}, opened: {}, time: {}, partial: {} };
-  const KINDS = ["lesson", "drill"];
+  const KINDS = ["lesson", "drill", "review"];
   const KIND = KINDS.indexOf(L.kind) >= 0 ? L.kind : "lesson";
   const SECS = Number(L.secondsPerQuestion) > 0 ? Math.round(Number(L.secondsPerQuestion)) : 0;
   const GLOSSARY = (Array.isArray(L.glossary) ? L.glossary : []).filter((g) => g && typeof g === "object" && g.term);
@@ -610,6 +610,9 @@
       (state.reasons[k] ? ' "' + oneLine(state.reasons[k]) + '"' : "")
     ).join("; ") || "none";
     const partial = fin.filter((k) => state.partial[k] && state.credit[k] > 0).map((k) => k + " " + state.partial[k]);
+    // A review page mixes questions from several pages; each carries the id of its source question.
+    const qs = scored();
+    const ids = fin.filter((k) => qs[parseInt(k.slice(1), 10) - 1] && qs[parseInt(k.slice(1), 10) - 1].id).map((k) => k + " " + qs[parseInt(k.slice(1), 10) - 1].id).join("; ");
     const nChanged = fin.filter((k) => saved.changes[k] > 0).length;
     const over = SECS ? fin.filter((k) => typeof state.time[k] === "number" && state.time[k] > SECS) : [];
     out.textContent =
@@ -625,6 +628,7 @@
       " | recall: " + recall +
       (document.getElementById("redraw") ? " | redraw: " + (saved.redraw.mark || "not marked") : "") +
       " | marks: " + marks +
+      (ids ? " | ids: " + ids : "") +
       (nChanged ? " | answers changed before checking: " + nChanged : "") +
       " | page feedback: " + fbText();
     const again = document.getElementById("startover");

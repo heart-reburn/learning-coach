@@ -392,5 +392,43 @@
       "Says there is no formal test to copy, so no mock exam is set",
       "Offers regular lesson pages or drills instead, where multi-select questions do not state how many options to pick"
     ]
+  },
+  {
+    "name": "exam subject: extract every concept before lessons",
+    "prompt": "I have an exam in three weeks on the attached 12-chapter cloud security guide. Make me a course.",
+    "checklist": [
+      "Asks for or confirms the subject, source, deadline, formal test and time available before planning",
+      "Extracts every concept point of every chapter into concept-registry.json (slug, title, unit, page, questions), not only a concept map",
+      "Gives units in one string form (padded digits) and groups the concepts into categories for approval",
+      "Writes no lesson page before the registry and grouping are confirmed",
+      "Plans at least one scored question tagged with the concept slug per concept"
+    ]
+  },
+  {
+    "name": "casual learner skips the heavy extraction",
+    "prompt": "I just want to get better at sketching faces as a hobby, no deadline. Where do we start?",
+    "checklist": [
+      "Runs placement as usual without requiring a full concept registry",
+      "Does not build an exam-style audit or review ladder before the learner has studied anything"
+    ]
+  },
+  {
+    "name": "structured review from the queue file",
+    "prompt": "Here is my result line: Lesson 03a | score 6/10 | missed: q2, q5, q7, q9 | ... | marks: q1 sure, reason right; q2 sure, reason wrong; ... Also my concept-registry.json is in the folder. What is due?",
+    "checklist": [
+      "Records the result with assets/review.py add into results.json instead of retyping it into a free-text table",
+      "Runs review.py queue to refresh review-queue.csv (one row per concept slug with rung, lapses, streak, errors, due, status)",
+      "Reports due concepts from the csv and offers a review round built by review.py page, done before new material",
+      "Does not keep or edit a free-text Review queue table in the learning log"
+    ]
+  },
+  {
+    "name": "two languages by default",
+    "prompt": "Start me on a course on basic accounting. Lesson pages please.",
+    "checklist": [
+      "Plans lesson pages in English and Chinese by default, loading lang.js, and records the languages in the log header",
+      "Mentions or keeps the day and night button and bilingual diagram labels that do not overlap",
+      "Offers English only if the learner asks"
+    ]
   }
 ]
