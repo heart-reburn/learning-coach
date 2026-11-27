@@ -173,6 +173,17 @@ html[data-lang="both"] svg text.lab.l2 { transform: translateY(9px); }
 
 .gloss { padding-left: 1.1rem; }
 .gloss li { margin-bottom: .8rem; }
+.keypts { padding-left: 1.25rem; margin: .45rem 0 1rem; }
+.keypts li { margin-bottom: .45rem; }
+html[data-lang="both"] .keypts li { margin-bottom: .75rem; }
 #bigpicture p.link { color: var(--muted); }
 details.check { margin: .6rem 0 1.6rem; padding: .5rem .8rem; border-left: 3px solid var(--rule, #8884); }
 details.check summary { cursor: pointer; font: 600 .95rem -apple-system, BlinkMacSystemFont, sans-serif; opacity: .85; }
+
+/* Diagrams scaled to fit main (640px inner width) while staying readable on narrow screens */
+#bigpicture, #together, #chapter-map, .concept, .group { overflow-x: auto; }
+svg[viewBox^="0 0 500"] { width: 640px; min-width: 580px; max-width: none; }
+svg[viewBox^="0 0 470"] { width: 640px; min-width: 560px; max-width: none; }
+svg[viewBox^="0 0 360"] { width: 504px; min-width: 440px; max-width: none; }
+svg[viewBox^="0 0 320"] { width: 448px; min-width: 400px; max-width: none; }
+#bigpicture svg, #together svg, #chapter-map svg, .concept svg { margin-left: auto; margin-right: auto; }

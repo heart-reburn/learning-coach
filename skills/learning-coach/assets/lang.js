@@ -100,6 +100,11 @@
       if (cur && width(next, px) > max) { lines.push(cur); cur = u; } else cur = next;
     });
     if (cur) lines.push(cur);
+    if (cjk && lines.length === 2 && lines[1].length <= 2) {
+      const mid = Math.ceil(units.length * 0.55);
+      const a = units.slice(0, mid).join(""), b = units.slice(mid).join("");
+      if (width(a, px) <= max && width(b, px) <= max) return [a, b];
+    }
     return lines;
   }
 
@@ -139,18 +144,33 @@
     document.querySelectorAll("svg text.cl.l2").forEach((l2) => {
       const en = l2.previousElementSibling;
       if (!en || !en.classList.contains("cl")) return;
-      if (!l2._x) l2._x = l2.getAttribute("x");
-      if (!l2._y) l2._y = l2.getAttribute("y");
-      const vb = l2.ownerSVGElement.viewBox.baseVal;
-      const ex = +en.getAttribute("x"), ey = +en.getAttribute("y");
+      if (!l2._x) { l2._x = l2.getAttribute("x"); l2._y = l2.getAttribute("y"); en._y = en.getAttribute("y"); }
+      const svg = l2.ownerSVGElement;
+      const vb = svg.viewBox.baseVal;
+      const ex = +en.getAttribute("x"), ey = +en._y;
+      en.setAttribute("y", ey);
+      en.style.fontSize = "";
+      l2.style.fontSize = "";
       const ew = width(en.textContent, 10) * 1.12, lw = width(l2.textContent, 10);
       if (mode !== "both") { l2.setAttribute("x", ex); l2.setAttribute("y", ey); return; }
-      if (ex + ew + 16 + lw <= vb.width - 8) { l2.setAttribute("x", ex + ew + 16); l2.setAttribute("y", ey); }
-      else { l2.setAttribute("x", ex); l2.setAttribute("y", ey + 13); }
+      if (ex + ew + 16 + lw <= vb.width - 12) { l2.setAttribute("x", ex + ew + 16); l2.setAttribute("y", ey); return; }
+      // Check room above the first node inside this cluster; tighten older HEAD=30 maps if needed.
+      const nodesAfter = [...svg.querySelectorAll("rect.node")].map((r) => +r.getAttribute("y")).filter((ny) => ny > ey);
+      const nextY = nodesAfter.length ? Math.min(...nodesAfter) : ey + 26;
+      if (nextY - ey < 20) {
+        en.style.fontSize = "9px";
+        l2.style.fontSize = "9px";
+        en.setAttribute("y", ey - 2);
+        l2.setAttribute("x", ex);
+        l2.setAttribute("y", ey + 9);
+      } else {
+        l2.setAttribute("x", ex);
+        l2.setAttribute("y", ey + 13);
+      }
     });
   }
 
-  // Nudges edge labels off any other text so no two labels or node texts overlap, in every language mode.
+  // Nudges edge labels off other text and nodes, and places dynamic background masks behind edge labels and cluster titles.
   function dodge() {
     const OFFS = [];
     for (let dy = -90; dy <= 90; dy += 6) for (let dx = -60; dx <= 60; dx += 10) OFFS.push([dx, dy]);
@@ -161,8 +181,25 @@
       if (m) dy = +m[1].split(",")[5] || 0;
       return { x: b.x, y: b.y + dy, w: b.width, h: b.height };
     };
-    const hit = (a, b, dx, dy) => a.x + dx < b.x + b.w + 1 && b.x < a.x + dx + a.w + 1 && a.y + dy < b.y + b.h + 1 && b.y < a.y + dy + a.h + 1;
+    const hit = (a, b, dx, dy) => a.x + dx < b.x + b.w + 2 && b.x < a.x + dx + a.w + 2 && a.y + dy < b.y + b.h + 2 && b.y < a.y + dy + a.h + 2;
+    const maskFor = (elems, parent, beforeNode) => {
+      const boxes = elems.filter((e) => getComputedStyle(e).display !== "none" && e.textContent.trim()).map(eff);
+      if (!boxes.length) return;
+      const x1 = Math.min(...boxes.map((b) => b.x)) - 4;
+      const y1 = Math.min(...boxes.map((b) => b.y)) - 2;
+      const x2 = Math.max(...boxes.map((b) => b.x + b.w)) + 4;
+      const y2 = Math.max(...boxes.map((b) => b.y + b.h)) + 2;
+      const r = document.createElementNS(NS, "rect");
+      r.setAttribute("class", "lbg");
+      r.setAttribute("x", x1.toFixed(1));
+      r.setAttribute("y", y1.toFixed(1));
+      r.setAttribute("width", Math.max(0, x2 - x1).toFixed(1));
+      r.setAttribute("height", Math.max(0, y2 - y1).toFixed(1));
+      r.setAttribute("rx", "4");
+      parent.insertBefore(r, beforeNode);
+    };
     document.querySelectorAll("svg").forEach((svg) => { try {
+      svg.querySelectorAll("rect.lbg").forEach((r) => r.remove());
       const labs = [...svg.querySelectorAll("text.lab")];
       labs.forEach((l) => {
         if (l._ox === undefined) { l._ox = l.getAttribute("x"); l._oy = l.getAttribute("y"); }
@@ -170,6 +207,7 @@
       });
       const vis = () => [...svg.querySelectorAll("text")].filter((x) => getComputedStyle(x).display !== "none" && x.textContent.trim());
       const done = new Set();
+      const groups = [];
       labs.forEach((l) => {
         if (done.has(l)) return;
         const twin = labs.find((o) => !done.has(o) && o !== l && o._ox === l._ox && o._oy === l._oy && o.classList.contains("l2") !== l.classList.contains("l2"));
@@ -177,6 +215,7 @@
         same.forEach((g) => done.add(g));
         const group = same.filter((o) => getComputedStyle(o).display !== "none");
         if (!group.length) return;
+        groups.push(group);
         const others = vis().filter((x) => !group.includes(x));
         const gb = group.map(eff);
         const u = { x: Math.min(...gb.map((b) => b.x)), y: Math.min(...gb.map((b) => b.y)), w: 0, h: 0 };
@@ -188,6 +227,14 @@
         const pick = OFFS.find(([dx, dy]) => inside(dx, dy) && !ob.some((b) => hit(u, b, dx, dy)) && !nodes.some((b) => hit(u, b, dx, dy)))
           || OFFS.find(([dx, dy]) => inside(dx, dy) && !ob.some((b) => hit(u, b, dx, dy)));
         if (pick) group.forEach((g) => { g.setAttribute("x", +g._ox + pick[0]); g.setAttribute("y", +g._oy + pick[1]); });
+      });
+      // Rebuild background masks behind cluster headers and final edge-label positions so arrows never strike through text.
+      svg.querySelectorAll("text.en.cl").forEach((enCl) => {
+        const l2Cl = enCl.nextElementSibling && enCl.nextElementSibling.classList.contains("cl") ? enCl.nextElementSibling : null;
+        maskFor(l2Cl ? [enCl, l2Cl] : [enCl], enCl.parentNode, enCl);
+      });
+      groups.forEach((group) => {
+        if (!group[0].closest("g[transform]")) maskFor(group, group[0].parentNode, group[0]);
       });
     } catch (e) {} });
   }

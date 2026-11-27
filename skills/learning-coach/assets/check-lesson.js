@@ -90,6 +90,7 @@ if (!drillLike) {
     }
     [...m[2].matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)].forEach((t) => {
       const txt = t[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      if (/\|/.test(txt)) problems.push(tag + ': unsplit "|" in svg text: "' + txt + '"');
       const fs0 = (t[1].match(/font-size\s*[=:]\s*"?'?(\d+(?:\.\d+)?)/) || [])[1];
       if (len(txt) > maxChars) problems.push(tag + ': text of ' + len(txt) + ' characters (at most ' + maxChars + '): "' + txt + '"');
       if (fs0 && Number(fs0) < 11) problems.push(tag + ": text with font-size " + fs0 + " (at least 11): \"" + txt + "\"");
@@ -99,8 +100,10 @@ if (!drillLike) {
   });
   const conceptHtml = [...html.matchAll(/<section[^>]*class="[^"]*\bconcept\b[^"]*"[^>]*>([\s\S]*?)<\/section>/g)].map((m) => m[1]).join(" ");
   conceptText = plainText(conceptHtml);
-  // Terms: the English term must be used in the page body, outside the glossary and the questions (scripts are not body).
-  const body = plainText(stripScripts(html).replace(/<div[^>]*id="glossary"[^>]*>[\s\S]*?<\/div>/, " ").replace(/<section[^>]*id="glossary"[^>]*>[\s\S]*?<\/section>/, " ")).toLowerCase();
+  // Terms: both English and second-language glossary terms must appear in the page body before the glossary and quiz.
+  const bodyHtml = stripScripts(html).replace(/<div[^>]*id="glossary"[^>]*>[\s\S]*?<\/div>/, " ").replace(/<section[^>]*id="glossary"[^>]*>[\s\S]*?<\/section>/, " ");
+  const body = plainText(bodyHtml).toLowerCase();
+  const bodyAll = bodyHtml.replace(/<svg[\s\S]*?<\/svg>/g, " ").replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ");
   const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   (Array.isArray(L.glossary) ? L.glossary : []).forEach((g) => {
     const term = ((g && (typeof g.term === "string" ? g.term : g.term && g.term.en)) || "").trim().toLowerCase();
@@ -109,6 +112,9 @@ if (!drillLike) {
     const stem = term.replace(/(ies|es|s)$/, "");
     if (!re.test(body) && !(stem.length > 3 && new RegExp("(?<![a-z0-9])" + esc(stem) + "(?:s|es|ies|y)?(?![a-z0-9])").test(body)))
       problems.push('glossary term "' + term + '" is never used in the page body before the quiz; teach it inline where first used');
+    const l2Term = ((g && typeof g.term === "object" && g.term.l2) || "").trim();
+    if (l2Term && langs.includes("l2") && !bodyAll.includes(l2Term))
+      problems.push('glossary l2 term "' + l2Term + '" is never used in the page body before the quiz; match the prose translation');
   });
 }
 const wordsOf = (t) => (t.toLowerCase().match(/[a-z0-9]+(?:'[a-z]+)?/g) || []);
@@ -146,6 +152,8 @@ L.questions.forEach((q) => {
     if (texts.some((t) => /\b(all|none) of the above\b/i.test(t))) problems.push(tag + ": all/none of the above");
     if (!L.showCount && /\b(select|choose|pick|which)\s+(the\s+)?(two|three|four|five|[2-5])\b|\(\s*[2-5]\s*(answers|options)\s*\)|选\s*[2-5二三四五]\s*项|[两二三四]项/i.test(pick(q.stem, lang)))
       problems.push(tag + ": stem says how many to pick; the page hides counts (set LESSON.showCount only for a mock that copies the exam's format)");
+    if (!L.showCount && /select all that apply|选出所有正确的选项/i.test(pick(q.stem, lang)))
+      problems.push(tag + ": stem repeats select-all-that-apply; quiz.js already renders that line");
     const asksWhy = /\bwhy\b|为什么|为何/i.test(pick(q.stem, lang));
     const REASON = /\b(because|since|so that|in order to|to confirm|to verify|which fixes)\b|;\s*that fixes it|\bso\s+\w+\s+(can|will|would|returns|applies)\b|因为|所以|以便|为了|这样就能/i;
     if (!asksWhy) texts.forEach((t) => {
