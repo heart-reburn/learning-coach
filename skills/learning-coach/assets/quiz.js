@@ -17,9 +17,9 @@
 //     cannot reset a question (edited page content starts fresh); a finished page offers "Start over". Without storage the page still works.
 //   - recall answers stay hidden until the learner has written something
 //   - each scored question needs a sure / guessing mark (and a reason when LESSON.reason is set) before checking
-//   - each question locks once checked; no changing answers after seeing feedback
+//   - each question locks its answer choices and reason input once checked; confidence (sure / guessing, unless a term was opened) and reason self-marks (right / partly right / wrong) remain changeable afterwards
 //   - after checking, each option carries a text marker ("Correct answer. You chose it." / "Correct answer. You did not choose it." / "Wrong answer. You chose it."), not colour alone
-//   - after checking, the learner marks their own reason right / partly right / wrong; the next question stays locked until they do
+//   - after checking, the learner marks their own reason right / partly right / wrong (and can adjust it later); the next question stays locked until they mark it
 //   - multi-select questions give partial credit: the right options found minus wrong ones picked, over the right ones
 (function () {
   const L = window.LESSON;
@@ -385,10 +385,15 @@
     const confButtons = [[true, "sure"], [false, "guess"]].map(([value, key]) => {
       const b = bi("button", { class: "secondary", type: "button", "aria-pressed": "false" }, ui(key));
       b.onclick = () => {
+        if (opened && value) return;
         setSure(value);
         saved.sure[name] = value;
         save();
         ready();
+        if (locked) {
+          state.sure[name] = sure;
+          updateResult();
+        }
       };
       conf.append(b);
       return b;
@@ -498,12 +503,11 @@
         const on = b.dataset.key === key;
         b.setAttribute("aria-pressed", String(on));
         b.classList.toggle("secondary", !on);
-        b.disabled = !on;
       });
       hint.textContent = "";
     }
     function lock(elapsed) {
-      confButtons.forEach((b) => (b.disabled = true));
+      if (opened) confButtons[0].disabled = true;
       if (reason) reason.readOnly = true;
       const { right, same, hits, extra } = reveal();
       const need = rows.filter((r) => r.o.correct).length;
