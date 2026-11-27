@@ -17,7 +17,7 @@
 //     cannot reset a question (edited page content starts fresh); a finished page offers "Start over". Without storage the page still works.
 //   - recall answers stay hidden until the learner has written something
 //   - each scored question needs a sure / guessing mark (and a reason when LESSON.reason is set) before checking
-//   - each question locks its answer choices and reason input once checked; confidence (sure / guessing, unless a term was opened) and reason self-marks (right / partly right / wrong) remain changeable afterwards
+//   - each question locks its answer choices once checked; the reason text, confidence (sure / guessing, unless a term was opened), and reason self-marks (right / partly right / wrong) remain changeable afterwards
 //   - after checking, each option carries a text marker ("Correct answer. You chose it." / "Correct answer. You did not choose it." / "Wrong answer. You chose it."), not colour alone
 //   - after checking, the learner marks their own reason right / partly right / wrong (and can adjust it later); the next question stays locked until they mark it
 //   - multi-select questions give partial credit: the right options found minus wrong ones picked, over the right ones
@@ -419,6 +419,10 @@
         saved.reason[name] = reason.value;
         save();
         ready();
+        if (locked) {
+          state.reasons[name] = reason.value;
+          updateResult();
+        }
       };
     }
     const check = bi("button", { style: "margin-top:.6rem", type: "button", "aria-describedby": name + "-need" }, ui("check"));
@@ -508,7 +512,6 @@
     }
     function lock(elapsed) {
       if (opened) confButtons[0].disabled = true;
-      if (reason) reason.readOnly = true;
       const { right, same, hits, extra } = reveal();
       const need = rows.filter((r) => r.o.correct).length;
       if (tick) { clearInterval(tick); tick = null; }
