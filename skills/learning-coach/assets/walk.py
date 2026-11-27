@@ -33,9 +33,10 @@ def build(f,mapsrc,intro,groups,links,final,last_aria_note=''):
         small=cmap.render([c],ie,'Group %d of the chapter map: %s'%(i+1,c[0].lower()))
         if i>0:
             out+=f'  <p class="en link"><em>{links[i-1][0]}</em></p>\n  <p class="l2 link"><em>{links[i-1][1]}</em></p>\n'
-        out+=f'  <h3><span class="en">{title(c[0])}</span><span class="l2">{c[1]}</span></h3>\n  {small}\n  <p class="en">{g[0]}</p>\n  <p class="l2">{g[1]}</p>\n'
+        out+=f'  <h3><span class="en">{title(c[0])}</span><span class="l2">{c[1]}</span></h3>\n  <p class="en">{g[0]}</p>\n  <p class="l2">{g[1]}</p>\n'
         ns=[n for r in c[2] for n in r]
         out+='  <ul class="gloss">\n'+''.join('    <li><span class="en"><strong>%s%s</strong> %s</span><span class="l2"><strong>%s：</strong>%s</span></li>\n'%(n[1].replace('|',' '),'' if n[1].endswith('?') else ':',G[n[1].replace('|',' ')][0],n[2],G[n[1].replace('|',' ')][1]) for n in ns)+'  </ul>\n'
+        out+=f'  {small}\n'
     cmap._n[0]=200
     out+=f'  <h3><span class="en">The whole chapter, connected</span><span class="l2">整章连起来</span></h3>\n  <p class="en">{final[0]}</p>\n  <p class="l2">{final[1]}</p>\n  {cmap.render(C,E,aria)}\n'
     t2=re.sub(r'(<section id="bigpicture">).*?(</section>)',lambda m:m.group(1)+'\n  '+out+m.group(2),t,count=1,flags=re.S)
