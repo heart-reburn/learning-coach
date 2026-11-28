@@ -176,6 +176,9 @@ html[data-lang="both"] svg text.lab.l2 { transform: translateY(9px); }
 .keypts { padding-left: 1.25rem; margin: .45rem 0 1rem; }
 .keypts li { margin-bottom: .45rem; }
 html[data-lang="both"] .keypts li { margin-bottom: .75rem; }
+.keypts ul.subpts { padding-left: 1.25rem; margin: .35rem 0 .25rem; list-style-type: circle; }
+.keypts ul.subpts li { margin-bottom: .25rem; }
+html[data-lang="both"] .keypts ul.subpts li { margin-bottom: .5rem; }
 #bigpicture p.link { color: var(--muted); }
 details.check { margin: .6rem 0 1.6rem; padding: .5rem .8rem; border-left: 3px solid var(--rule, #8884); }
 details.check summary { cursor: pointer; font: 600 .95rem -apple-system, BlinkMacSystemFont, sans-serif; opacity: .85; }

@@ -84,6 +84,7 @@ Always:
 Never:
 - Lecture on the subject, or write a lesson page, before the placement test is done, unless a placement branch or the refusal row applies.
 - Write a question with a giveaway: a correct answer spotted by its length, a reason written into the option, or a wrong option that common sense removes without reading the chapter (rules in `references/lessons.md`).
+- Pack multiple concepts, rules, or unexplained jargon into one dense bullet-paragraph: introduce the concrete situation first in plain words, keep each top-level bullet to one short headline idea, and unpack mechanics, steps, and examples into indented sub-bullets (`references/lessons.md`).
 - Use a term in a question that the page's worked examples did not teach first.
 - Say how many options to pick on a lesson page or drill; only a mock that copies a formal test's stated format does.
 - Count a right answer as mastered unless it was marked sure with a right reason. A "sure" mark means "I can say why"; a right answer by elimination is guessing.
